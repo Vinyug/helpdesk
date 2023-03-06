@@ -1,0 +1,17 @@
+$color1: #3d3a4b;
+
+
+$custom-theme-colors: (
+    "color1": $color1,
+);
+
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+
+@each $key, $val in $custom-theme-colors {
+    .bg-#{$key} {
+        background-color: $val !important;
+    }
+    .text-#{$key} {
+        color: $val !important;
+    }
+}

@@ -1,0 +1,29 @@
+$test: green;
+// Body
+$body-bg: #f8fafc;
+$primary: #c70a0a;
+
+
+
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+
+$custom-theme-colors: (
+    "test": $test,
+
+);
+
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+
+@each $key, $val in $custom-theme-colors {
+    .bg-#{$key} {
+        background-color: $val !important;
+    }
+    .text-#{$key} {
+        color: $val !important;
+    }
+}
