@@ -1,8 +1,20 @@
-$color1: #3d3aeb;
+$white: #fff;
+$light-blue: #2EA3F2;
+$dark-blue: #15314e;
+$blue: #2573F9;
+$orange: #FF8A3D;
+$dark: #333;
+$grey: #666;
 
 
 $custom-theme-colors: (
-    "color1": $color1,
+    "white" :       $white,
+    "light-blue" :  $light-blue,
+    "dark-blue" :   $dark-blue,
+    "blue" :        $blue,
+    "orange" :      $orange,
+    "dark" :        $dark,
+    "grey" :        $grey,
 );
 
 $theme-colors: map-merge($custom-theme-colors, $theme-colors);
