@@ -6,12 +6,14 @@
 
         <title>Laravel</title>
 
-        <!-- Bootstrap CSS -->
-        @vite(['resources/js/app.js'])
-        
-
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+                
+        <!-- Bootstrap CSS -->
+        {{-- dev --}}
+        @vite(['resources/js/app.js'])
+        {{-- prod --}}
+        <link rel="stylesheet" href="build/assets/app-09ee2eee.css">
     </head>
 
     <body class="antialiased">
@@ -29,5 +31,6 @@
     </body>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- prod --}}
+    <script src="build/assets/app-8fc1926a.js"></script>
 </html>
