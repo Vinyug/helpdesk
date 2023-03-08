@@ -1,4 +1,4 @@
-{{-- TEST BRANCH DEV --}}
+{{-- TEST AFTER RESET --}}
 @extends('layouts.main')
 
 @section('content')
