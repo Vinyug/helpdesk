@@ -10,3 +10,4 @@
 - Install npm : npm install
 - Open project with web browser
 - To compile CSS / JS, need use command : npm run dev
+- Configure a mailer in .env
