@@ -30,6 +30,7 @@
     </div>
 </nav> --}}
 
+test
 
 {{-- Looking for customize --}}
 <nav class="container mx-auto py-3">
