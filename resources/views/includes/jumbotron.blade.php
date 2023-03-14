@@ -18,11 +18,13 @@
 
 
 {{-- looking for customize --}}
-<div class=" jumbotron relative bg-image">
-    <div class="absolute inset-0 bg-opacity-70 bg-blue-900"></div>
-    <div class="relative flex justify-center items-center h-screen">
+<div class="relative">
+    <img class="absolute object-cover object-center w-full xl:h-[500px] lg:h-[450px] h-[400px]" src="assets/images/jumbotron.jpg" alt="image serveur">
+    {{-- <div class="absolute inset-0"> --}}
+    </div>
+    <div class="relative flex justify-center items-center xl:h-[500px] lg:h-[450px] h-[400px] bg-opacity-80 bg-blue-900">
         <div class="text-white m-3 text-center">
-            <h1 class="font-bold text-4xl md:text-5xl lg:text-6xl mb-3">HELPDESK - Axess Informatique</h1>
+            <h1 class="title-font font-bold text-4xl md:text-5xl lg:text-6xl mb-3">HELPDESK - Axess Informatique</h1>
             <h5 class="text-lg md:text-xl lg:text-2xl mb-4">
                 Accéder à la performance, la pérennité et la sécurité pour votre infrastructure.
             </h5>

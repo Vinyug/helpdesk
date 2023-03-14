@@ -30,13 +30,12 @@
     </div>
 </nav> --}}
 
-test
 
 {{-- Looking for customize --}}
 <nav class="container mx-auto py-3">
     <div class="flex items-center">
-        <a href="#"><img class="h-10 w-10" src="{{ asset('assets/images/logo-axi.jpg')}}" alt="logo AXI"></a>
-        <div class="ml-3 font-bold text-lg text-dark-blue">Helpdesk</div>
+        <a href="#"><img class="logo-navbar h-10 w-10" src="{{ asset('assets/images/logo-axi.jpg')}}" alt="logo AXI"></a>
+        <div class="title-font ml-3 font-bold text-lg text-dark-blue">Helpdesk</div>
 
         <button class="navbar-toggler sm:hidden" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

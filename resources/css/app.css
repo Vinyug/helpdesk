@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+/* Global */
+.title-font{
+    font-family: 'Share Tech', helvetica, Arial, Lucida, sans-serif;
+}    
+/* End Global */
+
+/* Navbar */
+nav .logo-navbar {
+    width: 64px;
+}
+nav .menu ul li a:hover {
+    transition: 0.3s;
+    opacity: 0.75;
+}
+/* End Navbar  */
+
+/* Jumbotron */
+
+/* End Jumbotron */
