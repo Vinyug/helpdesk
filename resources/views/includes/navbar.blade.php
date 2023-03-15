@@ -74,32 +74,9 @@
                 </ul>
             </div>
             
-            <!-- Settings Dropdown -->
-            {{-- <div class="hidden order-2 sm:order-4 sm:flex sm:items-center sm:ml-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 text-sm text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80">
-                            <div>Menu</div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <ul>
-                            <li class="inline-flex items-center ml-4 my-1 w-full">
-                                <a class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" href="{{ route('profile.edit') }}">Profile</a>
-                            </li>
-                        </ul>
-
-                    </x-slot>
-                </x-dropdown>
-            </div> --}}
-
-
-
-
 
             <!-- Sidebar -->
-            <div class="hidden sm:block absolute transform transition duration-300 inset-0 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-113px)] mt-[113px]" :class="{'-translate-x-full opacity-0':isOpen === false, 'translate-x-0 opacity-100': isOpen === true}">
+            <div class="hidden sm:block absolute transform transition duration-300 top-0 -left-80 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-113px)] mt-[113px]" :class="{'-translate-x-full opacity-0 hidden':isOpen === false, 'translate-x-80 opacity-100 block': isOpen === true}">
                 <div class="flex justify-between">
                     <span class="font-bold pl-4 text-custom-grey text-2xl sm:text-3xl">Menu</span>
                     <button class="p-2 rounded text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = false">
@@ -163,8 +140,8 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-800">Nom</div>
+                <div class="font-medium text-sm text-gray-500">Email</div>
             </div>
 
             <div class="mt-3 space-y-1">
