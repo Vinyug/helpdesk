@@ -3,12 +3,7 @@
 @tailwind utilities;
 
 
-
-/* Global */
-.title-font{
-    font-family: 'Share Tech', helvetica, Arial, Lucida, sans-serif;
-}    
-/* End Global */
+/*------------ CUSTOM -------------*/
 
 /* Navbar */
 nav .logo-navbar {
@@ -20,6 +15,15 @@ nav .menu ul li a:hover {
 }
 /* End Navbar  */
 
-/* Jumbotron */
-
-/* End Jumbotron */
+/* Footer */
+footer img:hover {
+    filter: 
+        invert(35%) 
+        sepia(4%) 
+        saturate(6145%) 
+        hue-rotate(184deg) 
+        brightness(102%) 
+        contrast(112%);
+    transition: all 0.3s;
+}
+/* End Footer */

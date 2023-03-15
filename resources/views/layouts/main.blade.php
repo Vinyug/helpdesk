@@ -17,7 +17,7 @@
         
     </head>
 
-    <body class="flex flex-col min-h-screen antialiased">
+    <body class="text-custom-dark flex flex-col min-h-screen antialiased">
 
         @include('includes.header')
         

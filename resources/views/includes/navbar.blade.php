@@ -35,31 +35,42 @@
 <nav class="container mx-auto py-3">
     <div class="flex items-center">
         <a href="#"><img class="logo-navbar h-10 w-10" src="{{ asset('assets/images/logo-axi.jpg')}}" alt="logo AXI"></a>
-        <div class="title-font ml-3 font-bold text-lg text-dark-blue">Helpdesk</div>
+        <div class="font-share-tech ml-6 font-bold tracking-wide text-lg md:text-2xl text-custom-dark-blue">Helpdesk</div>
 
         <button class="navbar-toggler sm:hidden" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-6 h-6 text-red-900" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M2 5a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zm16 6a1 1 0 01-1 1H3a1 1 0 110-2h14a1 1 0 011 1zm-1 4a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
             </svg>
         </button>
+
         <div class="menu hidden sm:block sm:ml-auto sm:mr-3">
-            <ul class="flex items-center space-x-4 text-sm text-gray-700">
+            <ul class="flex items-center space-x-4 font-bold">
                 <li class="nav-item">
-                    <a class="px-3 py-2 rounded-lg text-blue font-bold bg-gray-100" aria-current="page" href="#">Accueil</a>
+                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="px-3 py-2 rounded-lg text-light-blue hover:text-white hover:bg-blue-600 transition duration-300 ease-in-out" href="#">Inscription</a>
+                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Inscription</a>
                 </li>
                 <li class="nav-item">
-                    <a class="px-3 py-2 rounded-lg text-light-blue hover:text-white hover:bg-blue-600 transition duration-300 ease-in-out" href="#">Connexion</a>
+                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Connexion</a>
                 </li>
                 <li class="nav-item">
-                    <a class="px-3 py-2 rounded-lg text-light-blue hover:text-white hover:bg-blue-600 transition duration-300 ease-in-out" href="#">Mon compte</a>
+                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="px-3 py-2 rounded-lg text-light-blue hover:text-white hover:bg-blue-600 transition duration-300 ease-in-out" href="#">Contact</a>
+                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Menu</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+
+
+
+          
+              
+
+        
+
+  
