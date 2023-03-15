@@ -68,11 +68,14 @@
                             <a class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">Déconnexion</a>
                         </form>
                     </li>
+                    <li class="inline-flex items-center ml-10 h-full">
+                        <button class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = !isOpen">Menu</button>
+                    </li>
                 </ul>
             </div>
             
             <!-- Settings Dropdown -->
-            <div class="hidden order-2 sm:order-4 sm:flex sm:items-center sm:ml-6">
+            {{-- <div class="hidden order-2 sm:order-4 sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 text-sm text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80">
@@ -89,7 +92,31 @@
 
                     </x-slot>
                 </x-dropdown>
+            </div> --}}
+
+
+
+
+
+            <!-- Sidebar -->
+            <div class="hidden sm:block absolute transform transition duration-300 inset-0 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-113px)] mt-[113px]" :class="{'-translate-x-full opacity-0':isOpen === false, 'translate-x-0 opacity-100': isOpen === true}">
+                <div class="flex justify-between">
+                    <span class="font-bold pl-4 text-custom-grey text-2xl sm:text-3xl">Menu</span>
+                    <button class="p-2 rounded text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = false">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                </div>
+                <ul>
+                    <li class="block w-full py-2 pl-8 hover:pl-3 pr-4 text-left hover:border-l-[20px] hover:border-custom-light-blue hover:border-opacity-50 transition duration-300 ease-in-out">
+                        <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="{{ route('profile.edit') }}">Profil</a>
+                    </li>
+                </ul>
             </div>
+
+
+
 
 
             <!-- Hamburger -->
@@ -141,9 +168,11 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
-                    <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="{{ route('profile.edit') }}">Profile</a>
-                </li>
+                <ul>
+                    <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
+                        <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="{{ route('profile.edit') }}">Profile</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
