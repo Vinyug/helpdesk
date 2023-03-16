@@ -1,39 +1,4 @@
-{{-- <nav class="container mx-auto p-3">
-    <div class="flex items-center">
-        <a class="order-3 sm:order-1 mx-auto sm:mr-6 sm:ml-0" href="#"><img class="logo-navbar h-auto w-10" src="{{ asset('assets/images/logo-axi.jpg')}}" alt="logo AXI"></a>
-        <div class="order-4 sm:order-2 font-share-tech font-bold tracking-wide text-lg md:text-2xl text-custom-dark-blue">Helpdesk</div>
-
-        <button class="order-1 sm:order-3 navbar-toggler sm:hidden" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <svg class="w-6 h-6 text-custom-dark-blue" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M2 5a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zm16 6a1 1 0 01-1 1H3a1 1 0 110-2h14a1 1 0 011 1zm-1 4a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
-            </svg>
-        </button>
-
-        <div class="order-2 sm:order-4 menu hidden sm:block sm:ml-auto sm:mr-3">
-            <ul class="flex items-center space-x-4 font-bold">
-                <li class="nav-item">
-                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Inscription</a>
-                </li>
-                <li class="nav-item">
-                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Connexion</a>
-                </li>
-                <li class="nav-item">
-                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="px-3 py-2 text-custom-light-blue hover:text-opacity-80 transition duration-300 ease-in-out" href="#">Menu</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav> --}}
-
-
-
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="z-10 sticky top-0 bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -76,7 +41,7 @@
             
 
             <!-- Sidebar -->
-            <div class="hidden sm:block absolute transform transition duration-300 top-0 -left-80 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-113px)] mt-[113px]" :class="{'-translate-x-full opacity-0 hidden':isOpen === false, 'translate-x-80 opacity-100 block': isOpen === true}">
+            <div class="hidden sm:block absolute transform transition duration-300 top-0 -left-80 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-48px)] mt-[48px]" :class="{'-translate-x-full opacity-0 hidden':isOpen === false, 'translate-x-80 opacity-100 block': isOpen === true}">
                 <div class="flex justify-between">
                     <span class="font-bold pl-4 text-custom-grey text-2xl sm:text-3xl">Menu</span>
                     <button class="p-2 rounded text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = false">
