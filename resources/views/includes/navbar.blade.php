@@ -10,7 +10,10 @@
 
             <!-- Navigation Links -->
             <div class="hidden order-1 sm:order-3 space-x-8 sm:-my-px sm:ml-auto sm:pl-10 sm:flex">
-                <x-nav-link :href="url('/')" :active="(Request::url() == url('/'))">
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
+                <x-nav-link :href="url('/')" :active="Request::url() == url('/')">
                     {{ __('Accueil') }}
                 </x-nav-link>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
