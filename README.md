@@ -7,7 +7,5 @@
 - Open folder helpdesk in your IDE, open CLI to write command : composer install (need install composer)
 - Generate an APP_KEY : php artisan key:generate
 - Create migration table to Database : php artisan migrate
-- Install npm : npm install
 - Open project with web browser
-- To compile CSS / JS, need use command : npm run dev
 - Configure a mailer in .env
