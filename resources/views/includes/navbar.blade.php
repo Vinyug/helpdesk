@@ -13,7 +13,7 @@
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-nav-link>
-                <x-nav-link :href="url('/')" :active="request()->routeIs('index')">
+                <x-nav-link :href="url('/')" :active="Request::url() == url('/')">
                     {{ __('Accueil') }}
                 </x-nav-link>
                 <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
