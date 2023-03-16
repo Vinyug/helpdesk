@@ -23,7 +23,10 @@
         
         @include('includes.navbar')
         
-        @include('includes.jumbotron')
+        @if(Request::url() == url('/'))
+            @include('includes.jumbotron')
+        @endif
+        
         {{-- start content --}}
         @yield('content')
         {{-- end content --}}

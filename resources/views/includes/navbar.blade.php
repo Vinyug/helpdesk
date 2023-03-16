@@ -3,8 +3,8 @@
     <div class="z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <!-- Logo -->
-            <a class="shrink-0 flex items-center order-3 sm:order-1 mx-auto sm:mr-4 sm:ml-0" href="#">
-                <img class="logo-navbar" src="{{ asset('assets/images/logo-axi.jpg')}}" alt="logo AXI">
+            <a class="shrink-0 flex items-center order-3 sm:order-1 mx-auto sm:mr-4 sm:ml-0" href="/">
+                <x-application-logo/>
             </a>
             <div class="shrink-0 flex items-center order-4 sm:order-2 font-share-tech font-bold tracking-wide text-lg md:text-2xl text-custom-dark-blue">Helpdesk</div>
 
@@ -13,13 +13,13 @@
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-nav-link>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-nav-link :href="url('/')" :active="request()->routeIs('index')">
                     {{ __('Accueil') }}
                 </x-nav-link>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                     {{ __('Connexion') }}
                 </x-nav-link>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
                     {{ __('Inscription') }}
                 </x-nav-link>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
