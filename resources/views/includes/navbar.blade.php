@@ -1,6 +1,6 @@
-<nav x-data="{ open: false }" class="z-10 sticky top-0 bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="z-10 sticky top-0 bg-white border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-200">
     <!-- Primary Navigation Menu -->
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <!-- Logo -->
             <a class="shrink-0 flex items-center order-3 sm:order-1 mx-auto sm:mr-4 sm:ml-0" href="#">
@@ -10,55 +10,55 @@
 
             <!-- Navigation Links -->
             <div class="hidden order-1 sm:order-3 space-x-8 sm:-my-px sm:ml-auto sm:pl-10 sm:flex">
-                <ul>
-                    <li class="inline-flex items-center ml-10 h-full">
-                        <a class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" href="{{ route('dashboard') }}">Dashboard Retirer plus tard</a>
-                    </li>
-                    <li class="inline-flex items-center ml-10 h-full">
-                        <a class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" href="{{ url('test') }}">Accueil TEST</a>
-                    </li>
-                    <li class="inline-flex items-center ml-10 h-full">
-                        <a class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" href="">Connexion</a>
-                    </li>
-                    <li class="inline-flex items-center ml-10 h-full">
-                        <a class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" href="">Inscription</a>
-                    </li>
-                    <li class="inline-flex items-center ml-10 h-full">
-                        <a class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" href="">Contact</a>
-                    </li>
-                    <li class="inline-flex items-center ml-10 h-full">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            
-                            <a class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">Déconnexion</a>
-                        </form>
-                    </li>
-                    <li class="inline-flex items-center ml-10 h-full">
-                        <button class="text-sm font-bold leading-5 text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = !isOpen">Menu</button>
-                    </li>
-                </ul>
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Accueil') }}
+                </x-nav-link>
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Connexion') }}
+                </x-nav-link>
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Inscription') }}
+                </x-nav-link>
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Contact') }}
+                </x-nav-link>
+                
+                <form method="POST" action="{{ route('logout') }}" style="margin-left: 0;">
+                    @csrf
+
+                    <x-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Déconnexion') }}
+                    </x-nav-link>
+                </form>
+
+                <x-nav-link @click="isOpen = !isOpen">
+                    {{ __('Menu') }}
+                </x-nav-link>
+                
             </div>
             
 
             <!-- Sidebar -->
-            <div class="hidden sm:block absolute transform transition duration-300 top-0 -left-80 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-48px)] mt-[48px]" :class="{'-translate-x-full opacity-0 hidden':isOpen === false, 'translate-x-80 opacity-100 block': isOpen === true}">
+            <div class="hidden sm:block absolute transform transition duration-300 top-0 -left-80 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-65px)] mt-[65px] border-r-[1px] border-custom-dark border-opacity-30 shadow-md shadow-gray-400" :class="{'-translate-x-full opacity-0 hidden':isOpen === false, 'translate-x-80 opacity-100 block': isOpen === true}">
                 <div class="flex justify-between">
-                    <span class="font-bold pl-4 text-custom-grey text-2xl sm:text-3xl">Menu</span>
-                    <button class="p-2 rounded text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = false">
+                    <span class="font-bold pl-4 text-custom-dark text-2xl sm:text-3xl">Menu</span>
+                    <button class="p-2 rounded text-custom-dark hover:text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = false">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
                     </button>
+
+                <!-- Navigation -->
                 </div>
-                <ul>
-                    <li class="block w-full py-2 pl-8 hover:pl-3 pr-4 text-left hover:border-l-[20px] hover:border-custom-light-blue hover:border-opacity-50 transition duration-300 ease-in-out">
-                        <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="{{ route('profile.edit') }}">Profil</a>
-                    </li>
-                </ul>
+                    <x-dropright-link :href="route('profile.edit')">
+                        {{ __('Profil') }}
+                    </x-dropright-link>
             </div>
-
-
-
 
 
             <!-- Hamburger -->
@@ -73,33 +73,32 @@
         </div>
     </div>
 
+
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <ul>
-                <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
-                    <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="{{ route('dashboard') }}">Dashboard Retirer plus tard</a>
-                </li>
-                <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
-                    <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="{{ url('test') }}">Accueil</a>
-                </li>
-                <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
-                    <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="">Connexion</a>
-                </li>
-                <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
-                    <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="">Inscription</a>
-                </li>
-                <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
-                    <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="">Contact</a>
-                </li>
-                <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        
-                        <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">Déconnexion</a>
-                    </form>
-                </li>
-            </ul>
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Accueil') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Connexion') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Inscription') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Contact') }}
+            </x-responsive-nav-link>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                    this.closest('form').submit();">
+                    {{ __('Déconnexion') }}
+                </x-responsive-nav-link>
+            </form>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -110,11 +109,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <ul>
-                    <li class="block w-full pl-4 pr-4 py-2 text-left hover:border-l-4 hover:border-custom-light-blue hover:border-opacity-50 hover:pl-3">
-                        <a class="text-base font-medium leading-5 text-custom-grey hover:text-custom-light-blue transition duration-300 ease-in-out" href="{{ route('profile.edit') }}">Profile</a>
-                    </li>
-                </ul>
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    {{ __('Profile') }}
+                </x-responsive-nav-link>
             </div>
         </div>
     </div>
