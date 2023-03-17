@@ -10,18 +10,18 @@
 
             <!-- Navigation Links -->
             <div class="hidden order-1 sm:order-3 space-x-8 sm:-my-px sm:ml-auto sm:pl-10 sm:flex">
-                {{-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
-                </x-nav-link> --}}
+                </x-nav-link>
                 <x-nav-link :href="url('/')" :active="request()->routeIs('index')">
                     {{ __('Accueil') }}
                 </x-nav-link>
-                {{-- <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
+                <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                     {{ __('Connexion') }}
                 </x-nav-link>
                 <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
                     {{ __('Inscription') }}
-                </x-nav-link> --}}
+                </x-nav-link>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Contact') }}
                 </x-nav-link>
