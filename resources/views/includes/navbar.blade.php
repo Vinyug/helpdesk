@@ -58,7 +58,7 @@
                 <!-- Navigation -->
                 </div>
                     <x-dropleft-link :href="route('profile.edit')">
-                        {{ __('Profil') }}
+                        {{ __('Mes informations') }}
                     </x-dropleft-link>
                     
                     @can('company-list')
@@ -137,7 +137,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('Mes informations') }}
                 </x-responsive-nav-link>
                 
                 @can('company-list')
