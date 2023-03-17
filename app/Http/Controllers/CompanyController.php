@@ -14,13 +14,13 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // function __construct()
-    // {
-    //      $this->middleware('permission:company-list|company-create|company-edit|company-delete', ['only' => ['index','show']]);
-    //      $this->middleware('permission:company-create', ['only' => ['create','store']]);
-    //      $this->middleware('permission:company-edit', ['only' => ['edit','update']]);
-    //      $this->middleware('permission:company-delete', ['only' => ['destroy']]);
-    // }
+    function __construct()
+    {
+         $this->middleware('permission:company-list|company-create|company-edit|company-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:company-create', ['only' => ['create','store']]);
+         $this->middleware('permission:company-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:company-delete', ['only' => ['destroy']]);
+    }
 
     /**
      * Display a listing of the resource.
