@@ -45,23 +45,24 @@
             
 
             <!-- Sidebar -->
-            <div class="hidden sm:block absolute transform transition duration-300 top-0 -left-80 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-65px)] mt-[65px] border-r-[1px] border-custom-dark border-opacity-30 shadow-md shadow-gray-400" :class="{'-translate-x-full opacity-0 hidden':isOpen === false, 'translate-x-80 opacity-100 block': isOpen === true}">
+             <div class="hidden sm:block absolute transform transition duration-300 top-0 -right-80 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-65px)] mt-[65px] border-r-[1px] border-custom-dark border-opacity-30 shadow-md shadow-gray-400" :class="{'translate-x-full opacity-0':isOpen === false, '-translate-x-80 opacity-100': isOpen === true}">
+
                 <div class="flex justify-between">
                     <h2 class="font-bold pl-4 text-custom-dark text-2xl sm:text-3xl">Menu</h2>
                     <button class="p-2 rounded text-custom-dark hover:text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = false">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
                     </button>
 
                 <!-- Navigation -->
                 </div>
-                    <x-dropright-link :href="route('profile.edit')">
+                    <x-dropleft-link :href="route('profile.edit')">
                         {{ __('Profil') }}
-                    </x-dropright-link>
-                    <x-dropright-link :href="route('companies.index')">
+                    </x-dropleft-link>
+                    <x-dropleft-link :href="route('companies.index')">
                         {{ __('Liste des entreprises') }}
-                    </x-dropright-link>
+                    </x-dropleft-link>
             </div>
 
 
