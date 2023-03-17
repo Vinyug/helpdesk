@@ -8,7 +8,9 @@
                     <h2 class="font-share-tech mt-8 mb-12 text-4xl">Liste des entreprises</h2>
                 </div>
                 <div class="pull-right my-3">
+                    @can('company-create')
                     <a class="btn-green" href="{{ route('companies.create') }}"> Créer une entreprise</a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -41,19 +43,19 @@
                         <td>{{ $company->name }}</td>
                         <td>{{ $company->address }}</td>
                         <td>{{ $company->email }}</td>
-                        <td>
-                            <form action="{{ route('companies.destroy', $company->uuid) }}" method="Post">
-                                @can('company-edit')
-                                <a class="btn btn-primary" href="{{ route('companies.edit', $company->uuid) }}">Edit</a>
-                                @endcan
+                        <td class="flex justify-end">
+                            @can('company-edit')
+                            <a class="btn-blue" href="{{ route('companies.edit', $company->uuid) }}">Edit</a>
+                            @endcan
 
+                            @can('company-delete')
+                            <form action="{{ route('companies.destroy', $company->uuid) }}" method="Post">
                                 @csrf
                                 @method('DELETE')
                                 
-                                @can('company-delete')
-                                <button type="submit" class="btn btn-outline-danger">Delete</button>
-                                @endcan
+                                <button type="submit" class="btn-red">Delete</button>
                             </form>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

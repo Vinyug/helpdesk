@@ -50,9 +50,9 @@ class UserController extends Controller
     {
         $roles = Role::pluck('name','name')->all();
         $company = Company::pluck('name', 'id');
-        $job = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
+        // $job = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
 
-        return view('users.create',compact('roles', 'company', 'job'));
+        return view('users.create',compact('roles', 'company'));
     }
     
     /**
@@ -64,12 +64,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
             'company_id' => 'nullable|exists:companies,id',
             'job' => 'exists:listings,job|nullable',
-            // 'roles' => 'required'
+            'roles' => 'required'
         ]);
     
         $input = $request->all();
@@ -110,8 +111,8 @@ class UserController extends Controller
         $company = Company::pluck('name', 'id')->all();
         $userCompany = $user->company_id;
 
-        $job = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
-        $userJob = $user->job;
+        // $job = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
+        // $userJob = $user->job;
     
         return view('users.edit',compact('user','roles','userRole', 'company', 'userCompany', 'job', 'userJob'));
     }
