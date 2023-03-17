@@ -10,36 +10,37 @@
 
             <!-- Navigation Links -->
             <div class="hidden order-1 sm:order-3 space-x-8 sm:-my-px sm:ml-auto sm:pl-10 sm:flex">
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-nav-link>
                 <x-nav-link :href="url('/')" :active="request()->routeIs('index')">
                     {{ __('Accueil') }}
                 </x-nav-link>
-                <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
-                    {{ __('Connexion') }}
-                </x-nav-link>
-                <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
-                    {{ __('Inscription') }}
-                </x-nav-link>
+                @guest
+                    <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
+                        {{ __('Connexion') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                        {{ __('Inscription') }}
+                    </x-nav-link>   
+                @endguest
+
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Contact') }}
                 </x-nav-link>
-                
-                <form method="POST" action="{{ route('logout') }}" style="margin-left: 0;">
-                    @csrf
 
-                    <x-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Déconnexion') }}
+                @auth
+                    <form method="POST" action="{{ route('logout') }}" style="margin-left: 0;">
+                        @csrf
+
+                        <x-nav-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Déconnexion') }}
+                        </x-nav-link>
+                    </form>
+
+                    <x-nav-link @click="isOpen = !isOpen">
+                        {{ __('Menu') }}
                     </x-nav-link>
-                </form>
-
-                <x-nav-link @click="isOpen = !isOpen">
-                    {{ __('Menu') }}
-                </x-nav-link>
-                
+                @endauth
             </div>
             
 
@@ -57,6 +58,9 @@
                 </div>
                     <x-dropright-link :href="route('profile.edit')">
                         {{ __('Profil') }}
+                    </x-dropright-link>
+                    <x-dropright-link :href="route('companies.create')">
+                        {{ __('Créer une entreprise') }}
                     </x-dropright-link>
             </div>
 

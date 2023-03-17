@@ -60,11 +60,11 @@ class CompanyController extends Controller
         $request->validate([
             'name' => 'required|max:50',
             'address' => 'required|max:80',
-            'city' => 'max:50',
-            'zip_code' => 'max:5',
-            'siret' => 'digits:14',
-            'code_ape' => 'digits:5',
-            'phone' => 'digits:10',
+            'city' => 'required|max:50',
+            'zip_code' => 'required|digits:5',
+            'siret' => 'digits:14|nullable',
+            'code_ape' => 'max:5|nullable',
+            'phone' => 'digits:10|nullable',
             'email' => 'required|email|max:80',
         ]);
         
@@ -114,11 +114,11 @@ class CompanyController extends Controller
         $request->validate([
             'name' => 'required|max:50',
             'address' => 'required|max:80',
-            'city' => 'max:50',
-            'zip_code' => 'max:5',
-            'siret' => 'digits:14',
-            'code_ape' => 'digits:5',
-            'phone' => 'digits:10',
+            'city' => 'required|max:50',
+            'zip_code' => 'required|digits:5',
+            'siret' => 'digits:14|nullable',
+            'code_ape' => 'max:5|nullable',
+            'phone' => 'digits:10|nullable',
             'email' => 'required|email|max:80',
         ]);
         

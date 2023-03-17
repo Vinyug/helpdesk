@@ -1,81 +1,99 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 margin-tb">
-                <div class="pull-left mt-5">
-                    <h2>Modifier entreprise</h2>
+    <div class="container mb-16 mx-auto sm:px-4">
+        <div class="flex flex-wrap">
+            <div class="lg:w-full pr-4 pl-4 mt-5">
+                <div class="pull-left mb-2">
+                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">Modifier une entreprise</h2>
                 </div>
                 <div class="pull-right my-3">
-                    <a class="btn btn-info" href="{{ route('companies.index') }}" enctype="multipart/form-data">
-                        Retour</a>
+                    <a class="btn-blue" href="{{ route('companies.index') }}"> Retour</a>
                 </div>
             </div>
         </div>
+
         @if(session('status'))
-        <div class="alert alert-success mb-1 mt-1">
+        <div class="custom-status">
             {{ session('status') }}
         </div>
         @endif
+
         <form action="{{ route('companies.update',$company->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="row">    
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Nom de l'entreprise : <span style="color: red;">*</span></strong>
-                        <input type="text" name="name" class="form-control" placeholder="Nom de l'entreprise" value="{{ $company->name }}">
-                        @error('name')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+
+            <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 p-4">    
+                <div class="col-span-full">
+                    <label for="name" class="custom-label">Nom de l'entreprise : <span class="text-red-600 font-bold">*</span></label>
+                    <input type="text" name="name" id="name" class="custom-input" placeholder="Saisir le nom de l'entreprise" value="{{ $company->name }}" required>
+                    @error('name')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Adresse de l'entreprise : <span style="color: red;">*</span></strong>
-                        <input type="text" name="address" class="form-control" placeholder="Adresse de l'entreprise" value="{{ $company->address }}">
-                        @error('address')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <div class="col-span-full">
+                    <label for="address" class="custom-label">Adresse : <span class="text-red-600 font-bold">*</span></label>
+                    <input type="text" name="address" id="address" class="custom-input" placeholder="Saisir l'adresse de l'entreprise" value="{{ $company->address }}" required>
+                    @error('address')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="w-full">
+                    <label for="city" class="custom-label">Ville : <span class="text-red-600 font-bold">*</span></label>
+                    <input type="text" name="city" id="city" class="custom-input" placeholder="Saisir la ville de l'entreprise" value="{{ $company->city }}" required>
+                    @error('city')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="w-full">
+                    <label for="zip_code" class="custom-label">Code postal : <span class="text-red-600 font-bold">*</span></label>
+                    <input type="text" name="zip_code" id="zip_code" class="custom-input" placeholder="Saisir le code postal de l'entreprise" value="{{ $company->zip_code }}" required>
+                    @error('zip_code')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <div class="col-xs-6 col-sm-6 col-md-6">
-                    <div class="form-group">
-                        <strong>Ville de l'entreprise : </strong>
-                        <input type="text" name="city" class="form-control" placeholder="Ville de l'entreprise" value="{{ $company->city }}"">
-                        @error('city')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <div class="w-full">
+                    <label for="siret" class="custom-label">SIRET : </label>
+                    <input type="text" name="siret" id="siret" class="custom-input" placeholder="Saisir le SIRET de l'entreprise" value="{{ $company->siret }}">
+                    @error('siret')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <div class="col-xs-6 col-sm-6 col-md-6">
-                    <div class="form-group">
-                        <strong>Code postal de l'entreprise : </strong>
-                        <input type="text" name="zip_code" class="form-control" placeholder="Code postal de l'entreprise" value="{{ $company->zip_code }}">
-                        @error('zip_code')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <div class="w-full">
+                    <label for="code_ape" class="custom-label">Code APE : </label>
+                    <input type="text" name="code_ape" id="code_ape" class="custom-input" placeholder="Saisir le code APE de l'entreprise" value="{{ $company->code_ape }}">
+                    @error('code_ape')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Email de l'entreprise : <span style="color: red;">*</span></strong>
-                        <input type="email" name="email" class="form-control" placeholder="Email de l'entreprise" value="{{ $company->email }}" }}">
-                        @error('email')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <div class="w-full">
+                    <label for="phone" class="custom-label">Téléphone : </label>
+                    <input type="tel" name="phone" id="phone" class="custom-input" placeholder="Saisir le téléphone de l'entreprise" value="{{ $company->phone }}">
+                    @error('phone')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <div class="text-danger mb-5">* les champs obligatoires</div>
+                <div class="w-full">
+                    <label for="email" class="custom-label">Email : <span class="text-red-600 font-bold">*</span></label>
+                    <input type="email" name="email" id="email" class="custom-input" placeholder="Saisir l'adresse email de l'entreprise" value="{{ $company->email }}" required>
+                    @error('email')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>
+
+                <div class="col-span-full">
+                    <button type="submit" class="btn-orange">Modifier</button>
+                </div>
             </div>
-
-            <button type="submit" class="btn btn-outline-success ml-3">Modifier</button>
         </form>
     </div>
 @endsection
