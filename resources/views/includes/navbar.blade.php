@@ -10,7 +10,7 @@
 
             <!-- Navigation Links -->
             <div class="hidden order-1 sm:order-3 space-x-8 sm:-my-px sm:ml-auto sm:pl-10 sm:flex">
-                <x-nav-link :href="url('/')" :active="request()->routeIs('index')">
+                <x-nav-link :href="url('/')" :active="(Request::url() == url('/'))">
                     {{ __('Accueil') }}
                 </x-nav-link>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -60,12 +60,24 @@
                     <x-dropleft-link :href="route('profile.edit')">
                         {{ __('Profil') }}
                     </x-dropleft-link>
+                    
+                    @can('company-list')
                     <x-dropleft-link :href="route('companies.index')">
                         {{ __('Liste des entreprises') }}
                     </x-dropleft-link>
+                    @endcan
+
+                    @can('user-list')
                     <x-dropleft-link :href="route('users.index')">
                         {{ __('Liste des utilisateurs') }}
                     </x-dropleft-link>
+                    @endcan
+
+                    @can('role-list')
+                    <x-dropleft-link :href="route('roles.index')">
+                        {{ __('Roles') }}
+                    </x-dropleft-link>
+                    @endcan
             </div>
 
 
@@ -88,6 +100,10 @@
             <x-responsive-nav-link :href="url('/')" :active="request()->routeIs('index')">
                 {{ __('Accueil') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Contact') }}
+            </x-responsive-nav-link>
+
             @guest
                 <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
                     {{ __('Connexion') }}
@@ -96,10 +112,6 @@
                     {{ __('Inscription') }}
                 </x-responsive-nav-link>   
             @endguest
-
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Contact') }}
-            </x-responsive-nav-link>
 
             @auth
                 <form method="POST" action="{{ route('logout') }}" style="margin-left: 0;">
@@ -127,12 +139,24 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+                
+                @can('company-list')
                 <x-responsive-nav-link :href="route('companies.index')">
                     {{ __('Listes des entreprises') }}
                 </x-responsive-nav-link>
+                @endcan
+
+                @can('user-list')
                 <x-responsive-nav-link :href="route('users.index')">
                     {{ __('Listes des utilisateurs') }}
                 </x-responsive-nav-link>
+                @endcan
+
+                @can('role-list')
+                <x-responsive-nav-link :href="route('roles.index')">
+                    {{ __('Roles') }}
+                </x-responsive-nav-link>
+                @endcan
             </div>
         </div>
     </div>

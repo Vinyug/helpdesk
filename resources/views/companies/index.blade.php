@@ -43,15 +43,16 @@
                         <td>{{ $company->email }}</td>
                         <td>
                             <form action="{{ route('companies.destroy', $company->uuid) }}" method="Post">
-                                {{-- @can('company-edit') --}}
+                                @can('company-edit')
                                 <a class="btn btn-primary" href="{{ route('companies.edit', $company->uuid) }}">Edit</a>
-                                {{-- @endcan --}}
+                                @endcan
 
                                 @csrf
                                 @method('DELETE')
-                                {{-- @can('company-delete') --}}
+                                
+                                @can('company-delete')
                                 <button type="submit" class="btn btn-outline-danger">Delete</button>
-                                {{-- @endcan --}}
+                                @endcan
                             </form>
                         </td>
                     </tr>
