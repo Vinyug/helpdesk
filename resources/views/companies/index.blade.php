@@ -31,6 +31,7 @@
                     <th>Nom entreprise</th>
                     <th>Adresse entreprise</th>
                     <th>Email entreprise</th>
+                    <th>uuid</th>
                     <th width="280px">Action</th>
                 </tr>
             </thead>
@@ -41,10 +42,11 @@
                         <td>{{ $company->name }}</td>
                         <td>{{ $company->address }}</td>
                         <td>{{ $company->email }}</td>
+                        <td>{{ $company->uuid }}</td>
                         <td>
-                            <form action="{{ route('companies.destroy',$company->id) }}" method="Post">
+                            <form action="{{ route('companies.destroy', $company->uuid) }}" method="Post">
                                 {{-- @can('company-edit') --}}
-                                <a class="btn btn-primary" href="{{ route('companies.edit',$company->id) }}">Edit</a>
+                                <a class="btn btn-primary" href="{{ route('companies.edit', $company->uuid) }}">Edit</a>
                                 {{-- @endcan --}}
 
                                 @csrf

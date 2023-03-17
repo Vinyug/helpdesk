@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('code_ape')->nullable();
             $table->integer('phone')->nullable();
             $table->string('email');
-            $table->string('uuid')->nullable();
-            $table->boolean('present')->nullable();
+            $table->string('uuid');
+            $table->boolean('present')->default('1');
             $table->timestamps();
         });
     }

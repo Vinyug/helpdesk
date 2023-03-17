@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
@@ -69,9 +70,12 @@ class CompanyController extends Controller
         ]);
         
         // dd($request);
+        
+        // genererate uuid
+        $uuid = Str::uuid()->toString();
 
         // insert in DB
-        Company::create($request->post());
+        Company::create(array_merge($request->post(), ['uuid' => $uuid]));
 
         // redirect with message
         return redirect()->route('companies.index')->with('success','L\'entreprise a été enregistrée avec succès.');
@@ -98,7 +102,7 @@ class CompanyController extends Controller
     {
         // get all users
         $users = User::all();
-
+        
         return view('companies.edit',compact('company', 'users'));
     }
 

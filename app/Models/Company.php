@@ -22,6 +22,12 @@ class Company extends Model
         'present',
     ];
 
+    // allow to transmit uuid in URL (instead of id by default)
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
+
     public function users()
     {
         return $this->hasMany(User::class);
