@@ -47,7 +47,7 @@
             <!-- Sidebar -->
             <div class="hidden sm:block absolute transform transition duration-300 top-0 -left-80 py-4 pr-4 z-10 w-80 bg-white h-[calc(100vh-65px)] mt-[65px] border-r-[1px] border-custom-dark border-opacity-30 shadow-md shadow-gray-400" :class="{'-translate-x-full opacity-0 hidden':isOpen === false, 'translate-x-80 opacity-100 block': isOpen === true}">
                 <div class="flex justify-between">
-                    <span class="font-bold pl-4 text-custom-dark text-2xl sm:text-3xl">Menu</span>
+                    <h2 class="font-bold pl-4 text-custom-dark text-2xl sm:text-3xl">Menu</h2>
                     <button class="p-2 rounded text-custom-dark hover:text-custom-light-blue transition duration-300 ease-in-out hover:text-opacity-80" @click="isOpen = false">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -59,8 +59,8 @@
                     <x-dropright-link :href="route('profile.edit')">
                         {{ __('Profil') }}
                     </x-dropright-link>
-                    <x-dropright-link :href="route('companies.create')">
-                        {{ __('Créer une entreprise') }}
+                    <x-dropright-link :href="route('companies.index')">
+                        {{ __('Liste des entreprises') }}
                     </x-dropright-link>
             </div>
 
@@ -81,28 +81,33 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="url('/')" :active="request()->routeIs('index')">
                 {{ __('Accueil') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Connexion') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Inscription') }}
-            </x-responsive-nav-link>
+            @guest
+                <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
+                    {{ __('Connexion') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                    {{ __('Inscription') }}
+                </x-responsive-nav-link>   
+            @endguest
+
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Contact') }}
             </x-responsive-nav-link>
 
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
+            @auth
+                <form method="POST" action="{{ route('logout') }}" style="margin-left: 0;">
+                    @csrf
 
-                <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                    this.closest('form').submit();">
-                    {{ __('Déconnexion') }}
-                </x-responsive-nav-link>
-            </form>
+                    <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Déconnexion') }}
+                    </x-responsive-nav-link>
+                </form>
+            @endauth
         </div>
 
         <!-- Responsive Settings Options -->
@@ -112,9 +117,14 @@
                 <div class="font-medium text-sm text-gray-500">Email</div>
             </div>
 
+            <h2 class="my-3 font-bold text-xl pl-4">Menu</h2>
+
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('companies.index')">
+                    {{ __('Listes des entreprises') }}
                 </x-responsive-nav-link>
             </div>
         </div>
