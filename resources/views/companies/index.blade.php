@@ -31,7 +31,6 @@
                     <th>Nom entreprise</th>
                     <th>Adresse entreprise</th>
                     <th>Email entreprise</th>
-                    <th>uuid</th>
                     <th width="280px">Action</th>
                 </tr>
             </thead>
@@ -42,7 +41,6 @@
                         <td>{{ $company->name }}</td>
                         <td>{{ $company->address }}</td>
                         <td>{{ $company->email }}</td>
-                        <td>{{ $company->uuid }}</td>
                         <td>
                             <form action="{{ route('companies.destroy', $company->uuid) }}" method="Post">
                                 {{-- @can('company-edit') --}}

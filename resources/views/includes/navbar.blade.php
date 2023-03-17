@@ -13,6 +13,10 @@
                 <x-nav-link :href="url('/')" :active="request()->routeIs('index')">
                     {{ __('Accueil') }}
                 </x-nav-link>
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Contact') }}
+                </x-nav-link>
+
                 @guest
                     <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
                         {{ __('Connexion') }}
@@ -21,10 +25,6 @@
                         {{ __('Inscription') }}
                     </x-nav-link>   
                 @endguest
-
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Contact') }}
-                </x-nav-link>
 
                 @auth
                     <form method="POST" action="{{ route('logout') }}" style="margin-left: 0;">
@@ -62,6 +62,9 @@
                     </x-dropleft-link>
                     <x-dropleft-link :href="route('companies.index')">
                         {{ __('Liste des entreprises') }}
+                    </x-dropleft-link>
+                    <x-dropleft-link :href="route('users.index')">
+                        {{ __('Liste des utilisateurs') }}
                     </x-dropleft-link>
             </div>
 
