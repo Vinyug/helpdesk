@@ -5,7 +5,36 @@
 
 /*------------ CUSTOM -------------*/
 
-/* Navbar */
+/* COMPONENTS */
+@layer components {
+    .custom-status {
+        @apply relative p-2 mt-1 mb-4 border rounded-sm bg-green-200 border-green-300 text-green-800 ;
+    }
+    .custom-label {
+        @apply block mb-2 font-bold;
+    }
+    .custom-input {
+        @apply block w-full border-gray-300 focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out;
+    }
+    .custom-error {
+        @apply relative pt-2 text-red-600;
+    }
+    .btn-orange {
+        @apply block w-full sm:w-1/2 py-2 sm:mx-auto align-middle text-center font-medium border-2 rounded-sm text-white bg-custom-orange border-custom-orange hover:bg-white hover:text-custom-orange hover:shadow-gray-400 hover:shadow-md transition duration-300 ease-in-out;   
+    }
+    .btn-blue {
+        @apply inline-block ml-4 py-1 px-6 align-middle text-center font-medium rounded-sm text-white bg-custom-blue hover:bg-blue-600 hover:shadow-gray-400 hover:shadow-md transition duration-150 ease-in-out;   
+    }
+    .btn-green {
+        @apply inline-block ml-4 py-1 px-6 align-middle text-center font-medium rounded-sm text-white bg-green-500 hover:bg-green-600 hover:shadow-gray-400 hover:shadow-md transition duration-150 ease-in-out;   
+    }
+    .btn-red {
+        @apply inline-block ml-4 py-1 px-6 align-middle text-center font-medium rounded-sm text-white bg-red-500 hover:bg-red-600 hover:shadow-gray-400 hover:shadow-md transition duration-150 ease-in-out;   
+    }
+}
+/* END COMPONENTS */
+
+/* NAVBAR */
 nav .logo-navbar {
     width: 64px;
 }
@@ -13,9 +42,9 @@ nav .menu ul li a:hover {
     transition: 0.3s;
     opacity: 0.75;
 }
-/* End Navbar  */
+/* END NAVBAR  */
 
-/* Footer */
+/* FOOTER */
 footer img:hover {
     filter: 
         invert(35%) 
@@ -26,4 +55,4 @@ footer img:hover {
         contrast(112%);
     transition: all 0.3s;
 }
-/* End Footer */
+/* END FOOTER */
