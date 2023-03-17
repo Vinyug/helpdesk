@@ -2,10 +2,10 @@
 
 @section('content')
     <x-guest-layout>
+        <p class="font-share-tech text-center text-3xl font-medium mb-4">Login</p>
+
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <p class="font-share-tech text-center text-3xl font-medium mb-4">Login</p>
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
