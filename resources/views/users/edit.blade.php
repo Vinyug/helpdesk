@@ -89,7 +89,7 @@
                     <select class="custom-input" name="roles[]" id="role" multiple="">
                         <option value="">Choisir un rôle </option> 
                         @foreach($roles as $role)
-                            <option value="{{ $role->id }}" @if(in_array($role->name, $userRole)) selected="selected" @endif>{{ $role->name }}</option>
+                            <option value="{{ $role->id }}" @if(in_array($role->name, $userRole)) selected @endif>{{ $role->name }}</option>
                         @endforeach
                     </select>
 
