@@ -24,7 +24,8 @@
             <thead class="border-b dark:border-neutral-500">
                 <tr>
                     <th>No</th>
-                    <th>Name</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
                     <th>Email</th>
                     <th>Entreprise</th>
                     <th>Poste</th>
@@ -36,7 +37,8 @@
                 @foreach ($users as $key => $user)
                 <tr class="h-12 border-b dark:border-neutral-500">
                     <td>{{ ++$i }}</td>
-                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->firstname }}</td>
+                    <td>{{ $user->lastname }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ optional($user->company)->name }}</td>
                     <td>{{ $user->job }}</td>
