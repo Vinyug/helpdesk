@@ -68,7 +68,7 @@
                             <option value="{{ $company->id }}">{{ $company->name }}</option>
                         @endforeach
                     </select>
-                    @error('company')
+                    @error('company_id')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
                 </div>
@@ -81,7 +81,7 @@
                         <option value="{{ $role->id }}">{{ $role->name }}</option>   
                         @endforeach
                     </select>
-                    @error('role')
+                    @error('roles')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
                 </div>
