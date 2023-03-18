@@ -7,6 +7,9 @@
                 <div class="pull-left mb-2">
                     <h2 class="font-share-tech mt-8 mb-12 text-4xl">Liste des rôles</h2>
                 </div>
+                <div class="pull-right my-3">
+                    <a class="btn-blue" href="{{ route('roles.index') }}"> Retour</a>
+                </div>
             </div>
         </div>
         
