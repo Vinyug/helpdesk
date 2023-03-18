@@ -14,8 +14,9 @@
                 
         {{-- don't forget to build for production --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireScripts
         @livewireStyles
-        {{-- <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> --}}
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     </head>
     
     <body class="overflow-x-hidden text-custom-dark flex flex-col min-h-screen antialiased" x-data="{ isOpen: false }" class="relative antialiased min-h-screen lg:flex" @keydown.escape.window="isOpen = false">
@@ -33,9 +34,8 @@
         {{-- end content --}}
         
         @include('includes.footer')
-        
-        @livewireScripts
-        {{-- <script src="{{ asset('assets/js/script.js') }}"></script> --}}
+
+    {{-- <script src="{{ asset('assets/js/script.js') }}"></script> --}}
     </body>
     </html>
     
