@@ -8,7 +8,7 @@
                     <h2 class="font-share-tech mt-8 mb-12 text-4xl">Créer un utilisateur</h2>
                 </div>
                 <div class="pull-right my-3">
-                    <a class="btn-blue" href="{{ route('companies.index') }}"> Retour</a>
+                    <a class="btn-blue" href="{{ route('users.index') }}"> Retour</a>
                 </div>
             </div>
         </div>
@@ -18,7 +18,6 @@
             {{ session('status') }}
         </div>
         @endif
-
 
         <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -48,7 +47,7 @@
                     @enderror
                 </div>
 
-                <div class="col-span-full">
+                <div class="w-full">
                     <label for="password" class="custom-label">Mot de passe : <span class="text-red-600 font-bold">*</span></label>
                     <input type="password" name="password" id="password" class="custom-input" placeholder="Saisir le mot de passe" required>
                     @error('password')
@@ -56,9 +55,29 @@
                     @enderror
                 </div>
 
-                <div class="col-span-full">
+                <div class="w-full">
                     <label for="confirm-password" class="custom-label">Confirmation du mot de passe : <span class="text-red-600 font-bold">*</span></label>
                     <input type="password" name="confirm-password" id="confirm-password" class="custom-input" placeholder="Saisir la confirmation de mot de passe" required>
+                </div>
+                
+                <div class="w-full">
+                    <label for="company" class="custom-label">Entreprise : </label>
+                    <select class="custom-input"name="company" id="company">
+                        <option value="">Choisir une entreprise</option>
+                        @foreach ($companies as $company)
+                        <option value="{{ $company->id }}">{{ $company->name }}</option>   
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="w-full">
+                    <label for="role" class="custom-label">Rôle : <span class="text-red-600 font-bold">*</span></label>
+                    <select class="custom-input"name="role" id="role">
+                        <option value="">Choisir un rôle</option>
+                        @foreach ($roles as $role)
+                        <option value="{{ $role->id }}">{{ $role->name }}</option>   
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>

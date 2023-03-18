@@ -48,11 +48,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name','name')->all();
-        $company = Company::pluck('name', 'id');
+        $roles = Role::get();
+        $companies = Company::get();
         // $job = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
 
-        return view('users.create',compact('roles', 'company'));
+        return view('users.create',compact('roles', 'companies'));
     }
     
     /**
