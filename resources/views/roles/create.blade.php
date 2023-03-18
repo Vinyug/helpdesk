@@ -1,53 +1,57 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12 mt-5">
-            <div class="pull-left">
-                <h2>Créer un nouveau rôle</h2>
-            </div>
-            <div class="pull-right my-3">
-                <a class="btn btn-info" href="{{ route('roles.index') }}"> Retour </a>
+    <div class="container mb-16 mx-auto sm:px-4">
+        <div class="flex flex-wrap">
+            <div class="lg:w-full pr-4 pl-4 mt-5">
+                <div class="pull-left mb-2">
+                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">Créer un rôle</h2>
+                </div>
+                <div class="pull-right my-3">
+                    <a class="btn-blue" href="{{ route('roles.index') }}"> Retour</a>
+                </div>
             </div>
         </div>
+
+        @if(session('status'))
+        <div class="custom-status">
+            {{ session('status') }}
+        </div>
+        @endif
+
+        <form action="{{ route('roles.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+
+            <div class="grid sm:grid-cols-2 gap-4 p-4">    
+                <div class="col-span-full">
+                    <label for="name" class="custom-label">Nom du rôle : <span class="text-red-600 font-bold">*</span></label>
+                    <input type="text" name="name" id="name" class="custom-input" placeholder="Saisir le nom du rôle" value="{{ old('name') }}" >
+                    @error('name')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-span-full">
+                    <label class="custom-label">Permissions : <span class="text-red-600 font-bold">*</span></label>
+                    <div class="grid sm:grid-cols-3 gap-4">
+                        @foreach ($permissions as $permission)
+                        <div class="w-full">
+                            <input type="checkbox" class="border-gray-300 focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" name="permission[]" value="{{ $permission->id }}" id="{{ $permission->name }}" @if(old('permission') && in_array($permission->id, old('permission'))) checked @endif>
+                            <label class="pl-2" for="{{ $permission->name }}">{{ $permission->name }}</label>
+                        </div>
+                        @endforeach
+                    </div>
+                    @error('permission')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>
+
+                <div class="col-span-full">
+                    <button type="submit" class="btn-orange">Créer</button>
+                </div>
+            </div>
+        </form>
     </div>
-    
-    
-    @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <strong>Whoops!</strong> Something went wrong.<br><br>
-            <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-            </ul>
-        </div>
-    @endif
-    
-    {!! Form::open(array('route' => 'roles.store','method'=>'POST')) !!}
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Name:</strong>
-                {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Permission:</strong>
-                <br/>
-                @foreach($permission as $value)
-                    <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
-                    {{ $value->name }}</label>
-                <br/>
-                @endforeach
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <button type="submit" class="btn btn-outline-success">Créer</button>
-        </div>
-    </div>
-    {!! Form::close() !!}
-</div>
 @endsection

@@ -25,9 +25,8 @@
 
 
 
-
-        <table class="table table-bordered">
-            <thead>
+        <table class="min-w-full text-left">
+            <thead class="border-b dark:border-neutral-500">
                 <tr>
                     <th>N° entreprise</th>
                     <th>Nom entreprise</th>
@@ -38,12 +37,13 @@
             </thead>
             <tbody>
                 @foreach ($companies as $company)
-                    <tr>
-                        <td>{{ $company->id }}</td>
-                        <td>{{ $company->name }}</td>
-                        <td>{{ $company->address }}</td>
-                        <td>{{ $company->email }}</td>
-                        <td class="flex justify-end">
+                <tr class="h-12 border-b dark:border-neutral-500">
+                    <td>{{ $company->id }}</td>
+                    <td>{{ $company->name }}</td>
+                    <td>{{ $company->address }}</td>
+                    <td>{{ $company->email }}</td>
+                    <td>
+                        <div class="flex justify-center">
                             @can('company-edit')
                             <a class="btn-blue" href="{{ route('companies.edit', $company->uuid) }}">Edit</a>
                             @endcan
@@ -56,9 +56,10 @@
                                 <button type="submit" class="btn-red">Delete</button>
                             </form>
                             @endcan
-                        </td>
-                    </tr>
-                    @endforeach
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
         {!! $companies->links() !!}
