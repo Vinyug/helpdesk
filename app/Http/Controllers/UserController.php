@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Listing;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -80,7 +81,7 @@ class UserController extends Controller
         $user->assignRole($request->input('roles'));
     
         return redirect()->route('users.index')
-                        ->with('success','l\'utilisateur est crée.');
+                        ->with('success','L\'utilisateur est crée.');
     }
     
     /**
@@ -105,16 +106,14 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        $roles = Role::pluck('name','name')->all();
+        $roles = Role::get();
         $userRole = $user->roles->pluck('name','name')->all();
-        
-        $company = Company::pluck('name', 'id')->all();
-        $userCompany = $user->company_id;
+        $companies = Company::get();
 
         // $job = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
         // $userJob = $user->job;
-    
-        return view('users.edit',compact('user','roles','userRole', 'company', 'userCompany', 'job', 'userJob'));
+
+        return view('users.edit',compact('user', 'roles', 'userRole', 'companies'));
     }
     
     /**
@@ -126,22 +125,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'same:confirm-password',
-            'company_id' => 'nullable|exists:companies,id',
-            'roles' => 'required'
-        ]);
-    
-        $input = $request->all();
-        if(!empty($input['password'])){ 
-            $input['password'] = Hash::make($input['password']);
-        }else{
-            $input = Arr::except($input,array('password'));    
-        }
-    
         $user = User::find($id);
+        
+        $this->validate($request, [
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'company_id' => 'nullable|exists:companies,id',
+            'job' => 'exists:listings,job|nullable',
+            'roles' => 'required|exists:roles,id'
+        ]);
+
+        $input = $request->all();
         $user->update($input);
         DB::table('model_has_roles')->where('model_id',$id)->delete();
     
@@ -161,6 +156,6 @@ class UserController extends Controller
     {
         User::find($id)->delete();
         return redirect()->route('users.index')
-                        ->with('success','User deleted successfully');
+                        ->with('success','L\'utilisateur est supprimé.');
     }
 }

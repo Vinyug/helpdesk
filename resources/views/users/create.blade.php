@@ -59,25 +59,31 @@
                     <label for="confirm-password" class="custom-label">Confirmation du mot de passe : <span class="text-red-600 font-bold">*</span></label>
                     <input type="password" name="confirm-password" id="confirm-password" class="custom-input" placeholder="Saisir la confirmation de mot de passe" required>
                 </div>
-                
-                <div class="w-full">
-                    <label for="company" class="custom-label">Entreprise : </label>
-                    <select class="custom-input"name="company" id="company">
-                        <option value="">Choisir une entreprise</option>
-                        @foreach ($companies as $company)
-                        <option value="{{ $company->id }}">{{ $company->name }}</option>   
-                        @endforeach
-                    </select>
-                </div>
 
                 <div class="w-full">
+                    <label for="company_id" class="custom-label">Entreprise : </label>
+                    <select class="custom-input" name="company_id" id="company_id">
+                        <option value="">Choisir une entreprise</option>
+                        @foreach($companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('company')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-span-full">
                     <label for="role" class="custom-label">Rôle : <span class="text-red-600 font-bold">*</span></label>
-                    <select class="custom-input"name="role" id="role">
+                    <select class="custom-input" name="roles[]" id="role" multiple="">
                         <option value="">Choisir un rôle</option>
                         @foreach ($roles as $role)
                         <option value="{{ $role->id }}">{{ $role->name }}</option>   
                         @endforeach
                     </select>
+                    @error('role')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>
