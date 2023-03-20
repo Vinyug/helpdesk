@@ -13,6 +13,10 @@ final class UserTable extends PowerGridComponent
 {
     use ActionButton;
 
+    // Sort by default
+    public string $sortField = 'created_at';
+    public string $sortDirection = 'desc';
+
     /*
     |--------------------------------------------------------------------------
     |  Features Setup

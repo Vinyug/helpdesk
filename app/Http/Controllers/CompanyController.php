@@ -30,7 +30,7 @@ class CompanyController extends Controller
     public function index()
     {
         // get model data with order by latest and paginate 
-        $companies = Company::latest()->paginate(5);
+        $companies = Company::get();
         
         return view('companies.index', compact('companies'));
     }
