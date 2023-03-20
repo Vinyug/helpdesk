@@ -5,11 +5,11 @@
         <div class="flex flex-wrap">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <div class="pull-left mb-2">
-                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">Liste des postes</h2>
+                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">Liste des états</h2>
                 </div>
                 <div class="pull-right my-3">
-                    @can('job-create')
-                    <a class="btn-green" href="{{ route('jobs.create') }}"> Créer un poste</a>
+                    @can('state-create')
+                    <a class="btn-green" href="{{ route('states.create') }}"> Créer un état</a>
                     @endcan
                 </div>
             </div>
@@ -33,15 +33,15 @@
                 @foreach ($listings as $listing)
                 <tr class="h-12 border-b dark:border-neutral-500">
                     <td>{{ ++$i }}</td>
-                    <td>{{ $listing->job }}</td>
+                    <td>{{ $listing->state }}</td>
                     <td>
                         <div class="flex justify-center">               
-                            @can('job-edit')
-                                <a class="btn-blue" href="{{ route('jobs.edit', $listing->id) }}">Edit</a>
+                            @can('state-edit')
+                                <a class="btn-blue" href="{{ route('states.edit', $listing->id) }}">Edit</a>
                             @endcan
     
-                            @can('job-delete')
-                            <form action="{{ route('jobs.destroy', $listing->id) }}" method="Post">
+                            @can('state-delete')
+                            <form action="{{ route('states.destroy', $listing->id) }}" method="Post">
                                 @csrf
                                 @method('DELETE')
                                 

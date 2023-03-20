@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\Listing\JobController;
+use App\Http\Controllers\Listing\ServiceController;
+use App\Http\Controllers\Listing\StateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\StateController;
 use Illuminate\Support\Facades\Route;
 
 /*
