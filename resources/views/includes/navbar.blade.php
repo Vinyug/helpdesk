@@ -84,6 +84,18 @@
                         {{ __('Postes') }}
                     </x-dropleft-link>
                     @endcan
+
+                    @can('state-list')
+                    <x-dropleft-link :href="route('states.index')">
+                        {{ __('États') }}
+                    </x-dropleft-link>
+                    @endcan
+
+                    @can('service-list')
+                    <x-dropleft-link :href="route('services.index')">
+                        {{ __('Services') }}
+                    </x-dropleft-link>
+                    @endcan
             </div>
 
 
@@ -167,6 +179,18 @@
                 @can('job-list')
                 <x-responsive-nav-link :href="route('jobs.index')">
                     {{ __('Postes') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @can('state-list')
+                <x-responsive-nav-link :href="route('states.index')">
+                    {{ __('États') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @can('service-list')
+                <x-responsive-nav-link :href="route('services.index')">
+                    {{ __('Services') }}
                 </x-responsive-nav-link>
                 @endcan
             </div>
