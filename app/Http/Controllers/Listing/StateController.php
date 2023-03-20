@@ -23,7 +23,7 @@ class StateController extends Controller
      */
     public function index(Request $request)
     {
-        $listings = Listing::select('id', 'state')->whereNotNull('state')->where('state', '!=', '')->distinct()->paginate(5);
+        $listings = Listing::select('id', 'state')->whereNotNull('state')->where('state', '!=', '')->distinct();
 
         return view('states.index', compact('listings'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
