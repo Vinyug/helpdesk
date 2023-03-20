@@ -21,11 +21,11 @@
         @endif
 
 
-        {{-- @livewire('company-table') --}}
+        @livewire('company-table')
 
 
 
-        <table class="min-w-full text-left">
+        {{-- <table class="min-w-full text-left">
             <thead class="border-b dark:border-neutral-500">
                 <tr>
                     <th>N° entreprise</th>
@@ -62,6 +62,6 @@
                 @endforeach
             </tbody>
         </table>
-        {!! $companies->links() !!}
+        {!! $companies->links() !!} --}}
     </div>
 @endsection
