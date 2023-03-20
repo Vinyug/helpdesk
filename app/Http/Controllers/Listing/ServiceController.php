@@ -23,10 +23,9 @@ class ServiceController extends Controller
      */
     public function index(Request $request)
     {
-        $listings = Listing::select('id', 'service')->whereNotNull('service')->where('service', '!=', '')->distinct()->paginate(5);
+        $listings = Listing::select('id', 'service')->whereNotNull('service')->where('service', '!=', '')->distinct();
 
-        return view('services.index', compact('listings'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('services.index', compact('listings'));
     }
 
     /**

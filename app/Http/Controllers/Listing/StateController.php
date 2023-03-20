@@ -25,8 +25,7 @@ class StateController extends Controller
     {
         $listings = Listing::select('id', 'state')->whereNotNull('state')->where('state', '!=', '')->distinct();
 
-        return view('states.index', compact('listings'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('states.index', compact('listings'));
     }
 
     /**
