@@ -20,7 +20,12 @@
             </div>
         @endif
 
-        <table class="min-w-full text-left">
+        <div class="mt-12">
+            @livewire('user-table')
+        </div>
+
+        {{-- without powergrid --}}
+        {{-- <table class="min-w-full text-left">
             <thead class="border-b dark:border-neutral-500">
                 <tr>
                     <th>No</th>
@@ -70,53 +75,7 @@
                 </tr>
                 @endforeach
             </tbody>
-          </table>
-
-        {{-- <table class="w-full table-auto">
-            <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Entreprise</th>
-                <th>Poste</th>
-                <th>Roles</th>
-                <th width="280px">Action</th>
-            </tr>
-            @foreach ($users as $key => $user)
-                <tr>
-                    <td>{{ ++$i }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ optional($user->company)->name }}</td>
-                    <td>{{ $user->job }}</td>
-                    <td>
-                        @if (!empty($user->getRoleNames()))
-                            @foreach ($user->getRoleNames() as $v)
-                                <label class="badge badge-success">{{ $v }}</label>
-                            @endforeach
-                        @endif
-                    </td>
-                    <td class="flex justify-center">
-
-                        <a class="btn-green" href="{{ route('users.show', $user->id) }}">Show</a>
-                
-                        @can('user-edit')
-                        <a class="btn-blue" href="{{ route('users.edit', $user->id) }}">Edit</a>
-                        @endcan
-
-                        @can('user-delete')
-                        <form action="{{ route('users.destroy', $user->id) }}" method="Post">
-                            @csrf
-                            @method('DELETE')
-                            
-                            <button type="submit" class="btn-red">Delete</button>
-                        </form>
-                        @endcan
-                    </td>
-                </tr>
-            @endforeach
-        </table> --}}
-
-        {!! $users->render() !!}
+        </table>
+        {!! $users->render() !!} --}}
     </div>
 @endsection

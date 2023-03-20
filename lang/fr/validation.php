@@ -153,6 +153,8 @@ return [
         'country'                  => 'pays',
         'created_at'               => 'créé à',
         'creator'                  => 'créateur',
+        'company_id'               => 'entreprise',
+        'confirm-password'         => 'confirmation du mot de passe',
         'current_password'         => 'mot de passe actuel',
         'date'                     => 'Date',
         'date_of_birth'            => 'date de naissance',
