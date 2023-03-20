@@ -23,10 +23,9 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        $listings = Listing::select('id', 'job')->whereNotNull('job')->where('job', '!=', '')->distinct()->paginate(5);
+        $listings = Listing::select('id', 'job')->whereNotNull('job')->where('job', '!=', '')->distinct();
 
-        return view('jobs.index', compact('listings'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('jobs.index', compact('listings'));
     }
 
     /**

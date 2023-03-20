@@ -20,7 +20,12 @@
             </div>
         @endif
         
-        <table class="min-w-full text-left">
+        <div class="mt-12">
+            @livewire('job-table')
+        </div>
+
+        {{-- without powergrid --}}
+        {{-- <table class="min-w-full text-left">
             <thead class="border-b dark:border-neutral-500">
                 <tr>
                     <th>No</th>
@@ -54,7 +59,6 @@
                 @endforeach
             </tbody>
         </table>
-        
-        {!! $listings->render() !!}
+        {!! $listings->render() !!} --}}
     </div>
 @endsection
