@@ -78,6 +78,12 @@
                         {{ __('Roles') }}
                     </x-dropleft-link>
                     @endcan
+
+                    @can('job-list')
+                    <x-dropleft-link :href="route('jobs.index')">
+                        {{ __('Postes') }}
+                    </x-dropleft-link>
+                    @endcan
             </div>
 
 
@@ -155,6 +161,12 @@
                 @can('role-list')
                 <x-responsive-nav-link :href="route('roles.index')">
                     {{ __('Roles') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @can('job-list')
+                <x-responsive-nav-link :href="route('jobs.index')">
+                    {{ __('Postes') }}
                 </x-responsive-nav-link>
                 @endcan
             </div>
