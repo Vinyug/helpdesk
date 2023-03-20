@@ -51,9 +51,9 @@ class UserController extends Controller
     {
         $roles = Role::get();
         $companies = Company::get();
-        // $job = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
+        $jobs = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
 
-        return view('users.create',compact('roles', 'companies'));
+        return view('users.create',compact('roles', 'companies', 'jobs'));
     }
     
     /**
@@ -109,11 +109,9 @@ class UserController extends Controller
         $roles = Role::get();
         $userRole = $user->roles->pluck('name','name')->all();
         $companies = Company::get();
+        $jobs = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
 
-        // $job = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
-        // $userJob = $user->job;
-
-        return view('users.edit',compact('user', 'roles', 'userRole', 'companies'));
+        return view('users.edit',compact('user', 'roles', 'userRole', 'companies', 'jobs'));
     }
     
     /**

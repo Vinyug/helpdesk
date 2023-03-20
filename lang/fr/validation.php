@@ -170,6 +170,7 @@ return [
         'group'                    => 'groupe',
         'hour'                     => 'heure',
         'image'                    => 'image',
+        'job'                      => 'poste',
         'last_name'                => 'nom',
         'lastname'                 => 'nom',
         'lesson'                   => 'leçon',

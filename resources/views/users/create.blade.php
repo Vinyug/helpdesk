@@ -73,6 +73,19 @@
                     @enderror
                 </div>
 
+                <div class="w-full">
+                    <label for="job" class="custom-label">Poste : </label>
+                    <select class="custom-input" name="job" id="job">
+                        <option value="">Choisir un poste</option>
+                        @foreach($jobs as $job)
+                            <option value="{{ $job }}">{{ $job }}</option>
+                        @endforeach
+                    </select>
+                    @error('job')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <div class="col-span-full">
                     <label for="role" class="custom-label">Rôle : <span class="text-red-600 font-bold">*</span></label>
                     <select class="custom-input" name="roles[]" id="role" multiple="">

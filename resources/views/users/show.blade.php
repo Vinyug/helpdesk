@@ -29,7 +29,10 @@
                 <p class="pl-2">{{ $user->email }}</p>
             </div>
 
-            
+            <div class="flex">
+                <strong>Poste :</strong>
+                <p class="pl-2">{{ $user->job }}</p>
+            </div>
 
             <div>
                 <strong class="pr-2">Role :</strong>

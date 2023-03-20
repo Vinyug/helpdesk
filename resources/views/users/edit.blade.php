@@ -47,24 +47,6 @@
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
                 </div>
-                
-                {{-- <div class="w-full">
-                    <label for="company" class="custom-label">Entreprise : </label>
-                    <select class="custom-input"name="company" id="company">
-                        @if (empty($user->company_id))    
-                        <option value="">Choisir une entreprise</option>
-                        @else
-                        <option value="{{ $user->company_id }}">{{ $user->company_id }}</option>
-                        @endif
-                        
-                        @foreach ($companies as $company)
-                        <option value="{{ $company->id }}">{{ $company->name }}</option>   
-                        @endforeach
-                    </select>
-                    @error('company')
-                    <div class="custom-error">{{ $message }}</div>
-                    @enderror
-                </div> --}}
 
                 <div class="w-full">
                     <label for="company_id" class="custom-label">Entreprise : </label>
@@ -80,6 +62,24 @@
                         @endforeach
                     </select>
                     @error('company_id')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="w-full">
+                    <label for="job" class="custom-label">Poste : </label>
+                    <select class="custom-input" name="job" id="job">
+                        @if (empty($user->job))    
+                        <option value="">Choisir un poste</option>
+                        @else
+                        <option value="{{ $user->job }}">{{ $user->job }}</option>
+                        @endif
+
+                        @foreach($jobs as $job)
+                            <option value="{{ $job }}">{{ $job }}</option>
+                        @endforeach
+                    </select>
+                    @error('job')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
                 </div>
