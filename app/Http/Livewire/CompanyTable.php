@@ -202,12 +202,12 @@ final class CompanyTable extends PowerGridComponent
     {
        return [
             Button::make('edit', 'Edit')
-                ->class('link-blue')
+                ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
                 ->target('')
                 ->route('companies.edit', ['company' => 'uuid']),
                 
             Button::make('destroy', 'Delete')
-                ->class('link-red')
+                ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
                 ->target('')
                 ->route('companies.destroy', ['company' => 'uuid'])
                 ->method('delete')
@@ -229,16 +229,21 @@ final class CompanyTable extends PowerGridComponent
      * @return array<int, RuleActions>
      */
 
-    /*
+    
     public function actionRules(): array
     {
        return [
 
-           //Hide button edit for ID 1
+           //Hide action edit if user have not permission
             Rule::button('edit')
-                ->when(fn($company) => $company->id === 1)
+                ->when(fn() => auth()->user()->can('company-edit') === false)
+                ->hide(),
+
+           //Hide action delete if user have not permission
+            Rule::button('destroy')
+                ->when(fn() => auth()->user()->can('company-delete') === false)
                 ->hide(),
         ];
     }
-    */
+    
 }
