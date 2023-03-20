@@ -38,7 +38,7 @@
         @apply inline-block ml-4 py-1 align-middle text-center font-medium text-green-500 hover:underline transition duration-150 ease-in-out;   
     }
     .link-red {
-        @apply inline-block ml-4 py-1 align-middle text-center font-medium text-red-500 hover:underline transition duration-150 ease-in-out;   
+        @apply inline-block ml-4 py-1 align-middle text-center font-medium text-green-500 hover:underline transition duration-150 ease-in-out;   
     }
 }
 /* END COMPONENTS */

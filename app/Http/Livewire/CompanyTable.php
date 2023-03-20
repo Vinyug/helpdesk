@@ -203,10 +203,12 @@ final class CompanyTable extends PowerGridComponent
        return [
             Button::make('edit', 'Edit')
                 ->class('link-blue')
+                ->target('')
                 ->route('companies.edit', ['company' => 'uuid']),
-
+                
             Button::make('destroy', 'Delete')
                 ->class('link-red')
+                ->target('')
                 ->route('companies.destroy', ['company' => 'uuid'])
                 ->method('delete')
         ];
