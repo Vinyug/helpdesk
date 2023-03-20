@@ -50,7 +50,7 @@ class JobController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'job' => 'required',
+            'job' => 'required|max:50',
         ]);
     
         Listing::create(['job' => $request->input('job')]);
@@ -93,7 +93,7 @@ class JobController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'job' => 'required',
+            'job' => 'required|max:50',
         ]);
     
         $listing = Listing::findOrFail($id);
