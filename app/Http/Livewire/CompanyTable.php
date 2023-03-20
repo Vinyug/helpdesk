@@ -96,14 +96,15 @@ final class CompanyTable extends PowerGridComponent
             ->addColumn('address')
             ->addColumn('city')
             ->addColumn('zip_code')
-            ->addColumn('siret')
-            ->addColumn('code_ape')
+            // ->addColumn('siret')
+            // ->addColumn('code_ape')
             ->addColumn('phone')
             ->addColumn('email')
-            ->addColumn('uuid')
+            // ->addColumn('uuid')
             ->addColumn('present')
             ->addColumn('created_at_formatted', fn (Company $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            ->addColumn('updated_at_formatted', fn (Company $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            // ->addColumn('updated_at_formatted', fn (Company $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
+            ;
     }
 
     /*
@@ -126,60 +127,60 @@ final class CompanyTable extends PowerGridComponent
             Column::make('ID', 'id')
                 ->makeInputRange(),
 
-            Column::make('NAME', 'name')
+            Column::make(trans('Nom'), 'name')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make('ADDRESS', 'address')
+            Column::make(trans('Address'), 'address')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make('CITY', 'city')
+            Column::make(trans('City'), 'city')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make('ZIP CODE', 'zip_code')
+            Column::make(trans('ZIP Code'), 'zip_code')
                 ->makeInputRange(),
 
-            Column::make('SIRET', 'siret')
+            // Column::make('SIRET', 'siret')
+            //     ->makeInputRange(),
+
+            // Column::make('CODE APE', 'code_ape')
+            //     ->sortable()
+            //     ->searchable()
+            //     ->makeInputText(),
+
+            Column::make(trans('Phone'), 'phone')
                 ->makeInputRange(),
 
-            Column::make('CODE APE', 'code_ape')
+            Column::make(trans('Email'), 'email')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make('PHONE', 'phone')
-                ->makeInputRange(),
+            // Column::make('UUID', 'uuid')
+            //     ->sortable()
+            //     ->searchable()
+            //     ->makeInputText(),
 
-            Column::make('EMAIL', 'email')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
-            Column::make('UUID', 'uuid')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
-            Column::make('PRESENT', 'present')
+            Column::make(trans('Present'), 'present')
                 ->toggleable(),
 
-            Column::make('CREATED AT', 'created_at_formatted', 'created_at')
+            Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
                 ->sortable()
                 ->makeInputDatePicker(),
 
-            Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
-                ->searchable()
-                ->sortable()
-                ->makeInputDatePicker(),
+            // Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
+            //     ->searchable()
+            //     ->sortable()
+            //     ->makeInputDatePicker(),
 
         ]
-;
+    ;
     }
 
     /*
@@ -196,21 +197,21 @@ final class CompanyTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
+    
     public function actions(): array
     {
        return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('company.edit', ['company' => 'id']),
+            Button::make('edit', 'Edit')
+                ->class('link-blue')
+                ->route('companies.edit', ['company' => 'uuid']),
 
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('company.destroy', ['company' => 'id'])
-               ->method('delete')
+            Button::make('destroy', 'Delete')
+                ->class('link-red')
+                ->route('companies.destroy', ['company' => 'uuid'])
+                ->method('delete')
         ];
     }
-    */
+    
 
     /*
     |--------------------------------------------------------------------------

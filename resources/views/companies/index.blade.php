@@ -20,11 +20,11 @@
             </div>
         @endif
 
+        <div class="mt-12">
+            @livewire('company-table')
+        </div>
 
-        @livewire('company-table')
-
-
-
+        {{-- without powergrid --}}
         {{-- <table class="min-w-full text-left">
             <thead class="border-b dark:border-neutral-500">
                 <tr>
@@ -63,5 +63,6 @@
             </tbody>
         </table>
         {!! $companies->links() !!} --}}
+
     </div>
 @endsection

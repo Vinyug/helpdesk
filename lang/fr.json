@@ -1,7 +1,11 @@
 {
     "(and :count more error)": "(et :count erreur en plus)",
     "(and :count more errors)": "(et :count erreurs en plus)",
+    "Address": "Adresse",
     "All rights reserved.": "Tous droits réservés.",
+    "City": "Ville",
+    "Created at": "Date de création",
+    "Email": "Email",
     "Forbidden": "Interdit",
     "Go to page :page": "Aller à la page :page",
     "Hello!": "Bonjour !",
@@ -10,12 +14,15 @@
     "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Si vous avez des difficultés à cliquer sur le bouton \":actionText\", copiez et collez l'URL ci-dessous\ndans votre navigateur Web :",
     "Login": "Connexion",
     "Logout": "Déconnexion",
+    "Name": "Nom",
     "Not Found": "Non trouvé",
     "of": "de",
     "Page Expired": "Page expirée",
     "Pagination Navigation": "Pagination",
     "Payment Required": "Paiement requis",
+    "Phone": "Téléphone",
     "Please click the button below to verify your email address.": "Veuillez cliquer sur le bouton ci-dessous pour vérifier votre adresse e-mail :",
+    "Present": "Présence",
     "Regards": "Cordialement",
     "Register": "Inscription",
     "Reset Password": "Réinitialisation du mot de passe",
@@ -30,7 +37,9 @@
     "Toggle navigation": "Afficher / masquer le menu de navigation",
     "Too Many Requests": "Trop de requêtes",
     "Unauthorized": "Non autorisé",
+    "Updated at": "Date de modification",
     "Verify Email Address": "Vérifier l'adresse e-mail",
     "Whoops!": "Oups !",
-    "You are receiving this email because we received a password reset request for your account.": "Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte."
+    "You are receiving this email because we received a password reset request for your account.": "Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.",
+    "ZIP Code": "Code Postal"
 }

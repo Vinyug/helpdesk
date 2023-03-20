@@ -7,7 +7,7 @@
 ])
 <div>
     @if(isset($actions) && count($actions) && $row !== '')
-            <td class="pg-actions {{ $theme->table->tdBodyClass }}"
+            <td class="pg-actions flex justify-center {{ $theme->table->tdBodyClass }}"
                 style="{{ $theme->table->tdBodyStyle }}">
                 @foreach($actions as $key => $action)
                     @php
