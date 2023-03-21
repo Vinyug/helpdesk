@@ -11,7 +11,7 @@
 - Configure a mailer in .env
 - Seed : 
     * php artisan db:seed --class=PermissionTableSeeder
-    * php artisan make:seeder CreateAdminUserSeeder
+    * php artisan db:seed --class=CreateAdminUserSeeder
 
 #### Login admin :
 - email : admin@mail.com
