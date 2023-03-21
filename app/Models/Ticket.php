@@ -11,6 +11,7 @@ class Ticket extends Model
 
     protected $fillable = [
         'user_id',
+        'company_id',
         'time_id',
         'ticket_number', 
         'uuid',
@@ -28,5 +29,10 @@ class Ticket extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable();
+            $table->foreignId('company_id')->nullable();
             $table->foreignId('time_id')->nullable();
             $table->string('ticket_number')->unique();
             $table->string('uuid');
