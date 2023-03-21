@@ -54,7 +54,10 @@ final class StateTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        return Listing::query();
+        // query to select state value only
+        return Listing::query()
+            ->whereNotNull('state')
+            ->where('state', '!=', '');
     }
 
     /*
