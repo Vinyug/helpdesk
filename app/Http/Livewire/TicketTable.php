@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Company;
+use App\Models\Ticket;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class CompanyTable extends PowerGridComponent
+final class TicketTable extends PowerGridComponent
 {
     use ActionButton;
 
@@ -50,11 +50,11 @@ final class CompanyTable extends PowerGridComponent
     /**
     * PowerGrid datasource.
     *
-    * @return Builder<\App\Models\Company>
+    * @return Builder<\App\Models\Ticket>
     */
     public function datasource(): Builder
     {
-        return Company::query();
+        return Ticket::query();
     }
 
     /*
@@ -90,25 +90,23 @@ final class CompanyTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('name')
+            ->addColumn('user_id')
+            ->addColumn('company_id')
+            // ->addColumn('time_id')
+            ->addColumn('ticket_number')
 
            /** Example of custom column using a closure **/
-            ->addColumn('name_lower', function (Company $model) {
-                return strtolower(e($model->name));
+            ->addColumn('ticket_number_lower', function (Ticket $model) {
+                return strtolower(e($model->ticket_number));
             })
 
-            ->addColumn('address')
-            ->addColumn('city')
-            ->addColumn('zip_code')
-            // ->addColumn('siret')
-            // ->addColumn('code_ape')
-            ->addColumn('phone')
-            ->addColumn('email')
             // ->addColumn('uuid')
-            ->addColumn('present')
-            ->addColumn('created_at_formatted', fn (Company $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            // ->addColumn('updated_at_formatted', fn (Company $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
-            ;
+            ->addColumn('state')
+            ->addColumn('service')
+            ->addColumn('visibility')
+            ->addColumn('created_at_formatted', fn (Ticket $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
+            // ->addColumn('updated_at_formatted', fn (Ticket $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
+        ;
     }
 
     /*
@@ -131,36 +129,16 @@ final class CompanyTable extends PowerGridComponent
             Column::make('ID', 'id')
                 ->makeInputRange(),
 
-            Column::make(trans('Name'), 'name')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
-            Column::make(trans('Address'), 'address')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
-            Column::make(trans('City'), 'city')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
-            Column::make(trans('ZIP Code'), 'zip_code')
+            Column::make('USER ID', 'user_id')
                 ->makeInputRange(),
 
-            // Column::make('SIRET', 'siret')
-            //     ->makeInputRange(),
-
-            // Column::make('CODE APE', 'code_ape')
-            //     ->sortable()
-            //     ->searchable()
-            //     ->makeInputText(),
-
-            Column::make(trans('Phone'), 'phone')
+            Column::make('COMPANY ID', 'company_id')
                 ->makeInputRange(),
 
-            Column::make(trans('Email'), 'email')
+            Column::make('TIME ID', 'time_id')
+                ->makeInputRange(),
+
+            Column::make(trans('Ticket number'), 'ticket_number')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
@@ -170,7 +148,17 @@ final class CompanyTable extends PowerGridComponent
             //     ->searchable()
             //     ->makeInputText(),
 
-            Column::make(trans('Present'), 'present')
+            Column::make(trans('State'), 'state')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make(trans('Service'), 'service')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make(trans('Visibility'), 'visibility')
                 ->toggleable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
@@ -178,13 +166,13 @@ final class CompanyTable extends PowerGridComponent
                 ->sortable()
                 ->makeInputDatePicker(),
 
-            // Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
-            //     ->searchable()
-            //     ->sortable()
-            //     ->makeInputDatePicker(),
+            Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
+                ->searchable()
+                ->sortable()
+                ->makeInputDatePicker(),
 
         ]
-    ;
+;
     }
 
     /*
@@ -196,28 +184,31 @@ final class CompanyTable extends PowerGridComponent
     */
 
      /**
-     * PowerGrid Company Action Buttons.
+     * PowerGrid Ticket Action Buttons.
      *
      * @return array<int, Button>
      */
 
-    
-    public function actions(): array
-    {
-       return [
-            Button::make('edit', trans('Edit'))
-                ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
-                ->target('')
-                ->route('companies.edit', ['company' => 'uuid']),
-                
-            Button::make('destroy', trans('Delete'))
-                ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
-                ->target('')
-                ->route('companies.destroy', ['company' => 'uuid'])
-                ->method('delete')
-        ];
-    }
-    
+     public function actions(): array
+     {
+        return [
+             Button::make('show', trans('Show'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+                 ->target('')
+                 ->route('tickets.edit', ['ticket' => 'uuid']),
+
+             Button::make('edit', trans('Edit'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+                 ->target('')
+                 ->route('tickets.edit', ['ticket' => 'uuid']),
+                 
+             Button::make('destroy', trans('Delete'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
+                 ->target('')
+                 ->route('tickets.destroy', ['ticket' => 'uuid'])
+                 ->method('delete')
+         ];
+     }
 
     /*
     |--------------------------------------------------------------------------
@@ -228,26 +219,24 @@ final class CompanyTable extends PowerGridComponent
     */
 
      /**
-     * PowerGrid Company Action Rules.
+     * PowerGrid Ticket Action Rules.
      *
      * @return array<int, RuleActions>
      */
 
-    
-    public function actionRules(): array
-    {
-       return [
-
-           //Hide action edit if user have not permission
-            Rule::button('edit')
-                ->when(fn() => auth()->user()->can('company-edit') === false)
-                ->hide(),
-
-           //Hide action delete if user have not permission
-            Rule::button('destroy')
-                ->when(fn() => auth()->user()->can('company-delete') === false)
-                ->hide(),
-        ];
-    }
-    
+     public function actionRules(): array
+     {
+        return [
+ 
+            //Hide action edit if user have not permission
+             Rule::button('edit')
+                 ->when(fn() => auth()->user()->can('ticket-edit') === false)
+                 ->hide(),
+ 
+            //Hide action delete if user have not permission
+             Rule::button('destroy')
+                 ->when(fn() => auth()->user()->can('ticket-delete') === false)
+                 ->hide(),
+         ];
+     }
 }

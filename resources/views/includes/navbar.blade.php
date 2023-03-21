@@ -60,16 +60,22 @@
                     <x-dropleft-link :href="route('profile.edit')">
                         {{ __('Mes informations') }}
                     </x-dropleft-link>
-                    
-                    @can('company-list')
-                    <x-dropleft-link :href="route('companies.index')">
-                        {{ __('Liste des entreprises') }}
+
+                    @can('ticket-list')
+                    <x-dropleft-link :href="route('tickets.index')">
+                        {{ __('Liste des tickets') }}
                     </x-dropleft-link>
                     @endcan
 
                     @can('user-list')
                     <x-dropleft-link :href="route('users.index')">
                         {{ __('Liste des utilisateurs') }}
+                    </x-dropleft-link>
+                    @endcan
+                    
+                    @can('company-list')
+                    <x-dropleft-link :href="route('companies.index')">
+                        {{ __('Liste des entreprises') }}
                     </x-dropleft-link>
                     @endcan
 
@@ -159,9 +165,9 @@
                     {{ __('Mes informations') }}
                 </x-responsive-nav-link>
                 
-                @can('company-list')
-                <x-responsive-nav-link :href="route('companies.index')">
-                    {{ __('Listes des entreprises') }}
+                @can('ticket-list')
+                <x-responsive-nav-link :href="route('tickets.index')">
+                    {{ __('Listes des tickets') }}
                 </x-responsive-nav-link>
                 @endcan
 
@@ -170,6 +176,13 @@
                     {{ __('Listes des utilisateurs') }}
                 </x-responsive-nav-link>
                 @endcan
+
+                @can('company-list')
+                <x-responsive-nav-link :href="route('companies.index')">
+                    {{ __('Listes des entreprises') }}
+                </x-responsive-nav-link>
+                @endcan
+
 
                 @can('role-list')
                 <x-responsive-nav-link :href="route('roles.index')">

@@ -29,6 +29,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        // don't need with powergrid
         // get model data with order by latest and paginate 
         $companies = Company::get();
         

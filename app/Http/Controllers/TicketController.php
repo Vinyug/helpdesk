@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Listing;
+use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class TicketController extends Controller
 {
@@ -11,9 +16,23 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+         $this->middleware('permission:ticket-list|ticket-create|ticket-edit|ticket-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:ticket-create', ['only' => ['create','store']]);
+         $this->middleware('permission:ticket-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:ticket-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        //
+        // query in powergrid table : TicketTable
+        return view('tickets.index');
     }
 
     /**
@@ -23,7 +42,10 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
+
+        $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
+
+        return view('tickets.create', compact('services'));
     }
 
     /**
@@ -34,7 +56,29 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        // data validation
+        $request->validate([
+            'service' => 'required|exists:listings,service',
+        ]);
+        
+        // dd($request);
+        // dd(Auth::user()->id);
+
+        // user_id
+        $user_id = Auth::user()->id;
+        // company_id
+        $company_id = Auth::user()->company_id;
+        // generate ticket number 
+        $ticket_number = 'test'; 
+        // genererate uuid
+        $uuid = Str::uuid()->toString();
+
+        // insert in DB
+        Ticket::create(array_merge($request->post(), compact('user_id', 'company_id', 'ticket_number', 'uuid')));
+
+        // redirect with message
+        return redirect()->route('tickets.index')->with('success','Le ticket a été enregistrée avec succès.');
     }
 
     /**
@@ -43,9 +87,9 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Ticket $ticket)
     {
-        //
+        return view('tickets.show',compact('ticket'));
     }
 
     /**
@@ -54,9 +98,11 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Ticket $ticket)
     {
-        //
+        $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
+
+        return view('tickets.edit',compact('ticket', 'services'));
     }
 
     /**
@@ -66,9 +112,15 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Ticket $ticket)
     {
-        //
+        $request->validate([
+            'service' => 'required|exists:listings,service',
+        ]);
+        
+        $ticket->fill($request->post())->save();
+
+        return redirect()->route('tickets.index')->with('success','Le ticket a été mis à jour avec succès.');
     }
 
     /**
@@ -77,8 +129,9 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Ticket $ticket)
     {
-        //
+        $ticket->delete();
+        return redirect()->route('tickets.index')->with('success','Le ticket a été supprimée avec succès');
     }
 }
