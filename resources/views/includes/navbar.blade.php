@@ -145,10 +145,11 @@
         </div>
 
         <!-- Responsive Settings Options -->
+        @auth
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">Nom</div>
-                <div class="font-medium text-sm text-gray-500">Email</div>
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
             <h2 class="my-3 font-bold text-xl pl-4">Menu</h2>
@@ -195,5 +196,6 @@
                 @endcan
             </div>
         </div>
+        @endauth
     </div>
 </nav>
