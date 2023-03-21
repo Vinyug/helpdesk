@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tickets', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('company_id')->nullable();
+            $table->foreignId('user_id');
+            $table->foreignId('company_id');
             $table->foreignId('time_id')->nullable();
             $table->string('ticket_number')->unique();
             $table->string('uuid');
@@ -34,8 +34,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            Schema::dropIfExists('tickets');
-        });
+        Schema::dropIfExists('tickets');
+    
     }
 };
