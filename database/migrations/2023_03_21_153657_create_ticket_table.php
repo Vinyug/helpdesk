@@ -14,7 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            //
+            $table->id();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('time_id')->nullable();
+            $table->string('ticket_number')->unique();
+            $table->string('uuid');
+            $table->string('state')->default('En attente');
+            $table->string('service');
+            $table->boolean('visibility')->default('1');
+            $table->timestamps();
         });
     }
 
@@ -26,7 +34,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            //
+            Schema::dropIfExists('tickets');
         });
     }
 };
