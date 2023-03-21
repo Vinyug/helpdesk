@@ -173,10 +173,10 @@ final class StateTable extends PowerGridComponent
      public function actions(): array
      {
         return [
-            Button::make('show', trans('Show'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
-                 ->target('')
-                 ->route('states.show', ['state' => 'id']),
+            // Button::make('show', trans('Show'))
+            //      ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+            //      ->target('')
+            //      ->route('states.show', ['state' => 'id']),
                  
             Button::make('edit', trans('Edit'))
                  ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
