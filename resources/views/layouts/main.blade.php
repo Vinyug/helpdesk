@@ -14,27 +14,28 @@
                 
         {{-- don't forget to build for production --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @livewireScripts
         @livewireStyles
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> --}}
     </head>
-
+    
     <body class="overflow-x-hidden text-custom-dark flex flex-col min-h-screen antialiased" x-data="{ isOpen: false }" class="relative antialiased min-h-screen lg:flex" @keydown.escape.window="isOpen = false">
-
+        
         @include('includes.header')
         
         @include('includes.navbar')
         
         @if(Request::url() == url('/'))
-            @include('includes.jumbotron')
+        @include('includes.jumbotron')
         @endif
         
         {{-- start content --}}
         @yield('content')
         {{-- end content --}}
-
+        
         @include('includes.footer')
-
-    {{-- <script src="{{ asset('assets/js/script.js') }}"></script> --}}
+        
+        @livewireScripts
+        {{-- <script src="{{ asset('assets/js/script.js') }}"></script> --}}
     </body>
-</html>
+    </html>
+    
