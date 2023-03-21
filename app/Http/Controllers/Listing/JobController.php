@@ -23,6 +23,7 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
+        // Don't need with powergrid livewire
         $listings = Listing::select('id', 'job')->whereNotNull('job')->where('job', '!=', '')->distinct();
 
         return view('jobs.index', compact('listings'));

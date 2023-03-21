@@ -16,7 +16,7 @@ final class JobTable extends PowerGridComponent
     // Sort by default
     public string $sortField = 'created_at';
     public string $sortDirection = 'desc';
-
+ 
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
@@ -54,7 +54,10 @@ final class JobTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        return Listing::query();
+        // query to select job value only
+        return Listing::query()
+            ->whereNotNull('job')
+            ->where('job', '!=', '');
     }
 
     /*
@@ -196,24 +199,24 @@ final class JobTable extends PowerGridComponent
     |
     */
 
-     /**
+        /**
      * PowerGrid Listing Action Rules.
      *
      * @return array<int, RuleActions>
      */
 
-     public function actionRules(): array
-     {
+        public function actionRules(): array
+        {
         return [
             //Hide action edit if user have not permission
-             Rule::button('edit')
-                 ->when(fn() => auth()->user()->can('job-edit') === false)
-                 ->hide(),
- 
+                Rule::button('edit')
+                    ->when(fn() => auth()->user()->can('job-edit') === false)
+                    ->hide(),
+
             //Hide action delete if user have not permission
-             Rule::button('destroy')
-                 ->when(fn() => auth()->user()->can('job-delete') === false)
-                 ->hide(),
-         ];
-     }
+                Rule::button('destroy')
+                    ->when(fn() => auth()->user()->can('job-delete') === false)
+                    ->hide(),
+            ];
+        }
 }
