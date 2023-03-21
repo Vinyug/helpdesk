@@ -54,7 +54,10 @@ final class ServiceTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        return Listing::query();
+        // query to select service value only
+        return Listing::query()
+            ->whereNotNull('service')
+            ->where('service', '!=', '');
     }
 
     /*
