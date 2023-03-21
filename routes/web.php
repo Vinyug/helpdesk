@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\Listing\JobController;
 use App\Http\Controllers\Listing\ServiceController;
 use App\Http\Controllers\Listing\StateController;
@@ -21,9 +22,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+// Route::get('/', function () {
+//     return view('index');
+// });
+
+Route::get('/', [HomepageController::class, 'index'])->name('index');
 
 Route::get('/test', function () {
     return view('test');
