@@ -26,7 +26,7 @@
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
                 <div class="col-span-full">
                     <label for="state" class="custom-label">Nom de l'état : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="state" id="state" class="custom-input" placeholder="Saisir le nom de l'état" value="{{ $listing->state }}" >
+                    <input type="text" name="state" id="state" class="custom-input" placeholder="Saisir le nom de l'état" value="{{ old('state', $listing->state) }}" >
                     @error('state')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror

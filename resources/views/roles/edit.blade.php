@@ -26,7 +26,7 @@
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
                 <div class="col-span-full">
                     <label for="name" class="custom-label">Nom du rôle : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="name" id="name" class="custom-input" placeholder="Saisir le nom du rôle" value="{{ $role->name }}" >
+                    <input type="text" name="name" id="name" class="custom-input" placeholder="Saisir le nom du rôle" value="{{ old('name', $role->name) }}" >
                     @error('name')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror

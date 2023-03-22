@@ -26,7 +26,7 @@
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
                 <div class="col-span-full">
                     <label for="job" class="custom-label">Nom du poste : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="job" id="job" class="custom-input" placeholder="Saisir le nom du poste" value="{{ $listing->job }}" >
+                    <input type="text" name="job" id="job" class="custom-input" placeholder="Saisir le nom du poste" value="{{ old('job', $listing->job) }}" >
                     @error('job')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror

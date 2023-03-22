@@ -26,7 +26,7 @@
             <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 p-4">    
                 <div class="col-span-full">
                     <label for="name" class="custom-label">Nom de l'entreprise : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="name" id="name" class="custom-input" placeholder="Saisir le nom de l'entreprise" value="{{ $company->name }}" required>
+                    <input type="text" name="name" id="name" class="custom-input" placeholder="Saisir le nom de l'entreprise" value="{{ old('name',$company->name) }}" required>
                     @error('name')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -34,7 +34,7 @@
 
                 <div class="col-span-full">
                     <label for="address" class="custom-label">Adresse : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="address" id="address" class="custom-input" placeholder="Saisir l'adresse de l'entreprise" value="{{ $company->address }}" required>
+                    <input type="text" name="address" id="address" class="custom-input" placeholder="Saisir l'adresse de l'entreprise" value="{{ old('address', $company->address) }}" required>
                     @error('address')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -42,7 +42,7 @@
                 
                 <div class="w-full">
                     <label for="city" class="custom-label">Ville : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="city" id="city" class="custom-input" placeholder="Saisir la ville de l'entreprise" value="{{ $company->city }}" required>
+                    <input type="text" name="city" id="city" class="custom-input" placeholder="Saisir la ville de l'entreprise" value="{{ old('city', $company->city) }}" required>
                     @error('city')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -50,7 +50,7 @@
                 
                 <div class="w-full">
                     <label for="zip_code" class="custom-label">Code postal : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="zip_code" id="zip_code" class="custom-input" placeholder="Saisir le code postal de l'entreprise" value="{{ $company->zip_code }}" required>
+                    <input type="text" name="zip_code" id="zip_code" class="custom-input" placeholder="Saisir le code postal de l'entreprise" value="{{ old('zip_code', $company->zip_code) }}" required>
                     @error('zip_code')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -58,7 +58,7 @@
 
                 <div class="w-full">
                     <label for="siret" class="custom-label">SIRET : </label>
-                    <input type="text" name="siret" id="siret" class="custom-input" placeholder="Saisir le SIRET de l'entreprise" value="{{ $company->siret }}">
+                    <input type="text" name="siret" id="siret" class="custom-input" placeholder="Saisir le SIRET de l'entreprise" value="{{ old('siret', $company->siret) }}">
                     @error('siret')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -66,7 +66,7 @@
 
                 <div class="w-full">
                     <label for="code_ape" class="custom-label">Code APE : </label>
-                    <input type="text" name="code_ape" id="code_ape" class="custom-input" placeholder="Saisir le code APE de l'entreprise" value="{{ $company->code_ape }}">
+                    <input type="text" name="code_ape" id="code_ape" class="custom-input" placeholder="Saisir le code APE de l'entreprise" value="{{ old('code_ape', $company->code_ape) }}">
                     @error('code_ape')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -74,7 +74,7 @@
 
                 <div class="w-full">
                     <label for="phone" class="custom-label">Téléphone : </label>
-                    <input type="tel" name="phone" id="phone" class="custom-input" placeholder="Saisir le téléphone de l'entreprise" value="{{ $company->phone }}">
+                    <input type="tel" name="phone" id="phone" class="custom-input" placeholder="Saisir le téléphone de l'entreprise" value="{{ old('phone', $company->phone) }}">
                     @error('phone')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -82,7 +82,7 @@
 
                 <div class="w-full">
                     <label for="email" class="custom-label">Email : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="email" name="email" id="email" class="custom-input" placeholder="Saisir l'adresse email de l'entreprise" value="{{ $company->email }}" required>
+                    <input type="email" name="email" id="email" class="custom-input" placeholder="Saisir l'adresse email de l'entreprise" value="{{ old('email', $company->email) }}" required>
                     @error('email')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror

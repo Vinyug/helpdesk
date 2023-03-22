@@ -26,7 +26,7 @@
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
                 <div class="col-span-full">
                     <label for="firstname" class="custom-label">Prénom : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="firstname" id="firstname" class="custom-input" placeholder="Saisir le Prénom" value="{{ $user->firstname }}" required>
+                    <input type="text" name="firstname" id="firstname" class="custom-input" placeholder="Saisir le Prénom" value="{{ old('firstname', $user->firstname) }}" required>
                     @error('firstname')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -34,7 +34,7 @@
 
                 <div class="col-span-full">
                     <label for="lastname" class="custom-label">Nom : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="lastname" id="lastname" class="custom-input" placeholder="Saisir le Nom" value="{{ $user->lastname }}" required>
+                    <input type="text" name="lastname" id="lastname" class="custom-input" placeholder="Saisir le Nom" value="{{ old('lastname',$user->lastname) }}" required>
                     @error('lastname')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
@@ -42,7 +42,7 @@
 
                 <div class="col-span-full">
                     <label for="email" class="custom-label">Email : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="email" name="email" id="email" class="custom-input" placeholder="Saisir l'email" value="{{ $user->email }}" required>
+                    <input type="email" name="email" id="email" class="custom-input" placeholder="Saisir l'email" value="{{ old('email', $user->email) }}" required>
                     @error('email')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror

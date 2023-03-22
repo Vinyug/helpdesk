@@ -26,7 +26,7 @@
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
                 <div class="col-span-full">
                     <label for="service" class="custom-label">Nom du service : <span class="text-red-600 font-bold">*</span></label>
-                    <input type="text" name="service" id="service" class="custom-input" placeholder="Saisir le nom du service" value="{{ $listing->service }}" >
+                    <input type="text" name="service" id="service" class="custom-input" placeholder="Saisir le nom du service" value="{{ old('service', $listing->service) }}" >
                     @error('service')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
