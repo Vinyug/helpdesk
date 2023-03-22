@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Listing;
 use App\Models\Ticket;
 use App\Models\User;
@@ -57,13 +58,13 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        
         // data validation
         $request->validate([
             'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
+            'content' => 'required',
         ]);
-        
+
         // dd($request);
         // dd(Auth::user()->id);
 
@@ -76,11 +77,26 @@ class TicketController extends Controller
         // genererate uuid
         $uuid = Str::uuid()->toString();
 
-        // insert in DB
-        Ticket::create(array_merge($request->post(), compact('user_id', 'company_id', 'ticket_number', 'uuid')));
+        //------ INSERT --------
+        // DB tickets
+        $ticket = Ticket::create(array_merge([
+            'subject' => $request['subject'],
+            'service' => $request['service'],
+        ], 
+        compact('user_id', 'company_id', 'ticket_number', 'uuid')));
+
+        // DB comments
+        // ticket_id
+        $ticket_id = $ticket->id;
+
+        // insert
+        $comment = Comment::create(array_merge([
+            'content' => $request['content'],
+        ], 
+        compact('user_id', 'ticket_id')));
 
         // redirect with message
-        return redirect()->route('tickets.index')->with('success','Le ticket a été enregistré avec succès.');
+        return redirect()->route('tickets.show', $uuid)->with('success','Le ticket a été enregistré avec succès.');
     }
 
     /**
@@ -103,8 +119,8 @@ class TicketController extends Controller
     public function edit(Ticket $ticket)
     {
         $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
-
-        return view('tickets.edit',compact('ticket', 'services'));
+        $comment = Comment::where('ticket_id', '=', $ticket->id)->first();
+        return view('tickets.edit',compact('ticket', 'services', 'comment'));
     }
 
     /**
@@ -114,14 +130,29 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request, Ticket $ticket, Comment $comment)
     {
         $request->validate([
             'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
+            'content' => 'required',
         ]);
         
-        $ticket->fill($request->post())->save();
+        // $ticket->fill($request->post())->save();
+        
+        //------ UPDATE --------
+        // DB tickets
+        $ticket->fill([
+            'subject' => $request['subject'],
+            'service' => $request['service'],
+        ]);
+        $ticket->save();
+        
+        // DB comments
+        $comment->fill([
+            'content' => $request['content'],
+        ]);
+        $comment->save();
 
         return redirect()->route('tickets.index')->with('success','Le ticket a été mis à jour avec succès.');
     }

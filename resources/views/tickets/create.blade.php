@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="col-span-full">
-                    <label for="service" class="custom-label">Service : </label>
+                    <label for="service" class="custom-label">Service : <span class="text-red-600 font-bold">*</span></label>
                     <select class="custom-input" name="service" id="service">
                         <option value="">Choisir un service</option>
                         @foreach($services as $service)
@@ -40,6 +40,14 @@
                         @endforeach
                     </select>
                     @error('service')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-span-full">
+                    <label for="content" class="custom-label">Message : <span class="text-red-600 font-bold">*</span></label>
+                    <textarea class="custom-input h-80" name="content" id="content" placeholder="Saisir un message">{{ old('content') }}</textarea>
+                    @error('content')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
                 </div>
