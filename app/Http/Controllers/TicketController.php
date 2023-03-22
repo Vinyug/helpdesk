@@ -60,6 +60,7 @@ class TicketController extends Controller
         
         // data validation
         $request->validate([
+            'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
         ]);
         
@@ -116,6 +117,7 @@ class TicketController extends Controller
     public function update(Request $request, Ticket $ticket)
     {
         $request->validate([
+            'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
         ]);
         

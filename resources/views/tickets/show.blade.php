@@ -21,7 +21,8 @@
 
         <div class="flex flex-wrap">
             <div class="lg:w-full pr-4 pl-4 mt-5">
-                <p class="mb-2"><span class="font-bold">Sujet : </span>{{ $ticket->service }}</p>
+                <p class="mb-2"><span class="font-bold">Sujet : </span>{{ $ticket->subject }}</p>
+                <p class="mb-2"><span class="font-bold">Service : </span>{{ $ticket->service }}</p>
                 <p class="mb-2"><span class="font-bold">N° Ticket : </span>{{ $ticket->ticket_number }}</p>
                 <p class="mb-2"><span class="font-bold">Crée par : </span>{{ $ticket->user->firstname }} {{ $ticket->user->lastname }}</p>
                 <p class="mb-2"><span class="font-bold">État : </span>{{ $ticket->state }}</p>
@@ -39,6 +40,6 @@
         </div>
 
 
-        
+
     </div>
 @endsection

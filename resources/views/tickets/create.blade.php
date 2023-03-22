@@ -23,7 +23,15 @@
             @csrf
 
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
-                <div class="w-full">
+                <div class="col-span-full">
+                    <label for="subject" class="custom-label">Sujet : <span class="text-red-600 font-bold">*</span></label>
+                    <input type="text" name="subject" id="subject" class="custom-input" placeholder="Saisir le Sujet" value="{{ old('subject') }}" required>
+                    @error('subject')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-span-full">
                     <label for="service" class="custom-label">Service : </label>
                     <select class="custom-input" name="service" id="service">
                         <option value="">Choisir un service</option>

@@ -14,6 +14,7 @@ class Ticket extends Model
         'company_id',
         'time_id',
         'ticket_number', 
+        'subject', 
         'uuid',
         'state',
         'service', 
