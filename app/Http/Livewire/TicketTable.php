@@ -90,16 +90,14 @@ final class TicketTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('user_id')
-            ->addColumn('company_id')
+            ->addColumn('user_name', function (Ticket $ticket) {
+                return e($ticket->user->firstname . ' ' . $ticket->user->lastname);
+            })
+            ->addColumn('user_company', function (Ticket $ticket) {
+                return e($ticket->company->name);
+            })
             // ->addColumn('time_id')
             ->addColumn('ticket_number')
-
-           /** Example of custom column using a closure **/
-            ->addColumn('ticket_number_lower', function (Ticket $model) {
-                return strtolower(e($model->ticket_number));
-            })
-
             // ->addColumn('uuid')
             ->addColumn('state')
             ->addColumn('service')
@@ -129,11 +127,15 @@ final class TicketTable extends PowerGridComponent
             Column::make('ID', 'id')
                 ->makeInputRange(),
 
-            Column::make('USER ID', 'user_id')
-                ->makeInputRange(),
-
-            Column::make('COMPANY ID', 'company_id')
-                ->makeInputRange(),
+            Column::make(trans('Username'), 'user_name')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+         
+            Column::make(trans('Company'), 'user_company')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
 
             Column::make('TIME ID', 'time_id')
                 ->makeInputRange(),
