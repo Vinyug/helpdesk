@@ -67,7 +67,7 @@ class CompanyController extends Controller
             'siret' => 'digits:14|nullable',
             'code_ape' => 'max:5|nullable',
             'phone' => 'digits:10|nullable',
-            'email' => 'required|email|max:80',
+            'email' => 'required|unique:users,email|unique:companies,email|max:80',
         ]);
         
         // dd($request);
@@ -124,7 +124,7 @@ class CompanyController extends Controller
             'siret' => 'digits:14|nullable',
             'code_ape' => 'max:5|nullable',
             'phone' => 'digits:10|nullable',
-            'email' => 'required|email|max:80',
+            'email' => 'required|unique:users,email|unique:companies,email|max:80',
         ]);
         
         $company->fill($request->post())->save();
