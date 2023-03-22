@@ -98,7 +98,7 @@ final class TicketTable extends PowerGridComponent
             })
             // ->addColumn('time_id')
             ->addColumn('ticket_number')
-            ->addColumn('subject')
+            // ->addColumn('subject')
             // ->addColumn('uuid')
             ->addColumn('state')
             ->addColumn('service')
@@ -146,10 +146,10 @@ final class TicketTable extends PowerGridComponent
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make(trans('Subject'), 'subject')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
+            // Column::make(trans('Subject'), 'subject')
+            //     ->sortable()
+            //     ->searchable()
+            //     ->makeInputText(),
 
             // Column::make('UUID', 'uuid')
             //     ->sortable()
