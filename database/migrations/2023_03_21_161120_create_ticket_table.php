@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('company_id');
-            $table->foreignId('time_id')->nullable();
             $table->string('ticket_number')->unique();
             $table->string('uuid');
             $table->string('state')->default('En attente');
