@@ -166,10 +166,10 @@ final class TicketTable extends PowerGridComponent
                 ->sortable()
                 ->makeInputDatePicker(),
 
-            Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
-                ->searchable()
-                ->sortable()
-                ->makeInputDatePicker(),
+            // Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
+            //     ->searchable()
+            //     ->sortable()
+            //     ->makeInputDatePicker(),
 
         ]
 ;

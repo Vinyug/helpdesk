@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use App\Models\Ticket;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -69,8 +70,8 @@ class TicketController extends Controller
         $user_id = Auth::user()->id;
         // company_id
         $company_id = Auth::user()->company_id;
-        // generate ticket number 
-        $ticket_number = 'test'; 
+        // generate ticket number
+        $ticket_number = $this->generateTicketNumber();
         // genererate uuid
         $uuid = Str::uuid()->toString();
 
@@ -133,5 +134,23 @@ class TicketController extends Controller
     {
         $ticket->delete();
         return redirect()->route('tickets.index')->with('success','Le ticket a été supprimée avec succès');
+    }
+
+
+    
+    public function generateTicketNumber()
+    {
+        // user nesbot/carbon to know date of day
+        $date = Carbon::now();
+        // format into ddmmyy
+        $dateFormat = $date->format('dmy');
+        // count the number of tickets of the day
+        $dayTicket = Ticket::whereDate('created_at', $date)->count();
+        // and increment it
+        $dayTicket++;
+        // format ticket number on format - #ddmmyy/i
+        $ticket_number = "#{$dateFormat}/{$dayTicket}";
+        
+        return $ticket_number;
     }
 }
