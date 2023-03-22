@@ -79,7 +79,7 @@ class TicketController extends Controller
         Ticket::create(array_merge($request->post(), compact('user_id', 'company_id', 'ticket_number', 'uuid')));
 
         // redirect with message
-        return redirect()->route('tickets.index')->with('success','Le ticket a été enregistrée avec succès.');
+        return redirect()->route('tickets.index')->with('success','Le ticket a été enregistré avec succès.');
     }
 
     /**
@@ -133,11 +133,14 @@ class TicketController extends Controller
     public function destroy(Ticket $ticket)
     {
         $ticket->delete();
-        return redirect()->route('tickets.index')->with('success','Le ticket a été supprimée avec succès');
+        return redirect()->route('tickets.index')->with('success','Le ticket a été supprimé avec succès');
     }
 
 
-    
+    /**
+     * Custom method
+     *
+     */
     public function generateTicketNumber()
     {
         // user nesbot/carbon to know date of day

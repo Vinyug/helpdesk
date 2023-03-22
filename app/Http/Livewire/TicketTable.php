@@ -197,7 +197,7 @@ final class TicketTable extends PowerGridComponent
              Button::make('show', trans('Show'))
                  ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
                  ->target('')
-                 ->route('tickets.edit', ['ticket' => 'uuid']),
+                 ->route('tickets.show', ['ticket' => 'uuid']),
 
              Button::make('edit', trans('Edit'))
                  ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
