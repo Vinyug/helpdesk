@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\Listing\JobController;
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('companies', CompanyController::class);
     Route::resource('users', UserController::class);
     Route::resource('tickets', TicketController::class);
+    Route::resource('comments', CommentController::class);
     Route::resource('roles', RoleController::class);
 
     // Listing
