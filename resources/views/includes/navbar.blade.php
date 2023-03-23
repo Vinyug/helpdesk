@@ -10,7 +10,7 @@
 
             <!-- Navigation Links -->
             <div class="hidden order-1 sm:order-3 space-x-8 sm:-my-px sm:ml-auto sm:pl-10 sm:flex">
-                <x-nav-link :href="url('/')" :active="Request::url() == url('/')">
+                <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
                     {{ __('Accueil') }}
                 </x-nav-link>
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -121,7 +121,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="url('/')" :active="request()->routeIs('index')">
+            <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
                 {{ __('Accueil') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
