@@ -69,12 +69,19 @@
             <div class="flex flex-wrap justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
                 <div class="mx-2 mt-2">Par <span class="font-medium">Prénom NOM</span>, écrit le jj/mm/yyyy à hhHmm ou modifié le jj/mm/yyyy à hhHmm</div>
                 <div>
-                    {{-- @can('') --}}
-                    <a class="btn-blue text-sm my-1 sm:my-2" href="">Modifier</a>
-                    {{-- @endcan --}}
-                    {{-- @can('') --}}
-                    <a class="btn-red text-sm my-1 sm:my-2 mr-2" href="">Annuler</a>
-                    {{-- @endcan --}}
+                    @can('ticket-edit')
+                        <a class="btn-blue text-sm my-1 sm:my-2" href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier</a>
+                    @endcan
+                    
+                    @can('ticket-delete')
+                        <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="{{ route('tickets.destroy', $ticket->uuid) }}" method="Post">
+                            @csrf
+                            @method('DELETE')
+                            
+                            <button type="submit" >Annuler</button>
+                        </form>
+                    @endcan
+                    
                 </div>
             </div>
             <div class="p-4 rounded-b-sm">
