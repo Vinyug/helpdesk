@@ -5,7 +5,7 @@
         <div class="flex flex-wrap">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <div class="pull-left mb-2">
-                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">Liste des rôles</h2>
+                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">Information du rôle</h2>
                 </div>
                 <div class="pull-right my-3">
                     <a class="btn-blue" href="{{ route('roles.index') }}"> Retour</a>
