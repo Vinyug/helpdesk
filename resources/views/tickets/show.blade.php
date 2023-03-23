@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="container mb-16 mx-auto sm:px-4">
+    <div class="container mb-16 mx-auto px-4 text-sm sm:text-base">
         <div class="flex flex-wrap">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <div class="pull-left mb-2">
@@ -41,8 +41,8 @@
         </div>
 
 
-        {{-- Comment --}}
-        <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm">
+        {{-- CREATE COMMENT --}}
+        <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
             <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
             <form class="p-4 rounded-b-sm" action="" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -62,5 +62,32 @@
             </form>
         </div>
 
+
+        {{-- READ COMMENTS --}}
+        {{-- @foreach ($tickets as $ticket) --}}
+        <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
+            <div class="flex flex-wrap justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
+                <div class="mx-2 mt-2">Par <span class="font-medium">Prénom NOM</span>, écrit le jj/mm/yyyy à hhHmm ou modifié le jj/mm/yyyy à hhHmm</div>
+                <div>
+                    {{-- @can('') --}}
+                    <a class="btn-blue text-sm my-1 sm:my-2" href="">Modifier</a>
+                    {{-- @endcan --}}
+                    {{-- @can('') --}}
+                    <a class="btn-red text-sm my-1 sm:my-2 mr-2" href="">Annuler</a>
+                    {{-- @endcan --}}
+                </div>
+            </div>
+            <div class="p-4 rounded-b-sm">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur vel deleniti voluptas voluptatibus autem id obcaecati assumenda sapiente voluptate animi consectetur reprehenderit sit quos labore iure, dolorum asperiores libero! Ipsa culpa sequi voluptatibus magni atque quo eveniet soluta repellat placeat maxime, recusandae itaque quasi dolorum, corporis perspiciatis vel voluptas nostrum quia veniam deserunt natus? Temporibus debitis ratione distinctio eum quidem, cupiditate impedit iure fugiat officia voluptatem tenetur. Dignissimos, aliquid. Cupiditate, praesentium? Ipsa laboriosam ducimus velit labore id, architecto nemo voluptas accusamus provident quibusdam aperiam, et inventore dolorum esse numquam animi dolor at!</p> 
+                <div class="flex flex-wrap mt-2">
+                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">
+                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">
+                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">
+                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">
+                </div>
+            </div>
+        </div>
+        {{-- @endforeach --}}
+        
     </div>
 @endsection
