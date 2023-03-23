@@ -49,7 +49,7 @@ class StateController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'state' => 'required|max:50',
+            'state' => 'required|max:50|unique:listings,state',
         ]);
     
         Listing::create(['state' => $request->input('state')]);
@@ -92,7 +92,7 @@ class StateController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'state' => 'required|max:50',
+            'state' => 'required|max:50|unique:listings,state',
         ]);
     
         $listing = Listing::findOrFail($id);
