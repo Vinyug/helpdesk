@@ -63,25 +63,25 @@
 
                     @can('ticket-list')
                     <x-dropleft-link :href="route('tickets.index')">
-                        {{ __('Liste des tickets') }}
+                        {{ __('Tickets') }}
                     </x-dropleft-link>
                     @endcan
 
                     @can('user-list')
                     <x-dropleft-link :href="route('users.index')">
-                        {{ __('Liste des utilisateurs') }}
+                        {{ __('Utilisateurs') }}
                     </x-dropleft-link>
                     @endcan
                     
                     @can('company-list')
                     <x-dropleft-link :href="route('companies.index')">
-                        {{ __('Liste des entreprises') }}
+                        {{ __('Entreprises') }}
                     </x-dropleft-link>
                     @endcan
 
                     @can('role-list')
                     <x-dropleft-link :href="route('roles.index')">
-                        {{ __('Roles') }}
+                        {{ __('Rôles') }}
                     </x-dropleft-link>
                     @endcan
 
@@ -167,19 +167,19 @@
                 
                 @can('ticket-list')
                 <x-responsive-nav-link :href="route('tickets.index')">
-                    {{ __('Listes des tickets') }}
+                    {{ __('Tickets') }}
                 </x-responsive-nav-link>
                 @endcan
 
                 @can('user-list')
                 <x-responsive-nav-link :href="route('users.index')">
-                    {{ __('Listes des utilisateurs') }}
+                    {{ __('Utilisateurs') }}
                 </x-responsive-nav-link>
                 @endcan
 
                 @can('company-list')
                 <x-responsive-nav-link :href="route('companies.index')">
-                    {{ __('Listes des entreprises') }}
+                    {{ __('Entreprises') }}
                 </x-responsive-nav-link>
                 @endcan
 
