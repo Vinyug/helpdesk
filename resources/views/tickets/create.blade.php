@@ -52,6 +52,8 @@
                     @enderror
                 </div>
 
+                <input class="custom-input-file" type="file" name="file" id="file" multiple>
+
                 <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>
 
                 <div class="col-span-full">
