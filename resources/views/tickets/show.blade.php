@@ -19,7 +19,8 @@
         </div>
         @endif
 
-        <div class="flex flex-wrap">
+        {{-- Header --}}
+        <div class="flex flex-wrap mb-12">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <p class="mb-2"><span class="font-bold">Sujet : </span>{{ $ticket->subject }}</p>
                 <p class="mb-2"><span class="font-bold">Service : </span>{{ $ticket->service }}</p>
@@ -40,6 +41,26 @@
         </div>
 
 
+        {{-- Comment --}}
+        <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm">
+            <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
+            <form class="p-4 rounded-b-sm" action="" method="POST" enctype="multipart/form-data">
+                @csrf
+    
+                <div class="col-span-full mb-4">
+                    <textarea class="custom-input h-20" name="content" id="content" placeholder="Saisir un message">{{ old('content') }}</textarea>
+                    @error('content')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <input type="file" name="file" id="file" class="custom-input-file" multiple>
+    
+                <div class="col-span-full">
+                    <button type="submit" class="btn-comment-orange">Envoyer</button>
+                </div>
+            </form>
+        </div>
 
     </div>
 @endsection

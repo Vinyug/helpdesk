@@ -28,6 +28,8 @@ class Company extends Model
         return 'uuid';
     }
 
+
+    // RELATIONSHIP 
     public function users()
     {
         return $this->hasMany(User::class);
@@ -37,4 +39,18 @@ class Company extends Model
     {
         return $this->hasMany(Ticket::class);
     }
+
+
+    // MUTATOR - ACCESSOR
+    /**
+     * Set the name attribute and capitalize the first letter.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucfirst($value);
+    }
+
 }
