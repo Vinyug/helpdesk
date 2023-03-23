@@ -43,14 +43,47 @@ class Company extends Model
 
     // MUTATOR - ACCESSOR
     /**
-     * Set the name attribute and capitalize the first letter.
+     * Interact with the company.
      *
-     * @param  string  $value
-     * @return void
+     * @return  \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function setNameAttribute($value)
+    protected function setNameAttribute($value)
     {
-        $this->attributes['name'] = ucfirst($value);
+        $this->attributes['name'] = ucfirst(strtolower($value));
     }
 
+    protected function getNameAttribute($value)
+    {
+        return ucfirst(strtolower($this->attributes['name']));
+    }
+
+    protected function setCityAttribute($value)
+    {
+        $this->attributes['city'] = strtoupper($value);
+    }
+
+    protected function getCityAttribute($value)
+    {
+        return strtoupper($this->attributes['city']);
+    }
+
+    protected function setCodeApeAttribute($value)
+    {
+        $this->attributes['code_ape'] = strtoupper($value);
+    }
+
+    protected function getCodeApeAttribute($value)
+    {
+        return strtoupper($this->attributes['code_ape']);
+    }
+
+    protected function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
+
+    protected function getEmailAttribute($value)
+    {
+        return strtolower($this->attributes['email']);
+    }
 }
