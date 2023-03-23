@@ -63,11 +63,16 @@
         </div>
 
 
-        {{-- READ COMMENTS --}}
-        {{-- @foreach ($tickets as $ticket) --}}
+        {{-- COMMENTS --}}
+        <h3 class="border-t border-b  mt-12 mb-8 py-4 border-custom-blue text-2xl">Fil de discussion</h3>
+
+        @foreach ($comments as $comment)
         <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
             <div class="flex flex-wrap justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
-                <div class="mx-2 mt-2">Par <span class="font-medium">Prénom NOM</span>, écrit le jj/mm/yyyy à hhHmm ou modifié le jj/mm/yyyy à hhHmm</div>
+                <div class="mx-2 mt-2">
+                    Par <span class="font-medium">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
+                </div>
+                
                 <div>
                     @can('ticket-edit')
                         <a class="btn-blue text-sm my-1 sm:my-2" href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier</a>
@@ -81,20 +86,18 @@
                             <button type="submit" >Annuler</button>
                         </form>
                     @endcan
-                    
                 </div>
             </div>
             <div class="p-4 rounded-b-sm">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur vel deleniti voluptas voluptatibus autem id obcaecati assumenda sapiente voluptate animi consectetur reprehenderit sit quos labore iure, dolorum asperiores libero! Ipsa culpa sequi voluptatibus magni atque quo eveniet soluta repellat placeat maxime, recusandae itaque quasi dolorum, corporis perspiciatis vel voluptas nostrum quia veniam deserunt natus? Temporibus debitis ratione distinctio eum quidem, cupiditate impedit iure fugiat officia voluptatem tenetur. Dignissimos, aliquid. Cupiditate, praesentium? Ipsa laboriosam ducimus velit labore id, architecto nemo voluptas accusamus provident quibusdam aperiam, et inventore dolorum esse numquam animi dolor at!</p> 
+                <p>{{ $comment->content }}</p> 
                 <div class="flex flex-wrap mt-2">
-                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">
-                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">
-                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">
-                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">
+                    {{-- @foreach ($collection as $item) --}}
+                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">  
+                    {{-- @endforeach --}}
                 </div>
             </div>
         </div>
-        {{-- @endforeach --}}
+        @endforeach
         
     </div>
 @endsection

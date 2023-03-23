@@ -107,7 +107,10 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        return view('tickets.show',compact('ticket'));
+        // get all comments of ticket
+        $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
+        
+        return view('tickets.show',compact('ticket', 'comments'));
     }
 
     /**
