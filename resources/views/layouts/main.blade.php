@@ -24,7 +24,7 @@
         
         @include('includes.navbar')
         
-        @if(Request::url() == url('/'))
+        @if(request()->routeIs('index'))
         @include('includes.jumbotron')
         @endif
         

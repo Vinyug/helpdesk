@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="container mb-16 mx-auto sm:px-4">
+    <div class="container mb-16 mx-auto px-4 text-sm sm:text-base">
         <div class="flex flex-wrap">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <div class="pull-left mb-2">
@@ -19,7 +19,14 @@
         </div>
         @endif
 
-        <div class="flex flex-wrap">
+        @if ($message = Session::get('success'))
+            <div class="custom-status">
+                <p>{{ $message }}</p>
+            </div>
+        @endif
+
+        {{-- Header --}}
+        <div class="flex flex-wrap mb-12">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <p class="mb-2"><span class="font-bold">Sujet : </span>{{ $ticket->subject }}</p>
                 <p class="mb-2"><span class="font-bold">Service : </span>{{ $ticket->service }}</p>
@@ -27,7 +34,8 @@
                 <p class="mb-2"><span class="font-bold">Crée par : </span>{{ $ticket->user->firstname }} {{ $ticket->user->lastname }}</p>
                 <p class="mb-2"><span class="font-bold">État : </span>{{ $ticket->state }}</p>
                 <div>
-                    <div class="group inline relative mb-2">
+                    <div class="gro
+                    up inline relative mb-2">
                         <span class="font-bold cursor-help hover:text-custom-blue mb-2">Visibilité : </span>
                         <div class="hidden w-[220px] sm:w-[360px] group-hover:block bg-slate-50 transition-opacity p-2 text-sm italic rounded-sm border border-gray-300 absolute mb-4">
                             <p><span class="font-bold">Publique : </span>visible par tous les membres de l'entreprise.</p>
@@ -40,6 +48,63 @@
         </div>
 
 
+        {{-- CREATE COMMENT --}}
+        <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
+            <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
+            <form class="p-4 rounded-b-sm" action="" method="POST" enctype="multipart/form-data">
+                @csrf
+    
+                <div class="col-span-full mb-4">
+                    <textarea class="custom-input h-20" name="content" id="content" placeholder="Saisir un message">{{ old('content') }}</textarea>
+                    @error('content')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
 
+                <input type="file" name="file" id="file" class="custom-input-file" multiple>
+    
+                <div class="col-span-full">
+                    <button type="submit" class="btn-comment-orange">Envoyer</button>
+                </div>
+            </form>
+        </div>
+
+
+        {{-- COMMENTS --}}
+        <h3 class="border-t border-b  mt-12 mb-8 py-4 border-custom-blue text-2xl">Fil de discussion</h3>
+
+        @foreach ($comments as $comment)
+        <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
+            <div class="flex flex-wrap justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
+                <div class="mx-2 mt-2">
+                    Par <span class="font-medium">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
+                </div>
+                
+                <div>
+                    @can('ticket-edit')
+                        <a class="btn-blue text-sm my-1 sm:my-2" href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier</a>
+                    @endcan
+                    
+                    @can('ticket-delete')
+                        <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="{{ route('tickets.destroy', $ticket->uuid) }}" method="Post">
+                            @csrf
+                            @method('DELETE')
+                            
+                            <button type="submit" >Annuler</button>
+                        </form>
+                    @endcan
+                </div>
+            </div>
+            <div class="p-4 rounded-b-sm">
+                <p>{{ $comment->content }}</p> 
+                <div class="flex flex-wrap mt-2">
+                    {{-- @foreach ($collection as $item) --}}
+                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">  
+                    {{-- @endforeach --}}
+                </div>
+            </div>
+        </div>
+        @endforeach
+        
     </div>
 @endsection

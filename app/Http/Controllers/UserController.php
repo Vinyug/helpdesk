@@ -80,7 +80,7 @@ class UserController extends Controller
         $user->assignRole($request->input('roles'));
     
         return redirect()->route('users.index')
-                        ->with('success','L\'utilisateur est crée.');
+                        ->with('success','L\'utilisateur est créé.');
     }
     
     /**

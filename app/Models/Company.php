@@ -28,6 +28,8 @@ class Company extends Model
         return 'uuid';
     }
 
+
+    // RELATIONSHIP 
     public function users()
     {
         return $this->hasMany(User::class);
@@ -36,5 +38,52 @@ class Company extends Model
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
+    }
+
+
+    // MUTATOR - ACCESSOR
+    /**
+     * Interact with the company.
+     *
+     * @return  \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucfirst(strtolower($value));
+    }
+
+    protected function getNameAttribute($value)
+    {
+        return ucfirst(strtolower($this->attributes['name']));
+    }
+
+    protected function setCityAttribute($value)
+    {
+        $this->attributes['city'] = strtoupper($value);
+    }
+
+    protected function getCityAttribute($value)
+    {
+        return strtoupper($this->attributes['city']);
+    }
+
+    protected function setCodeApeAttribute($value)
+    {
+        $this->attributes['code_ape'] = strtoupper($value);
+    }
+
+    protected function getCodeApeAttribute($value)
+    {
+        return strtoupper($this->attributes['code_ape']);
+    }
+
+    protected function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
+
+    protected function getEmailAttribute($value)
+    {
+        return strtolower($this->attributes['email']);
     }
 }
