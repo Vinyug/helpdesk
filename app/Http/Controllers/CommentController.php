@@ -67,7 +67,6 @@ class CommentController extends Controller
 
         // redirect with message
         return redirect()->back()->with('success','Le commentaire a été enregistré avec succès.');
-
     }
 
     /**
@@ -99,9 +98,21 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comment $comment)
     {
-        //
+        // data validation
+        $request->validate([
+            'content' => 'required',
+        ]);
+
+        // update in DB
+        $comment->fill([
+            'content' => $request['content'],
+        ]);
+        $comment->update();
+
+        // redirect with message
+        return redirect()->back()->with('success','Le commentaire a été modifié avec succès.');
     }
 
     /**

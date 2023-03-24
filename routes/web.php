@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('tickets', TicketController::class);
     
     // Comment
+    Route::patch('/tickets/comment/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::post('/tickets/{ticket}/comment', [CommentController::class, 'store'])->name('comments.store');
     
     // Company

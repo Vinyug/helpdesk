@@ -72,17 +72,19 @@
         {{-- COMMENTS --}}
         <h3 class="border-t-[2px] border-b-[2px] mt-12 mb-8 p-4 border-custom-blue text-2xl">Fil de discussion</h3>
 
+
         @foreach ($comments as $comment)
-        <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
+        <div x-data="{ editComment: false }" class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
+            {{-- HEAD COMMENT --}}
             <div class="flex flex-wrap justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
                 <div class="mx-2 mt-2">
                     Par <span class="font-medium">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
                 </div>
                 
-                @if ($loop->first)
+                @if ($loop->first && $comment->user_id == Auth::id())
                 <div>
                     {{-- @can('comment-edit') --}}
-                        <a class="btn-blue text-sm my-1 sm:my-2" href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier</a>
+                        <a @click="editComment = !editComment" x-text="editComment ? 'Restituer' : 'Modifier'" x-bind:class="{ 'btn-blue': !editComment, 'btn-dark-blue': editComment }" class="btn-blue text-sm my-1 sm:my-2 cursor-pointer"></a>
                     {{-- @endcan --}}
                     
                     {{-- @can('comment-delete') --}}
@@ -96,16 +98,50 @@
                 </div>
                 @endif
             </div>
+
+            {{-- BODY COMMENT --}}
             <div class="p-4 rounded-b-sm">
-                <p>{!! nl2br(e($comment->content)) !!}</p> 
-                <div class="flex flex-wrap mt-2">
-                    {{-- @foreach ($collection as $item) --}}
-                    <img class="m-1" src="http://via.placeholder.com/100x100" alt="">  
-                    {{-- @endforeach --}}
+                {{-- TOGGLE editComment FALSE --}}
+                <div x-show="!editComment" class="p-4 rounded-b-sm">
+                    <p>{!! nl2br(e($comment->content)) !!}</p> 
+                    <div class="flex flex-wrap mt-2">
+                        {{-- @foreach ($collection as $item) --}}
+                        <img class="m-1" src="http://via.placeholder.com/100x100" alt="">  
+                        {{-- @endforeach --}}
+                    </div>
                 </div>
+                
+                {{-- TOGGLE editComment TRUE --}}
+                <form x-show="editComment" class="mb-2" action="{{ route('comments.update', $comment->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PATCH')
+
+                    <textarea class="custom-input h-20 mb-2" name="content" id="content" placeholder="Saisir un message">{{ old('content', $comment->content) }}</textarea>
+                    @error('content')
+                        <div class="custom-error">{{ $message }}</div>
+                    @enderror
+
+                    <input type="file" name="file" id="file" class="custom-input-file" multiple>
+
+                    <button type="submit" class="btn-comment-orange">Modifier</button>
+                </form>
             </div>
         </div>
         @endforeach
+
+
+
+
+
+
+
+        {{-- <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('ticket', () => ({
+                    editComment: false,
+                }));
+            });
+        </script> --}}
         
     </div>
 @endsection

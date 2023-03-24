@@ -40,6 +40,9 @@
     .btn-red {
         @apply inline-block ml-4 py-1 px-6 align-middle text-center font-medium rounded-sm text-white bg-red-500 hover:bg-red-600 hover:shadow-gray-400 hover:shadow-md transition duration-150 ease-in-out;   
     }
+    .btn-dark-blue {
+        @apply inline-block ml-4 py-1 px-6 align-middle text-center font-medium rounded-sm text-white bg-custom-dark-blue hover:bg-indigo-800 hover:shadow-gray-400 hover:shadow-md transition duration-150 ease-in-out;   
+    }
     .link-blue {
         @apply inline-block ml-4 py-1 align-middle text-center font-medium text-custom-blue hover:underline transition duration-150 ease-in-out;   
     }
