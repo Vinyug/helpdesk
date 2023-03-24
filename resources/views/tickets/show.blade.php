@@ -79,20 +79,22 @@
                     Par <span class="font-medium">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
                 </div>
                 
+                @if ($loop->first)
                 <div>
-                    @can('ticket-edit')
+                    {{-- @can('comment-edit') --}}
                         <a class="btn-blue text-sm my-1 sm:my-2" href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier</a>
-                    @endcan
+                    {{-- @endcan --}}
                     
-                    @can('ticket-delete')
-                        <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="{{ route('tickets.destroy', $ticket->uuid) }}" method="Post">
+                    {{-- @can('comment-delete') --}}
+                        <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="" method="Post">
                             @csrf
                             @method('DELETE')
                             
                             <button type="submit" >Annuler</button>
                         </form>
-                    @endcan
+                    {{-- @endcan --}}
                 </div>
+                @endif
             </div>
             <div class="p-4 rounded-b-sm">
                 <p>{!! nl2br(e($comment->content)) !!}</p> 
