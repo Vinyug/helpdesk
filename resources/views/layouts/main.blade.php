@@ -16,10 +16,10 @@
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
         @livewireStyles
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-</head>
+    </head>
 
-<body class="overflow-x-hidden text-custom-dark flex flex-col min-h-screen antialiased" x-data="{ isOpen: false }" class="relative antialiased min-h-screen lg:flex" @keydown.escape.window="isOpen = false">
-        
+    <body class="overflow-x-hidden text-custom-dark flex flex-col min-h-screen antialiased" x-data="{ isOpen: false }" class="relative antialiased min-h-screen lg:flex" @keydown.escape.window="isOpen = false">
+            
         @include('includes.header')
         
         @include('includes.navbar')
@@ -37,5 +37,5 @@
         @livewireScripts
         <script src="{{ asset('assets/js/script.js') }}"></script>
     </body>
-    </html>
+</html>
     
