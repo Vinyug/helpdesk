@@ -27,6 +27,7 @@
 
         {{-- Header --}}
         <div class="flex flex-wrap mb-12">
+            test
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <p class="mb-2"><span class="font-bold">Sujet : </span>{{ $ticket->subject }}</p>
                 <p class="mb-2"><span class="font-bold">Service : </span>{{ $ticket->service }}</p>
