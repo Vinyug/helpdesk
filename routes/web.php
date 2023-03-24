@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     
     // Comment
     Route::patch('/tickets/comment/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/tickets/comment/{comment}/delete', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('/tickets/{ticket}/comment', [CommentController::class, 'store'])->name('comments.store');
     
     // Company

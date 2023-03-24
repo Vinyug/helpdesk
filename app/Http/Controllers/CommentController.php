@@ -112,17 +112,17 @@ class CommentController extends Controller
         $comment->update();
 
         // redirect with message
-        return redirect()->back()->with('success','Le commentaire a été modifié avec succès.');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
+        return redirect()->back()->with('success','Le commentaire a été supprimé avec succès.');
     }
 }

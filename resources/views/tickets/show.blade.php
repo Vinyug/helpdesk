@@ -88,7 +88,7 @@
                     {{-- @endcan --}}
                     
                     {{-- @can('comment-delete') --}}
-                        <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="" method="Post">
+                        <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="{{ route('comments.destroy', $comment->id) }}" method="Post">
                             @csrf
                             @method('DELETE')
                             
