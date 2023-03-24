@@ -96,7 +96,7 @@
                 </div>
             </div>
             <div class="p-4 rounded-b-sm">
-                <p>{{ $comment->content }}</p> 
+                <p>{!! nl2br(e($comment->content)) !!}</p> 
                 <div class="flex flex-wrap mt-2">
                     {{-- @foreach ($collection as $item) --}}
                     <img class="m-1" src="http://via.placeholder.com/100x100" alt="">  

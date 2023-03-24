@@ -15,6 +15,8 @@ class Comment extends Model
         'content', 
     ];
 
+
+    // RELATIONSHIP
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -24,4 +26,5 @@ class Comment extends Model
     {
         return $this->belongsTo(Ticket::class);
     }
+
 }

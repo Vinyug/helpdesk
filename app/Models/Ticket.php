@@ -27,6 +27,8 @@ class Ticket extends Model
         return 'uuid';
     }
 
+
+    // RELATIONSHIP
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -40,5 +42,22 @@ class Ticket extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+
+    // MUTATOR - ACCESSOR
+    /**
+     * Interact with the ticket.
+     *
+     * @return  \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function setSubjectAttribute($value)
+    {
+        $this->attributes['subject'] = ucfirst(strtolower($value));
+    }
+
+    protected function getSubjectAttribute($value)
+    {
+        return ucfirst(strtolower($this->attributes['subject']));
     }
 }

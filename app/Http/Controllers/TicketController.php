@@ -141,8 +141,6 @@ class TicketController extends Controller
             'content' => 'required',
         ]);
         
-        // $ticket->fill($request->post())->save();
-        
         //------ UPDATE --------
         // DB tickets
         $ticket->fill([
