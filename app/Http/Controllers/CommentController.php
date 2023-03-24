@@ -112,6 +112,7 @@ class CommentController extends Controller
         $comment->update();
 
         // redirect with message
+        return redirect()->back()->with('success','Le commentaire a été modifié avec succès.');
     }
     
     /**
