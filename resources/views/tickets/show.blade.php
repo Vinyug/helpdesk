@@ -129,19 +129,5 @@
         </div>
         @endforeach
 
-
-
-
-
-
-
-        {{-- <script>
-            document.addEventListener('alpine:init', () => {
-                Alpine.data('ticket', () => ({
-                    editComment: false,
-                }));
-            });
-        </script> --}}
-        
     </div>
 @endsection
