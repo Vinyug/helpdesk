@@ -38,12 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
     Route::resource('companies', CompanyController::class);
     Route::resource('users', UserController::class);
     Route::resource('tickets', TicketController::class);
-    Route::resource('comments', CommentController::class);
     Route::resource('roles', RoleController::class);
+    Route::post('comment/{ticket}', [CommentController::class, 'store'])->name('comments.store');
 
     // Listing
     Route::resource('jobs', JobController::class);

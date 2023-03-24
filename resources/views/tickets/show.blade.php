@@ -19,6 +19,12 @@
         </div>
         @endif
 
+        @if ($message = Session::get('success'))
+            <div class="custom-status">
+                <p>{{ $message }}</p>
+            </div>
+        @endif
+
         {{-- Header --}}
         <div class="flex flex-wrap mb-12">
             <div class="lg:w-full pr-4 pl-4 mt-5">
