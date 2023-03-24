@@ -60,7 +60,7 @@ class CommentController extends Controller
         // user_id
         $user_id = Auth::user()->id;
         // ticket_id
-        // $ticket_id = ;
+        $ticket_id = $ticket->id;
 
         // insert in DB
         Comment::create(array_merge($request->post(), compact('user_id', 'ticket_id')));

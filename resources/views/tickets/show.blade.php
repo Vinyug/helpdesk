@@ -34,8 +34,7 @@
                 <p class="mb-2"><span class="font-bold">Crée par : </span>{{ $ticket->user->firstname }} {{ $ticket->user->lastname }}</p>
                 <p class="mb-2"><span class="font-bold">État : </span>{{ $ticket->state }}</p>
                 <div>
-                    <div class="gro
-                    up inline relative mb-2">
+                    <div class="group inline relative mb-2">
                         <span class="font-bold cursor-help hover:text-custom-blue mb-2">Visibilité : </span>
                         <div class="hidden w-[220px] sm:w-[360px] group-hover:block bg-slate-50 transition-opacity p-2 text-sm italic rounded-sm border border-gray-300 absolute mb-4">
                             <p><span class="font-bold">Publique : </span>visible par tous les membres de l'entreprise.</p>
@@ -51,7 +50,7 @@
         {{-- CREATE COMMENT --}}
         <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
             <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
-            <form class="p-4 rounded-b-sm" action="" method="POST" enctype="multipart/form-data">
+            <form class="p-4 rounded-b-sm" action="{{ route('comments.store', $ticket->uuid) }}" method="POST" enctype="multipart/form-data">
                 @csrf
     
                 <div class="col-span-full mb-4">
@@ -71,7 +70,7 @@
 
 
         {{-- COMMENTS --}}
-        <h3 class="border-t border-b  mt-12 mb-8 py-4 border-custom-blue text-2xl">Fil de discussion</h3>
+        <h3 class="border-t-[2px] border-b-[2px] mt-12 mb-8 p-4 border-custom-blue text-2xl">Fil de discussion</h3>
 
         @foreach ($comments as $comment)
         <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
