@@ -14,6 +14,13 @@
                 </div>
             </div>
         </div>
+
+        @if($message = Session::get('status'))
+        <div class="custom-status-error">
+            {{ $message }}
+        </div>
+        @endif
+
         @if ($message = Session::get('success'))
             <div class="custom-status">
                 <p>{{ $message }}</p>

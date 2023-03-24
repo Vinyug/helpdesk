@@ -121,9 +121,15 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
-        $comment = Comment::where('ticket_id', '=', $ticket->id)->first();
-        return view('tickets.edit',compact('ticket', 'services', 'comment'));
+        // add super admin and admin company
+        if (Auth()->user()->id == $ticket->user_id) {
+            $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
+            $comment = Comment::where('ticket_id', '=', $ticket->id)->first();
+            
+            return view('tickets.edit',compact('ticket', 'services', 'comment'));
+        }
+        
+        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
     }
 
     /**
@@ -147,15 +153,16 @@ class TicketController extends Controller
             'subject' => $request['subject'],
             'service' => $request['service'],
         ]);
-        $ticket->save();
+        $ticket->update();
         
         // DB comments
         $comment->fill([
             'content' => $request['content'],
         ]);
-        $comment->save();
+        $comment->update();
 
         return redirect()->route('tickets.index')->with('success','Le ticket a été mis à jour avec succès.');
+ 
     }
 
     /**

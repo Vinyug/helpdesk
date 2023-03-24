@@ -10,6 +10,9 @@
     .custom-status {
         @apply relative p-2 mt-1 mb-4 border rounded-sm bg-green-200 border-green-300 text-green-800 ;
     }
+    .custom-status-error {
+        @apply relative p-2 mt-1 mb-4 border rounded-sm bg-red-200 border-red-300 text-red-800 ;
+    }
     .custom-label {
         @apply block mb-2 font-bold;
     }

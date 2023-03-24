@@ -13,9 +13,9 @@
             </div>
         </div>
 
-        @if(session('status'))
-        <div class="custom-status">
-            {{ session('status') }}
+        @if($message = Session::get('status'))
+        <div class="custom-status-error">
+            {{ $message }}
         </div>
         @endif
 
