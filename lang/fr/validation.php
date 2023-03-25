@@ -149,7 +149,7 @@ return [
         'birthday'                 => 'anniversaire',
         'body'                     => 'corps',
         'city'                     => 'ville',
-        'content'                  => 'contenu',
+        'content'                  => 'message',
         'country'                  => 'pays',
         'created_at'               => 'créé à',
         'creator'                  => 'créateur',

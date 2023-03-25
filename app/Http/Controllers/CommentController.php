@@ -53,7 +53,7 @@ class CommentController extends Controller
     {
         // data validation
         $request->validate([
-            'content' => 'required',
+            'content' => 'required|max:2000',
         ]);
 
         // dd($request);
@@ -102,7 +102,7 @@ class CommentController extends Controller
     {
         // data validation
         $request->validate([
-            'content' => 'required',
+            'content' => 'required|max:2000',
         ]);
 
         // update in DB

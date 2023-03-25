@@ -52,12 +52,16 @@
             <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
             <form class="p-4 rounded-b-sm" action="{{ route('comments.store', $ticket->uuid) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                {{-- hidden input to verify if store is called --}}
+                <input type="hidden" name="form" value="store">
     
                 <div class="col-span-full mb-4">
                     <textarea class="custom-input h-20" name="content" id="content" placeholder="Saisir un message">{{ old('content') }}</textarea>
-                    @error('content')
-                    <div class="custom-error">{{ $message }}</div>
-                    @enderror
+                    @if(old('form') == 'store')
+                        @error('content')
+                            <div class="custom-error">{{ $message }}</div>
+                        @enderror
+                    @endif
                 </div>
 
                 <input type="file" name="file" id="file" class="custom-input-file" multiple>
@@ -74,7 +78,19 @@
 
 
         @foreach ($comments as $comment)
-        <div x-data="{ editComment: false }" class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
+        <div 
+            {{-- if comments.update has error on content, toggle to see textarea --}}
+            x-data="
+            @if ($loop->first && old('form') == 'update')
+            { editComment: 
+                @if ($errors->has('content')) true 
+                @else false 
+                @endif } 
+            @else
+            { editComment: false}
+            @endif"
+
+            class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
             {{-- HEAD COMMENT --}}
             <div class="flex flex-wrap justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
                 <div class="mx-2 mt-2">
@@ -110,16 +126,21 @@
                         {{-- @endforeach --}}
                     </div>
                 </div>
-                
+
                 {{-- TOGGLE editComment TRUE --}}
                 <form x-show="editComment" class="mb-2" action="{{ route('comments.update', $comment->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
 
-                    <textarea class="custom-input border-custom-blue shadow-gray-400 shadow-sm h-20 mb-2" name="content" id="content" placeholder="Saisir un message">{{ old('content', $comment->content) }}</textarea>
-                    @error('content')
-                        <div class="custom-error">{{ $message }}</div>
-                    @enderror
+                    {{-- hidden input to verify if update is called --}}
+                    <input type="hidden" name="form" value="update">
+
+                    <textarea class="custom-input border-custom-blue shadow-gray-400 shadow-sm h-20 mb-2" name="content" id="content" placeholder="Saisir un message">@if(empty(old('content'))){{ $comment->content }}@else{{ old('content', $comment->content) }}@endif</textarea>
+                    @if(old('form') == 'update')
+                        @error('content')
+                            <div class="custom-error">{{ $message }}</div>
+                        @enderror
+                    @endif
 
                     <input type="file" name="file" id="file" class="custom-input-file" multiple>
 
