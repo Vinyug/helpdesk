@@ -102,7 +102,7 @@
             {{-- BODY COMMENT --}}
             <div class="p-4 rounded-b-sm">
                 {{-- TOGGLE editComment FALSE --}}
-                <div x-show="!editComment" class="p-4 rounded-b-sm">
+                <div x-show="!editComment" class="py-[9px] px-[13px] rounded-b-sm">
                     <p>{!! nl2br(e($comment->content)) !!}</p> 
                     <div class="flex flex-wrap mt-2">
                         {{-- @foreach ($collection as $item) --}}
@@ -116,7 +116,7 @@
                     @csrf
                     @method('PATCH')
 
-                    <textarea class="custom-input h-20 mb-2" name="content" id="content" placeholder="Saisir un message">{{ old('content', $comment->content) }}</textarea>
+                    <textarea class="custom-input border-custom-blue shadow-gray-400 shadow-sm h-20 mb-2" name="content" id="content" placeholder="Saisir un message">{{ old('content', $comment->content) }}</textarea>
                     @error('content')
                         <div class="custom-error">{{ $message }}</div>
                     @enderror
