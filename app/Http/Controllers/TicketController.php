@@ -133,15 +133,15 @@ class TicketController extends Controller
                     $name = str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'_'.$i.'.'.$ext;
                     $i++;
 
-                    // upload each file in folder named by ticket number
-                    $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number), $name);
+                    // upload each file in folder named by ticket number and comment id
+                    $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id, $name);
 
                     // resize thumbnail
                     $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function($constraint){
                         $constraint->upsize();
                     })->encode($ext, 50); //reduce sizing by 50%
                     // thumbnail path
-                    $thumbnailPath = 'files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/thumbnail/thumb_'.$name;
+                    $thumbnailPath = 'files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id.'/thumbnail/thumb_'.$name;
                     // stock file. first parameter : where ; second parameter : what
                     Storage::put($thumbnailPath, $thumbnailFile);
 
@@ -176,13 +176,8 @@ class TicketController extends Controller
     {
         // get all comments of ticket
         $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
-        // get all files of comment
-        $files = Upload::join('comments', 'uploads.comment_id', '=', 'comments.id')
-            ->join('tickets', 'comments.ticket_id', '=', 'tickets.id')
-            ->where('tickets.id', '=', $ticket->id)
-            ->get();
-        
-        return view('tickets.show',compact('ticket', 'comments', 'files'));
+
+        return view('tickets.show',compact('ticket', 'comments'));
     }
 
     /**

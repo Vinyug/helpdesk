@@ -64,7 +64,12 @@
                     @endif
                 </div>
 
-                <input type="file" name="file" id="file" class="custom-input-file" multiple>
+                <div class="col-span-full">
+                    <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
+                    @error('filename.*')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
     
                 <div class="col-span-full">
                     <button type="submit" class="btn-comment-orange">Envoyer</button>
@@ -122,8 +127,8 @@
                     <p>{!! nl2br(e($comment->content)) !!}</p> 
                     <div class="flex flex-wrap mt-2">
                         <div class="flex flex-wrap mt-2">
-                            @foreach ($files as $file)
-                            <a href="{{ $file->url }}" target="_blank"><img class="thumbnail m-1" src="{{ $file->thumbnail_url }}" alt="{{ $file->filename }}"></a>  
+                            @foreach ($comment->uploads as $upload)
+                                <a href="{{ $upload->url }}" target="_blank"><img class="thumbnail m-1" src="{{ $upload->thumbnail_url }}" alt="{{ $upload->filename }}"></a>  
                             @endforeach
                         </div>
                     </div>
