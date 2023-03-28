@@ -77,7 +77,7 @@ class TicketController extends Controller
             'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
             'content' => 'required',
-            'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:10240|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
+            'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
         ]);
         
         // dd(Auth::user()->id);

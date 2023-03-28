@@ -66,9 +66,11 @@
 
                 <div class="col-span-full">
                     <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
-                    @error('filename.*')
-                    <div class="custom-error">{{ $message }}</div>
-                    @enderror
+                    @if(old('form') == 'store')
+                        @error('filename.*')
+                        <div class="custom-error">{{ $message }}</div>
+                        @enderror
+                    @endif
                 </div>
     
                 <div class="col-span-full">
@@ -88,7 +90,7 @@
             x-data="
             @if ($loop->first && old('form') == 'update')
             { editComment: 
-                @if ($errors->has('content')) true 
+                @if ($errors->has('content') || $errors->has('filename.*')) true 
                 @else false 
                 @endif } 
             @else
@@ -149,7 +151,12 @@
                         @enderror
                     @endif
 
-                    <input type="file" name="file" id="file" class="custom-input-file" multiple>
+                    <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
+                    @if(old('form') == 'update')
+                        @error('filename.*')
+                        <div class="custom-error">{{ $message }}</div>
+                        @enderror
+                    @endif
 
                     <button type="submit" class="btn-comment-orange">Modifier</button>
                 </form>

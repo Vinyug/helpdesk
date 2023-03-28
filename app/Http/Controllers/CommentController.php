@@ -67,7 +67,7 @@ class CommentController extends Controller
         // ---------------------------------------------------------------
         $request->validate([
             'content' => 'required|max:2000',
-            'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:10240|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
+            'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
         ]);
 
         // dd($request);
@@ -169,20 +169,92 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request,Upload $upload, Comment $comment, Ticket $ticket)
     {
-        // data validation
+        // ---------------------------------------------------------------
+        // ---------------------- DATA VALIDATION ------------------------
+        // ---------------------------------------------------------------
         $request->validate([
             'content' => 'required|max:2000',
+            'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
         ]);
 
-        // update in DB
+
+        // ---------------------------------------------------------------
+        // --------------------------- VARIABLE --------------------------
+        // ---------------------------------------------------------------
+        // get ticket_number
+        $ticket_number = $ticket->ticket_number;
+        
+
+        // ---------------------------------------------------------------
+        // --------------------------- UPDATE ----------------------------
+        // ---------------------------------------------------------------
+        
+        // --------------------------- COMMENT ----------------------------
         $comment->fill([
             'content' => $request['content'],
         ]);
         $comment->update();
 
-        // redirect with message
+
+        // --------------------------- UPLOAD ----------------------------
+        // get ticket_number
+        $ticket_number = $ticket->ticket_number;
+        // get comment_id
+        $comment_id = $comment->id;
+
+        // verify files if file exist and isValid, to delete upload and insert in DB
+        if ($request->hasFile('filename')) {
+
+            // delete every uploads of comment
+            $uploads = Upload::where('comment_id', $comment_id)->get();
+            foreach ($uploads as $upload) {
+                Storage::delete([$upload->path, $upload->thumbnail_path]);
+                $upload->delete();
+            }
+            
+            
+            // Insert new uploads comment
+            $i = 0;
+            foreach ($request->file('filename') as $file) {
+                if ($file->isValid()) {
+                    // get file extension
+                    $ext = $file->extension();
+                    // rename each file
+                    $name = str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'_'.$i.'.'.$ext;
+                    $i++;
+
+                    // upload each file in folder named by ticket number and comment id
+                    $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id, $name);
+
+                    // resize thumbnail
+                    $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function($constraint){
+                        $constraint->upsize();
+                    })->encode($ext, 50); //reduce sizing by 50%
+                    // thumbnail path
+                    $thumbnailPath = 'files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id.'/thumbnail/thumb_'.$name;
+                    // stock file. first parameter : where ; second parameter : what
+                    Storage::put($thumbnailPath, $thumbnailFile);
+
+                    // insert
+                    $upload = Upload::create(array_merge([
+                        'filename' => $name,
+                        'url' => Storage::url($path),
+                        'path' => $path,
+                        'thumbnail_url' => Storage::url($thumbnailPath),
+                        'thumbnail_path' => $thumbnailPath,
+                    ], 
+                    compact('comment_id')));
+                }
+            }
+        }
+
+
+        // ---------------------------------------------------------------
+        // ---------------------------- VIEW -----------------------------
+        // ---------------------------------------------------------------
+
         return redirect()->back()->with('success','Le commentaire a été modifié avec succès.');
     }
     
