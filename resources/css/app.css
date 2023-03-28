@@ -53,7 +53,7 @@
         @apply inline-block ml-4 py-1 align-middle text-center font-medium text-red-500 hover:underline transition duration-150 ease-in-out;   
     }
     .thumbnail {
-        @apply border p-1 border-custom-blue rounded-sm hover:scale-[102%] transition duration-300 ease-in-out;
+        @apply border p-[2px] border-custom-blue rounded-md hover:scale-[102%] transition duration-300 ease-in-out;
     }
 }
 /* END COMPONENTS */
