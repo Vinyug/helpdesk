@@ -165,6 +165,8 @@ return [
         'duration'                 => 'durée',
         'email'                    => 'adresse e-mail',
         'excerpt'                  => 'extrait',
+        'filename'                 => 'nom de fichier',
+        'filename.*'               => 'fichier',
         'filter'                   => 'filtre',
         'first_name'               => 'prénom',
         'firstname'                => 'prénom',

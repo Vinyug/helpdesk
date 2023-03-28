@@ -5,14 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Listing;
 use App\Models\Ticket;
-use App\Models\User;
+use App\Models\Upload;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+
 
 class TicketController extends Controller
 {
+    /**
+     * Variable.
+     *
+     */
+    protected $ticket_number_separate = '/';
+    protected $thumbnail_width = 100;
+    protected $thumbnail_height = 100;
+
+
     /**
      * Display a listing of the resource.
      *
@@ -58,16 +70,23 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        // data validation
+        // ---------------------------------------------------------------
+        // ---------------------- DATA VALIDATION ------------------------
+        // ---------------------------------------------------------------
         $request->validate([
             'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
             'content' => 'required',
+            'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:10240|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
         ]);
-
-        // dd($request);
+        
         // dd(Auth::user()->id);
+        // dd($request);
+        
 
+        // ---------------------------------------------------------------
+        // --------------------------- VARIABLE --------------------------
+        // ---------------------------------------------------------------
         // user_id
         $user_id = Auth::user()->id;
         // company_id
@@ -76,26 +95,74 @@ class TicketController extends Controller
         $ticket_number = $this->generateTicketNumber();
         // genererate uuid
         $uuid = Str::uuid()->toString();
+        
 
-        //------ INSERT --------
-        // DB tickets
+        // ---------------------------------------------------------------
+        // --------------------------- INSERT ----------------------------
+        // ---------------------------------------------------------------
+        
+        // --------------------------- TICKET ----------------------------
         $ticket = Ticket::create(array_merge([
             'subject' => $request['subject'],
             'service' => $request['service'],
         ], 
         compact('user_id', 'company_id', 'ticket_number', 'uuid')));
-
-        // DB comments
-        // ticket_id
+        
+        // --------------------------- COMMENT ----------------------------
+        // get ticket_id
         $ticket_id = $ticket->id;
-
+        
         // insert
         $comment = Comment::create(array_merge([
             'content' => $request['content'],
         ], 
         compact('user_id', 'ticket_id')));
+        
+        // --------------------------- UPLOAD ----------------------------
+        // get comment_id
+        $comment_id = $comment->id;
 
-        // redirect with message
+        // verify files if file exist and isValid, to insert in DB
+        if ($request->hasFile('filename')) {
+            $i = 0;
+            foreach ($request->file('filename') as $file) {
+                if ($file->isValid()) {
+                    // get file extension
+                    $ext = $file->extension();
+                    // rename each file
+                    $name = str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'_'.$i.'.'.$ext;
+                    $i++;
+
+                    // upload each file in folder named by ticket number
+                    $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number), $name);
+
+                    // resize thumbnail
+                    $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function($constraint){
+                        $constraint->upsize();
+                    })->encode($ext, 50); //reduce sizing by 50%
+                    // thumbnail path
+                    $thumbnailPath = 'files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/thumbnail/thumb_'.$name;
+                    // stock file. first parameter : where ; second parameter : what
+                    Storage::put($thumbnailPath, $thumbnailFile);
+
+                    // insert
+                    $upload = Upload::create(array_merge([
+                        'filename' => $name,
+                        'url' => Storage::url($path),
+                        'path' => $path,
+                        'thumbnail_url' => Storage::url($thumbnailPath),
+                        'thumbnail_path' => $thumbnailPath,
+                    ], 
+                    compact('comment_id')));
+                }
+            }
+        }
+
+
+        // ---------------------------------------------------------------
+        // ---------------------------- VIEW -----------------------------
+        // ---------------------------------------------------------------
+
         return redirect()->route('tickets.show', $uuid)->with('success','Le ticket a été enregistré avec succès.');
     }
 
@@ -109,8 +176,13 @@ class TicketController extends Controller
     {
         // get all comments of ticket
         $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
+        // get all files of comment
+        $files = Upload::join('comments', 'uploads.comment_id', '=', 'comments.id')
+            ->join('tickets', 'comments.ticket_id', '=', 'tickets.id')
+            ->where('tickets.id', '=', $ticket->id)
+            ->get();
         
-        return view('tickets.show',compact('ticket', 'comments'));
+        return view('tickets.show',compact('ticket', 'comments', 'files'));
     }
 
     /**
@@ -197,4 +269,5 @@ class TicketController extends Controller
         
         return $ticket_number;
     }
+
 }

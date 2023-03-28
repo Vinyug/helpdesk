@@ -121,9 +121,11 @@
                 <div x-show="!editComment" class="py-[9px] px-[13px] rounded-b-sm">
                     <p>{!! nl2br(e($comment->content)) !!}</p> 
                     <div class="flex flex-wrap mt-2">
-                        {{-- @foreach ($collection as $item) --}}
-                        <img class="m-1" src="http://via.placeholder.com/100x100" alt="">  
-                        {{-- @endforeach --}}
+                        <div class="flex flex-wrap mt-2">
+                            @foreach ($files as $file)
+                            <a href="{{ $file->url }}" target="_blank"><img class="thumbnail m-1" src="{{ $file->thumbnail_url }}" alt="{{ $file->filename }}"></a>  
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
