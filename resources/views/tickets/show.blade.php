@@ -64,7 +64,14 @@
                     @endif
                 </div>
 
-                <input type="file" name="file" id="file" class="custom-input-file" multiple>
+                <div class="col-span-full">
+                    <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
+                    @if(old('form') == 'store')
+                        @error('filename.*')
+                        <div class="custom-error">{{ $message }}</div>
+                        @enderror
+                    @endif
+                </div>
     
                 <div class="col-span-full">
                     <button type="submit" class="btn-comment-orange">Envoyer</button>
@@ -83,7 +90,7 @@
             x-data="
             @if ($loop->first && old('form') == 'update')
             { editComment: 
-                @if ($errors->has('content')) true 
+                @if ($errors->has('content') || $errors->has('filename.*')) true 
                 @else false 
                 @endif } 
             @else
@@ -121,9 +128,11 @@
                 <div x-show="!editComment" class="py-[9px] px-[13px] rounded-b-sm">
                     <p>{!! nl2br(e($comment->content)) !!}</p> 
                     <div class="flex flex-wrap mt-2">
-                        {{-- @foreach ($collection as $item) --}}
-                        <img class="m-1" src="http://via.placeholder.com/100x100" alt="">  
-                        {{-- @endforeach --}}
+                        <div class="flex flex-wrap mt-2">
+                            @foreach ($comment->uploads as $upload)
+                                <a href="{{ $upload->url }}" target="_blank"><img class="thumbnail m-1" src="{{ $upload->thumbnail_url }}" alt="{{ $upload->filename }}"></a>  
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
@@ -142,7 +151,12 @@
                         @enderror
                     @endif
 
-                    <input type="file" name="file" id="file" class="custom-input-file" multiple>
+                    <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
+                    @if(old('form') == 'update')
+                        @error('filename.*')
+                        <div class="custom-error">{{ $message }}</div>
+                        @enderror
+                    @endif
 
                     <button type="submit" class="btn-comment-orange">Modifier</button>
                 </form>

@@ -52,7 +52,13 @@
                     @enderror
                 </div>
 
-                <input class="custom-input-file" type="file" name="file" id="file" multiple>
+                <div class="col-span-full">
+                    <label for="filename" class="custom-label">Fichier :</label>
+                    <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
+                    @error('filename.*')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
 
                 <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>
 

@@ -27,4 +27,9 @@ class Comment extends Model
         return $this->belongsTo(Ticket::class);
     }
 
+    public function uploads()
+    {
+        return $this->hasMany(Upload::class);
+    }
+
 }
