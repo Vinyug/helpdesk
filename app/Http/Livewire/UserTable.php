@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -72,7 +73,11 @@ final class UserTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'company' => [
+                'name',
+            ],
+        ];
     }
 
     /*
@@ -92,15 +97,9 @@ final class UserTable extends PowerGridComponent
             ->addColumn('id')
             // ->addColumn('company_id')
             ->addColumn('job')
-
-           /** Example of custom column using a closure **/
-            ->addColumn('job_lower', function (User $model) {
-                return strtolower(e($model->job));
-            })
-
             // custom column company of user
             ->addColumn('user_company', function (User $user) {
-                return strtolower(e(optional($user->company)->name));
+                return ucfirst(e(optional($user->company)->name));
             })
             ->addColumn('firstname')
             ->addColumn('lastname')
@@ -134,6 +133,8 @@ final class UserTable extends PowerGridComponent
             //     ->makeInputRange(),
            
             Column::make(trans('Company'), 'user_company')
+                ->sortable()
+                ->searchable()
                 ->makeInputText(),
 
             Column::make(trans('Job'), 'job')
