@@ -54,7 +54,15 @@ final class UserTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        return User::query();
+        // if user authenticate have all-access, can see every users of DB
+        if (auth()->user()->can('all-access')) {
+            return User::query();
+        } else {
+            // else only users of his company
+            return User::query()->where('company_id', '=', auth()->user()->company_id);
+        }
+        
+        
     }
 
     /*
