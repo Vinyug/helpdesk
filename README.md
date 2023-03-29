@@ -12,6 +12,7 @@
 - Seed : 
     * php artisan db:seed --class=PermissionTableSeeder
     * php artisan db:seed --class=CreateAdminUserSeeder
+- Storage : php artisan storage:link 
 
 #### Login admin :
 - email : admin@mail.com
