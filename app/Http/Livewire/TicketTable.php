@@ -54,7 +54,13 @@ final class TicketTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        return Ticket::query();
+        // if user authenticate have all-access, can see every tickets of DB
+        if (auth()->user()->can('all-access')) {
+            return Ticket::query();
+        } else {
+            // else only users of his company
+            return Ticket::query()->where('company_id', '=', auth()->user()->company_id);
+        }
     }
 
     /*
