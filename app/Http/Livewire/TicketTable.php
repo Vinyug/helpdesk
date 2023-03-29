@@ -54,7 +54,13 @@ final class TicketTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        return Ticket::query();
+        // if user authenticate have all-access, can see every tickets of DB
+        if (auth()->user()->can('all-access')) {
+            return Ticket::query();
+        } else {
+            // else only users of his company
+            return Ticket::query()->where('company_id', '=', auth()->user()->company_id);
+        }
     }
 
     /*
@@ -235,6 +241,7 @@ final class TicketTable extends PowerGridComponent
             //Hide action edit if user have not permission
              Rule::button('edit')
                  ->when(fn() => auth()->user()->can('ticket-edit') === false)
+                 ->when(fn(Ticket $ticket) => $ticket->user_id === auth()->user()->id)
                  ->hide(),
  
             //Hide action delete if user have not permission

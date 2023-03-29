@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Company;
 use App\Models\Listing;
 use App\Models\Ticket;
 use App\Models\Upload;
@@ -56,10 +57,10 @@ class TicketController extends Controller
      */
     public function create()
     {
-
+        $companies = Company::get();
         $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
 
-        return view('tickets.create', compact('services'));
+        return view('tickets.create', compact('companies', 'services'));
     }
 
     /**
@@ -74,6 +75,7 @@ class TicketController extends Controller
         // ---------------------- DATA VALIDATION ------------------------
         // ---------------------------------------------------------------
         $request->validate([
+            'company_id' => 'required|exists:companies,id',
             'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
             'content' => 'required',
@@ -90,7 +92,11 @@ class TicketController extends Controller
         // user_id
         $user_id = Auth::user()->id;
         // company_id
-        $company_id = Auth::user()->company_id;
+        if (Auth::user()->can('all-access')) {
+            $company_id = $request['company_id'];
+        } else {
+            $company_id = Auth::user()->company_id;
+        }
         // generate ticket number
         $ticket_number = $this->generateTicketNumber();
         // genererate uuid
@@ -192,8 +198,9 @@ class TicketController extends Controller
         if (Auth()->user()->id == $ticket->user_id) {
             $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
             $comment = Comment::where('ticket_id', '=', $ticket->id)->first();
+            $companies = Company::get();
             
-            return view('tickets.edit',compact('ticket', 'services', 'comment'));
+            return view('tickets.edit',compact('ticket', 'services', 'comment', 'companies'));
         }
         
         return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
@@ -209,11 +216,19 @@ class TicketController extends Controller
     public function update(Request $request, Ticket $ticket, Comment $comment)
     {
         $request->validate([
+            'company_id' => 'required|exists:companies,id',
             'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
             'content' => 'required',
         ]);
         
+        // company_id
+        if (Auth::user()->can('all-access')) {
+            $ticket->fill([
+                'company_id' => $request['company_id'],
+            ]);
+        }
+
         //------ UPDATE --------
         // DB tickets
         $ticket->fill([

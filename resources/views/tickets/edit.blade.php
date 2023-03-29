@@ -23,7 +23,23 @@
             @csrf
             @method('PUT')
 
-            <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 p-4">   
+            <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 p-4">  
+                
+                @can('all-access')
+                <div class="col-span-full">
+                    <label for="company_id" class="custom-label">Entreprise : </label>
+                    <select class="custom-input" name="company_id" id="company_id">
+                        <option value="{{ $ticket->company_id }}">{{ $ticket->company->name }}</option>
+                        @foreach($companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('company_id')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+                @endcan
+                
                 <div class="col-span-full">
                     <label for="subject" class="custom-label">Sujet : <span class="text-red-600 font-bold">*</span></label>
                     <input type="text" name="subject" id="subject" class="custom-input" placeholder="Saisir le Sujet" value="{{ $ticket->subject }}" required>

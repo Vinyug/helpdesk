@@ -22,7 +22,23 @@
         <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <div class="grid sm:grid-cols-2 gap-4 p-4">    
+            <div class="grid sm:grid-cols-2 gap-4 p-4">  
+                
+                @can('all-access')
+                <div class="col-span-full">
+                    <label for="company_id" class="custom-label">Entreprise : <span class="text-red-600 font-bold">*</span></label>
+                    <select class="custom-input" name="company_id" id="company_id">
+                        <option value="">Choisir une entreprise</option>
+                        @foreach($companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('company_id')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+                @endcan
+
                 <div class="col-span-full">
                     <label for="subject" class="custom-label">Sujet : <span class="text-red-600 font-bold">*</span></label>
                     <input type="text" name="subject" id="subject" class="custom-input" placeholder="Saisir le Sujet" value="{{ old('subject') }}" required>
