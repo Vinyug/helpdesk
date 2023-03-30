@@ -1,10 +1,10 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium">
+        <h2 class="text-base sm:text-lg font-bold">
             {{ __('Mettre à jour votre mot de passe') }}
         </h2>
 
-        <p class="mt-1">
+        <p class="text-sm sm:text-base mt-1">
             {{ __("Veillez à ce que votre compte utilise un mot de passe long et aléatoire pour rester sécurisé.") }}
         </p>
     </header>

@@ -19,15 +19,15 @@
         </div>
         @endif
 
-        <div class="mt-6 p-4 sm:p-8 shadow sm:rounded-sm">
+        <div class="mt-4 sm:mt-6 p-4 sm:p-8 shadow sm:rounded-sm">
             @include('includes.profile.update-profile-information-form')
         </div>
 
-        <div class="mt-4 p-4 sm:p-8 shadow sm:rounded-sm">
+        <div class="mt-4 sm:mt-6 p-4 sm:p-8 shadow sm:rounded-sm">
             @include('includes.profile.update-password-form')
         </div>
 
-        <div class="mt-4 p-4 sm:p-8 shadow sm:rounded-sm">
+        <div class="mt-4 sm:mt-6 p-4 sm:p-8 shadow sm:rounded-sm">
             @include('includes.profile.delete-user-form')
         </div>
     </div>

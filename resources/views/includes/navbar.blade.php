@@ -57,48 +57,48 @@
 
                 <!-- Navigation -->
                 </div>
-                    <x-dropleft-link :href="route('profile.edit')">
+                    <x-dropleft-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
                         {{ __('Mes informations') }}
                     </x-dropleft-link>
 
                     @can('ticket-list')
-                    <x-dropleft-link :href="route('tickets.index')">
+                    <x-dropleft-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
                         {{ __('Tickets') }}
                     </x-dropleft-link>
                     @endcan
 
                     @can('user-list')
-                    <x-dropleft-link :href="route('users.index')">
+                    <x-dropleft-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('Utilisateurs') }}
                     </x-dropleft-link>
                     @endcan
                     
                     @can('company-list')
-                    <x-dropleft-link :href="route('companies.index')">
+                    <x-dropleft-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
                         {{ __('Entreprises') }}
                     </x-dropleft-link>
                     @endcan
 
                     @can('role-list')
-                    <x-dropleft-link :href="route('roles.index')">
+                    <x-dropleft-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
                         {{ __('Rôles') }}
                     </x-dropleft-link>
                     @endcan
 
                     @can('job-list')
-                    <x-dropleft-link :href="route('jobs.index')">
+                    <x-dropleft-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')">
                         {{ __('Postes') }}
                     </x-dropleft-link>
                     @endcan
 
                     @can('state-list')
-                    <x-dropleft-link :href="route('states.index')">
+                    <x-dropleft-link :href="route('states.index')" :active="request()->routeIs('states.index')">
                         {{ __('États') }}
                     </x-dropleft-link>
                     @endcan
 
                     @can('service-list')
-                    <x-dropleft-link :href="route('services.index')">
+                    <x-dropleft-link :href="route('services.index')" :active="request()->routeIs('services.index')">
                         {{ __('Services') }}
                     </x-dropleft-link>
                     @endcan
@@ -161,49 +161,49 @@
             <h2 class="my-3 font-bold text-xl pl-4">Menu</h2>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
                     {{ __('Mes informations') }}
                 </x-responsive-nav-link>
                 
                 @can('ticket-list')
-                <x-responsive-nav-link :href="route('tickets.index')">
+                <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
                     {{ __('Tickets') }}
                 </x-responsive-nav-link>
                 @endcan
 
                 @can('user-list')
-                <x-responsive-nav-link :href="route('users.index')">
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                     {{ __('Utilisateurs') }}
                 </x-responsive-nav-link>
                 @endcan
 
                 @can('company-list')
-                <x-responsive-nav-link :href="route('companies.index')">
+                <x-responsive-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
                     {{ __('Entreprises') }}
                 </x-responsive-nav-link>
                 @endcan
 
 
                 @can('role-list')
-                <x-responsive-nav-link :href="route('roles.index')">
+                <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
                     {{ __('Roles') }}
                 </x-responsive-nav-link>
                 @endcan
 
                 @can('job-list')
-                <x-responsive-nav-link :href="route('jobs.index')">
+                <x-responsive-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')">
                     {{ __('Postes') }}
                 </x-responsive-nav-link>
                 @endcan
 
                 @can('state-list')
-                <x-responsive-nav-link :href="route('states.index')">
+                <x-responsive-nav-link :href="route('states.index')" :active="request()->routeIs('states.index')">
                     {{ __('États') }}
                 </x-responsive-nav-link>
                 @endcan
 
                 @can('service-list')
-                <x-responsive-nav-link :href="route('services.index')">
+                <x-responsive-nav-link :href="route('services.index')" :active="request()->routeIs('services.index')">
                     {{ __('Services') }}
                 </x-responsive-nav-link>
                 @endcan

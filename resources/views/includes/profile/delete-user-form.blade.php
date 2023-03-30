@@ -1,10 +1,10 @@
 <section class="space-y-6">
     <header>
-        <h2 class="text-lg font-medium">
+        <h2 class="text-base sm:text-lg font-bold">
             {{ __('Supprimer votre compte') }}
         </h2>
 
-        <p class="mt-1">
+        <p class="text-sm sm:text-base mt-1">
             {{ __("Une fois votre compte supprimé, toutes ses ressources et données seront définitivement effacées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.") }}
         </p>
     </header>
