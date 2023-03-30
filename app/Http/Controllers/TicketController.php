@@ -194,7 +194,6 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        // TEST
         // add super admin and admin company
         if (Auth()->user()->id == $ticket->user_id) {
             $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
