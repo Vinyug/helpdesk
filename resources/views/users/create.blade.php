@@ -23,7 +23,7 @@
             @csrf
 
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
-                <div class="col-span-full">
+                <div class="w-full">
                     <label for="firstname" class="custom-label">Prénom : <span class="text-red-600 font-bold">*</span></label>
                     <input type="text" name="firstname" id="firstname" class="custom-input" placeholder="Saisir le Prénom" value="{{ old('firstname') }}" required>
                     @error('firstname')
@@ -31,7 +31,7 @@
                     @enderror
                 </div>
 
-                <div class="col-span-full">
+                <div class="w-full">
                     <label for="lastname" class="custom-label">Nom : <span class="text-red-600 font-bold">*</span></label>
                     <input type="text" name="lastname" id="lastname" class="custom-input" placeholder="Saisir le Nom" value="{{ old('lastname') }}" required>
                     @error('lastname')
