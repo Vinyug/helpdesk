@@ -89,7 +89,7 @@ final class CompanyTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
+            // ->addColumn('id')
             ->addColumn('name')
 
            /** Example of custom column using a closure **/
@@ -102,7 +102,7 @@ final class CompanyTable extends PowerGridComponent
             ->addColumn('zip_code')
             // ->addColumn('siret')
             // ->addColumn('code_ape')
-            ->addColumn('phone')
+            // ->addColumn('phone')
             ->addColumn('email')
             // ->addColumn('uuid')
             ->addColumn('present')
@@ -128,8 +128,8 @@ final class CompanyTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->makeInputRange(),
+            // Column::make('ID', 'id')
+            //     ->makeInputRange(),
 
             Column::make(trans('Name'), 'name')
                 ->sortable()
@@ -157,21 +157,22 @@ final class CompanyTable extends PowerGridComponent
             //     ->searchable()
             //     ->makeInputText(),
 
-            Column::make(trans('Phone'), 'phone')
-                ->makeInputRange(),
+            // Column::make(trans('Phone'), 'phone')
+            //     ->makeInputRange(),
 
             Column::make(trans('Email'), 'email')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
-
-            // Column::make('UUID', 'uuid')
-            //     ->sortable()
-            //     ->searchable()
-            //     ->makeInputText(),
-
-            Column::make(trans('Present'), 'present')
-                ->toggleable(),
+                
+                // Column::make('UUID', 'uuid')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->makeInputText(),
+                
+                Column::make(trans('Present'), 'present')
+                ->searchable(),
+                // ->toggleable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
