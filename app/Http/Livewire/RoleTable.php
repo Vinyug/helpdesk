@@ -73,7 +73,11 @@ final class RoleTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'permissions' => [
+                'name',
+            ],
+        ];
     }
 
     /*
@@ -132,7 +136,7 @@ final class RoleTable extends PowerGridComponent
                 ->makeInputText(),
             
             Column::make(trans('Permission'), 'role_permissions')
-                ->sortable()
+                // ->sortable()
                 ->searchable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
