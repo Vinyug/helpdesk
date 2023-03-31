@@ -169,7 +169,7 @@ final class TicketTable extends PowerGridComponent
             //     ->makeInputText(),
 
             Column::make(trans('Visibility'), 'visibility')
-                ->toggleable(),
+                ->searchable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
