@@ -71,7 +71,7 @@
 
                                 @if ($page == $paginator->currentPage())
                                     <span
-                                        class="px-2 py-1 m-1 text-center border-slate-400 rounded cursor-pointer border-1 dark:bg-slate-700 dark:text-white dark:text-slate-300">{{ $page }}</span>
+                                        class="px-2 py-1 m-1 text-center border-slate-400 rounded cursor-pointer border-1 ">{{ $page }}</span>
                                 @elseif ($page === $paginator->currentPage() + 1 || $page === $paginator->currentPage() + 2 || $page === $paginator->currentPage() - 1 || $page === $paginator->currentPage() - 2)
                                     <a class="px-2 py-1 m-1 text-center text-white bg-custom-orange border-slate-400 rounded cursor-pointer border-1 hover:bg-custom-orange hover:bg-opacity-70 hover:border-slate-800 dark:text-slate-300 transition duration-150 ease-in-out"
 
