@@ -101,7 +101,7 @@ final class UserTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
+            // ->addColumn('id')
             // ->addColumn('company_id')
             ->addColumn('job')
             // custom column company of user
@@ -133,22 +133,12 @@ final class UserTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->makeInputRange(),
+            // Column::make('ID', 'id')
+            //     ->makeInputRange(),
 
             // Column::make('COMPANY ID', 'company_id')
             //     ->makeInputRange(),
            
-            Column::make(trans('Company'), 'user_company')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
-            Column::make(trans('Job'), 'job')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
             Column::make(trans('Firstname'), 'firstname')
                 ->sortable()
                 ->searchable()
@@ -160,6 +150,16 @@ final class UserTable extends PowerGridComponent
                 ->makeInputText(),
 
             Column::make(trans('Email'), 'email')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make(trans('Company'), 'user_company')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make(trans('Job'), 'job')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
