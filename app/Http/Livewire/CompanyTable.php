@@ -177,7 +177,7 @@ final class CompanyTable extends PowerGridComponent
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
                 ->sortable()
-                ->makeInputDatePicker(),
+                // ->makeInputDatePicker(),
 
             // Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
             //     ->searchable()
