@@ -29,7 +29,7 @@ class CustomTheme extends Tailwind
             ->thead('shadow-sm bg-custom-light-blue border border-slate-300')
             ->tr('')
             ->trFilters('bg-custom-light-blue shadow-sm')
-            ->th('font-semibold px-2 pr-4 py-3 text-left font-semibold text-white tracking-wider whitespace-nowrap')
+            ->th('font-semibold px-2 pr-4 py-3 text-left text-white tracking-wider whitespace-nowrap')
             ->tbody('text-custom-dark')
             ->trBody('border border-slate-300 hover:bg-sky-50')
             ->tdBody('px-3 py-2 whitespace-nowrap')
@@ -122,7 +122,7 @@ class CustomTheme extends Tailwind
         return Theme::filterInputText()
             ->view($this->root() . '.filters.input-text')
             ->base('min-w-[9.5rem]')
-            ->select('custom-input text-sm py-1 px-2')
+            ->select('custom-input text-sm py-1 px-2 hidden')
             ->input('custom-input text-sm py-1 px-2');
     }
 }
