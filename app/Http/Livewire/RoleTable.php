@@ -55,13 +55,7 @@ final class RoleTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        
         return Role::query();
-        
-        // Role::find($id)
-        // $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-        //     ->where("role_has_permissions.role_id",$id)
-        //     ->get();
     }
 
     /*
