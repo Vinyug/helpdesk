@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Ticket;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
@@ -56,10 +57,25 @@ final class TicketTable extends PowerGridComponent
     {
         // if user authenticate have all-access, can see every tickets of DB
         if (auth()->user()->can('all-access')) {
-            return Ticket::query();
+            return Ticket::query()
+                ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
+                ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
+                ->select([
+                    'tickets.*',
+                    DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
+                    'companies.name as company_name',
+                ]);
         } else {
             // else only users of his company
-            return Ticket::query()->where('company_id', '=', auth()->user()->company_id);
+            return Ticket::query()
+                ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
+                ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
+                ->select([
+                    'tickets.*',
+                    DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
+                    'companies.name as company_name',
+                ])
+                ->where('tickets.company_id', '=', auth()->user()->company_id);
         }
     }
 
@@ -78,7 +94,15 @@ final class TicketTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'user' => [
+                'firstname',
+                'lastname',
+            ],
+            'company' => [
+                'name',
+            ],
+        ];
     }
 
     /*
@@ -96,12 +120,8 @@ final class TicketTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             // ->addColumn('id')
-            ->addColumn('user_name', function (Ticket $ticket) {
-                return e($ticket->user->firstname . ' ' . $ticket->user->lastname);
-            })
-            ->addColumn('user_company', function (Ticket $ticket) {
-                return e($ticket->company->name);
-            })
+            ->addColumn('user_fullname')
+            ->addColumn('company_name')
             ->addColumn('ticket_number')
             // ->addColumn('subject')
             // ->addColumn('uuid')
@@ -133,12 +153,12 @@ final class TicketTable extends PowerGridComponent
             // Column::make('ID', 'id')
             //     ->makeInputRange(),
 
-            Column::make(trans('Author'), 'user_name')
+            Column::make(trans('Author'), 'user_fullname', 'users.firstname')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
          
-            Column::make(trans('Company'), 'user_company')
+            Column::make(trans('Company'), 'company_name', 'companies.name')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),

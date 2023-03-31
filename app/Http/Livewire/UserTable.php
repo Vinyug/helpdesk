@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Company;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
