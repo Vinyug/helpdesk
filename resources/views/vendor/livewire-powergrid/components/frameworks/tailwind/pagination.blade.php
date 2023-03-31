@@ -1,5 +1,5 @@
 <div class="items-center justify-between sm:flex">
-    <div class="items-center justify-between w-full sm:flex-1 sm:flex">
+    <div class="items-center justify-end text-sm w-full sm:flex-1 sm:flex">
         @if($recordCount === 'full')
             <div>
                 <div class="mr-2 leading-5 text-center text-custom-dark text-md dark:text-slate-300 sm:text-right">
@@ -35,7 +35,7 @@
 
         @if ($paginator->hasPages() && $recordCount != 'min')
             <nav role="navigation" aria-label="Pagination Navigation" class="items-center justify-between sm:flex">
-                <div class="flex justify-center mt-2 md:flex-none md:justify-end sm:mt-0">
+                <div class="flex justify-center mt-2 md:flex-none md:justify-end sm:mt-0 ml-auto">
 
                     @if(!$paginator->onFirstPage())
                         <a
