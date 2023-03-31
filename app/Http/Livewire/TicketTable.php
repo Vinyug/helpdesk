@@ -95,7 +95,7 @@ final class TicketTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
+            // ->addColumn('id')
             ->addColumn('user_name', function (Ticket $ticket) {
                 return e($ticket->user->firstname . ' ' . $ticket->user->lastname);
             })
@@ -106,10 +106,10 @@ final class TicketTable extends PowerGridComponent
             // ->addColumn('subject')
             // ->addColumn('uuid')
             ->addColumn('state')
-            ->addColumn('service')
+            // ->addColumn('service')
             ->addColumn('visibility')
             ->addColumn('created_at_formatted', fn (Ticket $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            // ->addColumn('updated_at_formatted', fn (Ticket $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
+            ->addColumn('updated_at_formatted', fn (Ticket $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
         ;
     }
 
@@ -130,10 +130,10 @@ final class TicketTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->makeInputRange(),
+            // Column::make('ID', 'id')
+            //     ->makeInputRange(),
 
-            Column::make(trans('Username'), 'user_name')
+            Column::make(trans('Author'), 'user_name')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
@@ -163,22 +163,22 @@ final class TicketTable extends PowerGridComponent
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make(trans('Service'), 'service')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
+            // Column::make(trans('Service'), 'service')
+            //     ->sortable()
+            //     ->searchable()
+            //     ->makeInputText(),
 
             Column::make(trans('Visibility'), 'visibility')
                 ->toggleable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
-                ->sortable()
-                ->makeInputDatePicker(),
+                ->sortable(),
+                // ->makeInputDatePicker()
 
-            // Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
-            //     ->searchable()
-            //     ->sortable()
+            Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
+                ->searchable()
+                ->sortable()
             //     ->makeInputDatePicker(),
 
         ]
