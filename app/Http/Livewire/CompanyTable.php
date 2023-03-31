@@ -146,8 +146,8 @@ final class CompanyTable extends PowerGridComponent
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make(trans('ZIP Code'), 'zip_code')
-                ->makeInputRange(),
+            Column::make(trans('ZIP Code'), 'zip_code'),
+                // ->makeInputRange(),
 
             // Column::make('SIRET', 'siret')
             //     ->makeInputRange(),
