@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -56,7 +57,15 @@ final class UserTable extends PowerGridComponent
     {
         // if user authenticate have all-access, can see every users of DB
         if (auth()->user()->can('all-access')) {
-            return User::query();
+            // left join permets to take user datas with or without company
+            return User::query()
+                ->leftjoin('companies', function ($companies) {
+                    $companies->on('users.company_id', '=', 'companies.id');
+                })
+                ->select([
+                    'users.*',
+                    'companies.name as company_name',
+                ]);
         } else {
             // else only users of his company
             return User::query()->where('company_id', '=', auth()->user()->company_id);
@@ -105,9 +114,7 @@ final class UserTable extends PowerGridComponent
             // ->addColumn('company_id')
             ->addColumn('job')
             // custom column company of user
-            ->addColumn('user_company', function (User $user) {
-                return ucfirst(e(optional($user->company)->name));
-            })
+            ->addColumn('company_name')
             ->addColumn('firstname')
             ->addColumn('lastname')
             ->addColumn('email')
@@ -154,7 +161,7 @@ final class UserTable extends PowerGridComponent
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make(trans('Company'), 'user_company')
+            Column::make(trans('Company'), 'company_name', 'companies.name')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
