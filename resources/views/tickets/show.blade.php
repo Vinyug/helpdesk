@@ -106,18 +106,14 @@
                 
                 @if ($loop->first && $comment->user_id == Auth::id())
                 <div>
-                    {{-- @can('comment-edit') --}}
-                        <a @click="editComment = !editComment" x-text="editComment ? 'Restituer' : 'Modifier'" x-bind:class="{ 'btn-blue': !editComment, 'btn-dark-blue': editComment }" class="btn-blue text-sm my-1 sm:my-2 cursor-pointer"></a>
-                    {{-- @endcan --}}
+                    <a @click="editComment = !editComment" x-text="editComment ? 'Restituer' : 'Modifier'" x-bind:class="{ 'btn-blue': !editComment, 'btn-dark-blue': editComment }" class="btn-blue text-sm my-1 sm:my-2 cursor-pointer"></a>
                     
-                    {{-- @can('comment-delete') --}}
-                        <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="{{ route('comments.destroy', $comment->id) }}" method="Post">
-                            @csrf
-                            @method('DELETE')
-                            
-                            <button type="submit" >Annuler</button>
-                        </form>
-                    {{-- @endcan --}}
+                    <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="{{ route('comments.destroy', $comment->id) }}" method="Post">
+                        @csrf
+                        @method('DELETE')
+                        
+                        <button type="submit" >Annuler</button>
+                    </form>
                 </div>
                 @endif
             </div>

@@ -180,10 +180,17 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        // get all comments of ticket
-        $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
+        // if user have all-access or user belongs to a company
+        if (Auth::user()->can('all-access') || Auth::user()->company_id === $ticket->company_id) {
+            // get all comments of ticket
+            $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
+            
+            return view('tickets.show',compact('ticket', 'comments'));
+        }
 
-        return view('tickets.show',compact('ticket', 'comments'));
+        // return error http
+        return abort('403', 'Vous n\'avez pas la permission d\'accéder à cette page');
+
     }
 
     /**

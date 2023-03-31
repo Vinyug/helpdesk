@@ -10,7 +10,8 @@
             <div class="flex flex-row justify-center md:justify-start mb-2 md:mb-0">
                 <div class="relative h-10">
                     <select wire:model.lazy="setUp.footer.perPage"
-                            class="block appearance-none bg-slate-50 border border-slate-300 text-slate-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-slate-500  dark:bg-slate-600 dark:text-slate-200 dark:placeholder-slate-200 dark:border-slate-500">
+                            class="block appearance-none text-sm bg-slate-50 text-custom-dark border border-slate-300 rounded py-1.5 px-3 leading-tight
+                            focus:outline-none focus:bg-white focus:border-custom-blue transition duration-300 ease-in-out">
                         @foreach(data_get($setUp, 'footer.perPageValues') as $value)
                             <option value="{{$value}}">
                                 @if($value == 0)
@@ -23,7 +24,7 @@
                     </select>
 
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700">
-                        <x-livewire-powergrid::icons.down class="w-4 h-4"/>
+                        {{-- <x-livewire-powergrid::icons.down class="w-4 h-4"/> --}}
                     </div>
                 </div>
                 <div class="pl-4 hidden sm:block md:block lg:block w-full"

@@ -29,7 +29,7 @@
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="border-gray-300 focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" name="remember">
+                    <input id="remember_me" type="checkbox" class="border-gray-300 text-custom-blue focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" name="remember">
                     <span class="ml-2 text-sm">{{ __('Se souvenir de moi') }}</span>
                 </label>
             </div>

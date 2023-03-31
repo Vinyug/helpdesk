@@ -92,7 +92,7 @@ final class ServiceTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
+            // ->addColumn('id')
             // ->addColumn('job')
 
            /** Example of custom column using a closure **/
@@ -124,8 +124,8 @@ final class ServiceTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->makeInputRange(),
+            // Column::make('ID', 'id')
+            //     ->makeInputRange(),
 
             // Column::make(trans('Job'), 'job')
             //     ->sortable()
@@ -139,13 +139,13 @@ final class ServiceTable extends PowerGridComponent
 
             Column::make(trans('Service'), 'service')
                 ->sortable()
-                ->searchable()
-                ->makeInputText(),
+                ->searchable(),
+                // ->makeInputText(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
-                ->sortable()
-                ->makeInputDatePicker(),
+                ->sortable(),
+                // ->makeInputDatePicker(),
 
             // Column::make(trans('UPDATED AT'), 'updated_at_formatted', 'updated_at')
             //     ->searchable()

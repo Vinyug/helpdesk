@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
@@ -72,7 +73,11 @@ final class RoleTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'permissions' => [
+                'name',
+            ],
+        ];
     }
 
     /*
@@ -89,8 +94,17 @@ final class RoleTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
+            // ->addColumn('id')
             ->addColumn('name')
+            // custom column permissions of role
+            ->addColumn('role_permissions', function (Role $role) {
+                $permissions = $role->permissions;
+                $permissionBadges = '';
+                foreach ($permissions as $permission) {
+                    $permissionBadges .= '<span class="inline-block cursor-default px-1 mr-1 mt-1 text-xs font-bold text-custom-light-blue border border-custom-orange bg-white rounded-lg ">' . ucfirst(e($permission->name)) . '</span>';
+                }
+                return $permissionBadges;
+            })
             ->addColumn('created_at_formatted', fn (Role $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
             // ->addColumn('updated_at_formatted', fn (Role $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
         ;
@@ -113,18 +127,22 @@ final class RoleTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->makeInputRange(),
+            // Column::make('ID', 'id')
+            //     ->makeInputRange(),
 
             Column::make(trans('Name'), 'name')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
+            
+            Column::make(trans('Permission'), 'role_permissions')
+                // ->sortable()
+                ->searchable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
                 ->sortable()
-                ->makeInputDatePicker(),
+                // ->makeInputDatePicker(),
 
             // Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
             //     ->searchable()

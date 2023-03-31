@@ -56,7 +56,15 @@ final class UserTable extends PowerGridComponent
     {
         // if user authenticate have all-access, can see every users of DB
         if (auth()->user()->can('all-access')) {
-            return User::query();
+            // left join permets to take user datas with or without company
+            return User::query()
+                ->leftjoin('companies', function ($companies) {
+                    $companies->on('users.company_id', '=', 'companies.id');
+                })
+                ->select([
+                    'users.*',
+                    'companies.name as company_name',
+                ]);
         } else {
             // else only users of his company
             return User::query()->where('company_id', '=', auth()->user()->company_id);
@@ -101,13 +109,11 @@ final class UserTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
+            // ->addColumn('id')
             // ->addColumn('company_id')
             ->addColumn('job')
             // custom column company of user
-            ->addColumn('user_company', function (User $user) {
-                return ucfirst(e(optional($user->company)->name));
-            })
+            ->addColumn('company_name')
             ->addColumn('firstname')
             ->addColumn('lastname')
             ->addColumn('email')
@@ -133,22 +139,12 @@ final class UserTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->makeInputRange(),
+            // Column::make('ID', 'id')
+            //     ->makeInputRange(),
 
             // Column::make('COMPANY ID', 'company_id')
             //     ->makeInputRange(),
            
-            Column::make(trans('Company'), 'user_company')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
-            Column::make(trans('Job'), 'job')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
             Column::make(trans('Firstname'), 'firstname')
                 ->sortable()
                 ->searchable()
@@ -164,10 +160,20 @@ final class UserTable extends PowerGridComponent
                 ->searchable()
                 ->makeInputText(),
 
+            Column::make(trans('Company'), 'company_name', 'companies.name')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make(trans('Job'), 'job')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
                 ->sortable()
-                ->makeInputDatePicker(),
+                // ->makeInputDatePicker(),
 
             // Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
             //     ->searchable()
