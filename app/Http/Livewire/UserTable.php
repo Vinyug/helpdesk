@@ -201,18 +201,18 @@ final class UserTable extends PowerGridComponent
      public function actions(): array
      {
         return [
-            Button::make('show', trans('Show'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+            Button::make('show', trans(''))
+                 ->class('btn-show')
                  ->target('')
                  ->route('users.show', ['user' => 'id']),
                  
-            Button::make('edit', trans('Edit'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+            Button::make('edit', trans(''))
+                 ->class('btn-edit')
                  ->target('')
                  ->route('users.edit', ['user' => 'id']),
                  
-             Button::make('destroy', trans('Delete'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
+             Button::make('destroy', trans(''))
+                 ->class('btn-delete')
                  ->target('')
                  ->route('users.destroy', ['user' => 'id'])
                  ->method('delete')
