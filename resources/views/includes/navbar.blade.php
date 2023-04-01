@@ -119,7 +119,7 @@
 
 
     <!-- Responsive Navigation Menu -->
-    <div class="block absolute transform transition duration-700 bg-white top-0 -left-full z-10 w-full mt-[65px] border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-400" :class="{'opacity-0': ! open, 'translate-x-full opacity-100': open}">
+    <div class="block absolute transform transition duration-700 bg-white top-0 -left-[100%] z-10 w-[100%] mt-[65px] border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-400" :class="{'opacity-0': ! open, 'translate-x-[100%] opacity-100': open}">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
                 {{ __('Accueil') }}
