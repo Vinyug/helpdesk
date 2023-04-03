@@ -139,7 +139,7 @@ final class TicketTable extends PowerGridComponent
             // ->addColumn('uuid')
             ->addColumn('state')
             // ->addColumn('service')
-            ->addColumn('visibility')
+            ->addColumn('visibility', fn (Ticket $ticket) => $ticket->visibility ? 'Publique' : 'Privée')
             ->addColumn('created_at_formatted', fn (Ticket $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
             ->addColumn('updated_at_formatted', fn (Ticket $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
         ;
@@ -201,7 +201,8 @@ final class TicketTable extends PowerGridComponent
             //     ->makeInputText(),
 
             Column::make(trans('Visibility'), 'visibility')
-                ->searchable(),
+                // ->searchable()
+                ->sortable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
@@ -211,7 +212,7 @@ final class TicketTable extends PowerGridComponent
             Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
                 ->searchable()
                 ->sortable()
-            //     ->makeInputDatePicker(),
+                //  ->makeInputDatePicker(),
 
         ]
 ;
