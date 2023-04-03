@@ -54,27 +54,27 @@ final class UserTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
+        // left join permets to take user datas with or without company
+        $query = User::query()
+        ->leftjoin('companies','users.company_id', '=', 'companies.id')
+        ->leftjoin('model_has_roles','users.id', '=', 'model_has_roles.model_id')
+        ->leftjoin('roles', 'model_has_roles.model_id', '=', 'roles.id')
+        ->select([
+            'users.*',
+            'companies.name as company_name',
+            'roles.name as role_name',
+        ]);
+
         // if user authenticate have all-access, can see every users of DB
         if (auth()->user()->can('all-access')) {
-            // left join permets to take user datas with or without company
-            return User::query()
-                ->leftjoin('companies','users.company_id', '=', 'companies.id')
-                ->select([
-                    'users.*',
-                    'companies.name as company_name',
-                ]);
+            return $query;
+
         } else {
             // else only users of his company
-            return User::query()
-                ->leftjoin('companies','users.company_id', '=', 'companies.id')
-                ->select([
-                    'users.*',
-                    'companies.name as company_name',
-                ])
+            return $query
                 ->where('company_id', '=', auth()->user()->company_id);
+
         }
-        
-        
     }
 
     /*
@@ -94,6 +94,9 @@ final class UserTable extends PowerGridComponent
     {
         return [
             'company' => [
+                'name',
+            ],
+            'role' => [
                 'name',
             ],
         ];
@@ -118,6 +121,8 @@ final class UserTable extends PowerGridComponent
             ->addColumn('job')
             // custom column company of user
             ->addColumn('company_name')
+            // custom column role of user
+            ->addColumn('role_name')
             ->addColumn('firstname')
             ->addColumn('lastname')
             ->addColumn('email')
@@ -168,11 +173,16 @@ final class UserTable extends PowerGridComponent
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
-
+                
             Column::make(trans('Job'), 'job')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
+            ->sortable()
+            ->searchable()
+            ->makeInputText(),
+        
+            Column::make(trans('Role'), 'role_name', 'roles.name')
+            ->sortable()
+            ->searchable()
+            ->makeInputText(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
