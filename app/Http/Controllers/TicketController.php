@@ -80,6 +80,7 @@ class TicketController extends Controller
             'service' => 'required|exists:listings,service',
             'content' => 'required',
             'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
+            'visibility' => 'boolean',
         ]);
         
         // dd(Auth::user()->id);
@@ -111,6 +112,7 @@ class TicketController extends Controller
         $ticket = Ticket::create(array_merge([
             'subject' => $request['subject'],
             'service' => $request['service'],
+            'visibility' => $request['visibility'] ? 0 : 1,
         ], 
         compact('user_id', 'company_id', 'ticket_number', 'uuid')));
         
@@ -227,6 +229,7 @@ class TicketController extends Controller
             'subject' => 'required|max:80',
             'service' => 'required|exists:listings,service',
             'content' => 'required',
+            'visibility' => 'boolean',
         ]);
         
         // company_id
@@ -241,6 +244,7 @@ class TicketController extends Controller
         $ticket->fill([
             'subject' => $request['subject'],
             'service' => $request['service'],
+            'visibility' => $request['visibility'] ? 0 : 1,
         ]);
         $ticket->update();
         

@@ -24,6 +24,26 @@
             @method('PUT')
 
             <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 p-4">  
+
+                <div class="col-span-full">
+                    <div class="flex items-center">
+                        <div class="group inline relative">
+                            <label for="visibility" class="custom-label mb-0">Visibilité :</label>
+                            
+                            {{-- TOOLTIP --}}
+                            <div class="hidden w-[220px] sm:w-[410px] group-hover:block bg-slate-50 transition-opacity p-2 text-sm italic rounded-sm border border-gray-300 absolute">
+                                <p><span class="font-bold">Publique : </span>visible par tous les membres de l'entreprise.</p>
+                                <p><span class="font-bold">Privée (coché) : </span>visible par vous et l'administrateur entreprise.</p>
+                            </div>
+                        </div>
+    
+                        <input type="checkbox" name="visibility" id="visibility" value="{{ $ticket->visibility }}" class="ml-4 border-gray-300 text-custom-blue focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" {{ old('visibility', !$ticket->visibility) ? 'checked' : '' }}>
+                    </div>
+    
+                    @error('visibility')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
                 
                 @can('all-access')
                 <div class="col-span-full">
