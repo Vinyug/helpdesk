@@ -75,8 +75,18 @@ final class TicketTable extends PowerGridComponent
                     DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
                     'companies.name as company_name',
                 ])
-                ->where('tickets.company_id', '=', auth()->user()->company_id);
+                // if auth->user is not author of tickets, he looks only with visibility = 1 (public)
+                ->when(auth()->user()->id !== auth()->user()->tickets()->pluck('id'), function ($query) {
+                    $query->where('visibility', '=', '1');
+                })
+                ->where('tickets.company_id', '=', auth()->user()->company_id)
+                // if user is author of tickets, he looks visibility 0 and 1 (private and public)
+                ->orWhere(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                          ->whereIn('visibility', [0, 1]);
+                });
         }
+    
     }
 
     /*

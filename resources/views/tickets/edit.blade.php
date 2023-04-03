@@ -45,20 +45,24 @@
                     @enderror
                 </div>
                 
-                @can('all-access')
-                <div class="col-span-full">
-                    <label for="company_id" class="custom-label">Entreprise : </label>
-                    <select class="custom-input" name="company_id" id="company_id">
-                        <option value="{{ $ticket->company_id }}">{{ $ticket->company->name }}</option>
-                        @foreach($companies as $company)
-                            <option value="{{ $company->id }}">{{ $company->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('company_id')
-                    <div class="custom-error">{{ $message }}</div>
-                    @enderror
-                </div>
-                @endcan
+                @if (auth()->user()->can('all-access'))
+                    @can('all-access')
+                    <div class="col-span-full">
+                        <label for="company_id" class="custom-label">Entreprise : </label>
+                        <select class="custom-input" name="company_id" id="company_id">
+                            <option value="{{ $ticket->company_id }}">{{ $ticket->company->name }}</option>
+                            @foreach($companies as $company)
+                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('company_id')
+                        <div class="custom-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    @endcan
+                @else
+                    <input type="text" name="company_id" id="company_id" value="{{ auth()->user()->company_id }}" class="hidden" >
+                @endif
                 
                 <div class="col-span-full">
                     <label for="subject" class="custom-label">Sujet : <span class="text-red-600 font-bold">*</span></label>
