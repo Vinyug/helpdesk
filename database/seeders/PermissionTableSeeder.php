@@ -40,6 +40,7 @@ class PermissionTableSeeder extends Seeder
             'ticket-delete',
             'ticket-edit',
             'ticket-list',
+            'ticket-private',
             'user-create',
             'user-delete',
             'user-edit',

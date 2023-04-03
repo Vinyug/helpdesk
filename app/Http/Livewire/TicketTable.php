@@ -55,38 +55,40 @@ final class TicketTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
+        $query = Ticket::query()
+            ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
+            ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
+            ->select([
+                'tickets.*',
+                DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
+                'companies.name as company_name',
+            ]);
+        
         // if user authenticate have all-access, can see every tickets of DB
         if (auth()->user()->can('all-access')) {
-            return Ticket::query()
-                ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
-                ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
-                ->select([
-                    'tickets.*',
-                    DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
-                    'companies.name as company_name',
-                ]);
-        } else {
-            // else only users of his company
-            return Ticket::query()
-                ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
-                ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
-                ->select([
-                    'tickets.*',
-                    DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
-                    'companies.name as company_name',
-                ])
+            return $query;
+
+        } else { // else only users of his company
+            
+            // if user have permission ticket-private (admin-company)
+            if (auth()->user()->can('ticket-private')) {
+                $query->where('tickets.company_id', '=', auth()->user()->company_id);
+                return $query;
+                
+            } else {// else simple user of company
+                $query->where('tickets.company_id', '=', auth()->user()->company_id)
                 // if auth->user is not author of tickets, he looks only with visibility = 1 (public)
                 ->when(auth()->user()->id !== auth()->user()->tickets()->pluck('id'), function ($query) {
                     $query->where('visibility', '=', '1');
                 })
-                ->where('tickets.company_id', '=', auth()->user()->company_id)
                 // if user is author of tickets, he looks visibility 0 and 1 (private and public)
                 ->orWhere(function ($query) {
                     $query->where('user_id', auth()->user()->id)
-                          ->whereIn('visibility', [0, 1]);
+                    ->whereIn('visibility', [0, 1]);
                 });
+                return $query;
+            }
         }
-    
     }
 
     /*
