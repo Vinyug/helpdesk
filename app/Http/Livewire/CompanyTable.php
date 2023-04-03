@@ -206,13 +206,13 @@ final class CompanyTable extends PowerGridComponent
     public function actions(): array
     {
        return [
-            Button::make('edit', trans('Edit'))
-                ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+            Button::make('edit', trans(''))
+                ->class('btn-edit')
                 ->target('')
                 ->route('companies.edit', ['company' => 'uuid']),
                 
-            Button::make('destroy', trans('Delete'))
-                ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
+            Button::make('destroy', trans(''))
+                ->class('btn-delete')
                 ->target('')
                 ->route('companies.destroy', ['company' => 'uuid'])
                 ->method('delete')

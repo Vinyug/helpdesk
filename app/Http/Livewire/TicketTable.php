@@ -55,27 +55,39 @@ final class TicketTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
+        $query = Ticket::query()
+            ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
+            ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
+            ->select([
+                'tickets.*',
+                DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
+                'companies.name as company_name',
+            ]);
+        
         // if user authenticate have all-access, can see every tickets of DB
         if (auth()->user()->can('all-access')) {
-            return Ticket::query()
-                ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
-                ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
-                ->select([
-                    'tickets.*',
-                    DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
-                    'companies.name as company_name',
-                ]);
-        } else {
-            // else only users of his company
-            return Ticket::query()
-                ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
-                ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
-                ->select([
-                    'tickets.*',
-                    DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
-                    'companies.name as company_name',
-                ])
-                ->where('tickets.company_id', '=', auth()->user()->company_id);
+            return $query;
+
+        } else { // else only users of his company
+            
+            // if user have permission ticket-private (admin-company)
+            if (auth()->user()->can('ticket-private')) {
+                $query->where('tickets.company_id', '=', auth()->user()->company_id);
+                return $query;
+                
+            } else {// else simple user of company
+                $query->where('tickets.company_id', '=', auth()->user()->company_id)
+                // if auth->user is not author of tickets, he looks only with visibility = 1 (public)
+                ->when(auth()->user()->id !== auth()->user()->tickets()->pluck('id'), function ($query) {
+                    $query->where('visibility', '=', '1');
+                })
+                // if user is author of tickets, he looks visibility 0 and 1 (private and public)
+                ->orWhere(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                    ->whereIn('visibility', [0, 1]);
+                });
+                return $query;
+            }
         }
     }
 
@@ -127,7 +139,7 @@ final class TicketTable extends PowerGridComponent
             // ->addColumn('uuid')
             ->addColumn('state')
             // ->addColumn('service')
-            ->addColumn('visibility')
+            ->addColumn('visibility', fn (Ticket $ticket) => $ticket->visibility ? 'Publique' : 'Privée')
             ->addColumn('created_at_formatted', fn (Ticket $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
             ->addColumn('updated_at_formatted', fn (Ticket $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
         ;
@@ -189,7 +201,8 @@ final class TicketTable extends PowerGridComponent
             //     ->makeInputText(),
 
             Column::make(trans('Visibility'), 'visibility')
-                ->searchable(),
+                // ->searchable()
+                ->sortable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
@@ -199,7 +212,7 @@ final class TicketTable extends PowerGridComponent
             Column::make(trans('Updated at'), 'updated_at_formatted', 'updated_at')
                 ->searchable()
                 ->sortable()
-            //     ->makeInputDatePicker(),
+                //  ->makeInputDatePicker(),
 
         ]
 ;
@@ -222,18 +235,18 @@ final class TicketTable extends PowerGridComponent
      public function actions(): array
      {
         return [
-             Button::make('show', trans('Show'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+             Button::make('show', trans(''))
+                 ->class('btn-show')
                  ->target('')
                  ->route('tickets.show', ['ticket' => 'uuid']),
 
-             Button::make('edit', trans('Edit'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+             Button::make('edit', trans(''))
+                 ->class('btn-edit')
                  ->target('')
                  ->route('tickets.edit', ['ticket' => 'uuid']),
                  
-             Button::make('destroy', trans('Delete'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
+             Button::make('destroy', trans(''))
+                 ->class('btn-delete')
                  ->target('')
                  ->route('tickets.destroy', ['ticket' => 'uuid'])
                  ->method('delete')

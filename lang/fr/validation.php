@@ -218,6 +218,7 @@ return [
         'title'                    => 'titre',
         'updated_at'               => 'mis à jour à',
         'username'                 => 'nom d\'utilisateur',
+        'visibility'               => 'visibilité',
         'year'                     => 'année',
     ],
 ];

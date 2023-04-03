@@ -68,6 +68,54 @@ nav .menu ul li a:hover {
 }
 /* END NAVBAR  */
 
+
+/* POWERGRID */
+.btn-show {
+    margin: 0.25rem 0 auto 0;
+    width: 32px;
+    height: 32px;
+    background-color: #333;
+    mask: url(/public/assets/images/eye.svg) no-repeat 50% 50%;
+    -webkit-mask: url(/public/assets/images/eye.svg) no-repeat 50% 50%;
+    mask-size: contain;
+    transition-duration: 300ms;
+}
+.btn-show:hover {
+    background-color: #2ea3f2;
+    transform: scale(1.02, 1.12);
+}
+.btn-edit {
+    margin: auto 0;
+    margin-left: 1rem;
+    width: 22px;
+    height: 22px;
+    background-color: #333;
+    mask: url(/public/assets/images/pen.svg) no-repeat 50% 50%;
+    -webkit-mask: url(/public/assets/images/pen.svg) no-repeat 50% 50%;
+    mask-size: contain;
+    transition-duration: 300ms;
+}
+.btn-edit:hover {
+    background-color: #2ea3f2;
+    transform: scale(1.12, 1.05);
+}
+.btn-delete {
+    margin: 6px 0 auto 1rem;
+    width: 24px;
+    height: 24px;
+    background-color: #ef4444;
+    mask: url(/public/assets/images/trash.svg) no-repeat 50% 50%;
+    -webkit-mask: url(/public/assets/images/trash.svg) no-repeat 50% 50%;
+    mask-size: contain;
+    transition-duration: 300ms;
+}
+.btn-delete:hover {
+    background-color: #dc2626;
+    transform: scale(1.1);
+}
+/* END POWERGRID  */
+
+
 /* FOOTER */
 footer img:hover {
     filter: 
