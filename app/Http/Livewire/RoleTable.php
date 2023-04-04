@@ -170,18 +170,18 @@ final class RoleTable extends PowerGridComponent
     public function actions(): array
      {
         return [
-            Button::make('show', trans(''))
-                 ->class('btn-show')
+            Button::make('show', trans('Show'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
                  ->target('')
                  ->route('roles.show', ['role' => 'id']),
                  
-            Button::make('edit', trans(''))
-                 ->class('btn-edit')
+            Button::make('edit', trans('Edit'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
                  ->target('')
                  ->route('roles.edit', ['role' => 'id']),
                  
-             Button::make('destroy', trans(''))
-                 ->class('btn-delete')
+             Button::make('destroy', trans('Delete'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
                  ->target('')
                  ->route('roles.destroy', ['role' => 'id'])
                  ->method('delete')

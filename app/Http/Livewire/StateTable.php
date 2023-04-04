@@ -178,13 +178,13 @@ final class StateTable extends PowerGridComponent
             //      ->target('')
             //      ->route('states.show', ['state' => 'id']),
                  
-            Button::make('edit', trans(''))
-                 ->class('btn-edit')
+            Button::make('edit', trans('Edit'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
                  ->target('')
                  ->route('states.edit', ['state' => 'id']),
                  
-             Button::make('destroy', trans(''))
-                 ->class('btn-delete')
+             Button::make('destroy', trans('Delete'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
                  ->target('')
                  ->route('states.destroy', ['state' => 'id'])
                  ->method('delete')
