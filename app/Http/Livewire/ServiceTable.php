@@ -178,13 +178,13 @@ final class ServiceTable extends PowerGridComponent
             //      ->target('')
             //      ->route('services.show', ['service' => 'id']),
                  
-            Button::make('edit', trans(''))
-                 ->class('btn-edit')
+            Button::make('edit', trans('Edit'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
                  ->target('')
                  ->route('services.edit', ['service' => 'id']),
                  
-             Button::make('destroy', trans(''))
-                 ->class('btn-delete')
+             Button::make('destroy', trans('Delete'))
+                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
                  ->target('')
                  ->route('services.destroy', ['service' => 'id'])
                  ->method('delete')
