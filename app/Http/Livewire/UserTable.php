@@ -96,7 +96,7 @@ final class UserTable extends PowerGridComponent
             'company' => [
                 'name',
             ],
-            'role' => [
+            'roles' => [
                 'name',
             ],
         ];
