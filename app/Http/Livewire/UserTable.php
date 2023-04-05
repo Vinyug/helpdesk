@@ -57,12 +57,9 @@ final class UserTable extends PowerGridComponent
         // left join permets to take user datas with or without company
         $query = User::query()
         ->leftjoin('companies','users.company_id', '=', 'companies.id')
-        ->leftjoin('model_has_roles','users.id', '=', 'model_has_roles.model_id')
-        ->leftjoin('roles', 'model_has_roles.model_id', '=', 'roles.id')
         ->select([
             'users.*',
             'companies.name as company_name',
-            'roles.name as role_name',
         ]);
 
         // if user authenticate have all-access, can see every users of DB
@@ -73,7 +70,6 @@ final class UserTable extends PowerGridComponent
             // else only users of his company
             return $query
                 ->where('company_id', '=', auth()->user()->company_id);
-
         }
     }
 
@@ -94,9 +90,6 @@ final class UserTable extends PowerGridComponent
     {
         return [
             'company' => [
-                'name',
-            ],
-            'roles' => [
                 'name',
             ],
         ];
@@ -179,7 +172,7 @@ final class UserTable extends PowerGridComponent
             ->searchable()
             ->makeInputText(),
         
-            Column::make(trans('Role'), 'role_name', 'roles.name')
+            Column::make(trans('Role'), 'role')
             ->sortable()
             ->searchable()
             ->makeInputText(),

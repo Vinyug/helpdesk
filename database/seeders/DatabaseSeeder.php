@@ -11,30 +11,6 @@ use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    // public function run()
-    // {
-    //     $companies = Company::factory()->count(3)->create();
-
-    //     $services = ['Service A', 'Service B', 'Service C'];
-    //     $jobs = ['Poste A', 'Poste B', 'Poste C'];
-        
-    //     foreach ($services as $service) {
-    //         foreach ($jobs as $job) {
-    //             Listing::factory()->create([
-    //                 'job' => $job,
-    //                 'service' => $service
-    //             ]);
-    //         }
-    //     }
-
-    //     $users = User::factory()->count(4)->create([
-    //         'company_id' => $companies->random()->id,
-    //         'job' => $jobs[array_rand($jobs)],
-    //         'role' => 'user'
-    //     ]);
-    // }
-
-
     public function run()
     {
         // COMPANIES
@@ -80,6 +56,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
             'company_id' => $companies[0]->id,
             'job' => $jobs[0],
+            'role' => 'Admin-entreprise',
         ]);
     
         $adminCompanyRole = Role::create(['name' => 'Admin-entreprise']);
@@ -107,6 +84,7 @@ class DatabaseSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'company_id' => $companies[$companyIndex]->id,
                 'job' => $jobs[rand(0,2)],
+                'role' => 'Membre'
             ]);
             
             $userMember->assignRole([$memberRole->id]);
