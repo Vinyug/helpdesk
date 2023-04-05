@@ -50,6 +50,8 @@
 
                 <div class="w-full">
                     <label for="company_id" class="custom-label">Entreprise : </label>
+
+                    @if (auth()->user()->can('all-access'))
                     <select class="custom-input" name="company_id" id="company_id">
                         @if (empty($user->company_id))    
                         <option value="">Choisir une entreprise</option>
@@ -61,6 +63,12 @@
                             <option value="{{ $company->id }}">{{ $company->name }}</option>
                         @endforeach
                     </select>
+                    @else
+                    <select class="custom-input" name="company_id" id="company_id" disabled readonly>
+                        <option value="{{ auth()->user()->company_id }}">{{ auth()->user()->company->name }}</option>
+                    </select>
+                    @endif
+
                     @error('company_id')
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
