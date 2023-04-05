@@ -75,12 +75,9 @@ class UserController extends Controller
     
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
-    
-        // Attribute roles at the field role  
-        $role = $this->getModelRoleName($request);
         
         // insert user
-        $user = User::create(array_merge($input, compact('role')));
+        $user = User::create($input);
         // assign roles at user
         $user->assignRole($request->input('roles'));
     
@@ -140,11 +137,8 @@ class UserController extends Controller
 
         $input = $request->all();
 
-        // Attribute roles at the field role  
-        $role = $this->getModelRoleName($request);
-        
         // update user 
-        $user->update(array_merge($input, compact('role')));
+        $user->update($input);
         
         // assign roles to user (delete and assign)
         DB::table('model_has_roles')->where('model_id',$id)->delete();
@@ -165,27 +159,5 @@ class UserController extends Controller
         User::find($id)->delete();
         return redirect()->route('users.index')
                         ->with('success','L\'utilisateur est supprimé.');
-    }
-
-    /**
-     * Custom method. 
-     *
-     */
-    public function getModelRoleName(Request $request)
-    {
-    // get roles of select
-    $roles = $request->roles;
-    // stock in array
-    $roleNames = [];
-    
-    // for every id of request roles
-    foreach($roles as $roleId) {
-        $role = Role::find($roleId);
-        $roleNames[] = $role->name;
-    }
-    // separator
-    $role = implode(', ', $roleNames);
-    
-    return $role;
     }
 }

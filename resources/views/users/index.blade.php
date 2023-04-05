@@ -8,7 +8,7 @@
                     <h2 class="font-share-tech mt-8 mb-12 text-4xl">Liste des utilisateurs</h2>
                 </div>
                 <div class="pull-right my-3">
-                    @can('company-create')
+                    @can('user-create')
                     <a class="btn-green" href="{{ route('users.create') }}"> Créer un utilisateur</a>
                     @endcan
                 </div>
