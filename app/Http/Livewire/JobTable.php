@@ -178,13 +178,13 @@ final class JobTable extends PowerGridComponent
             //      ->target('')
             //      ->route('jobs.show', ['job' => 'id']),
                  
-            Button::make('edit', trans('Edit'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+            Button::make('edit', trans(''))
+                 ->class('btn-edit')
                  ->target('')
                  ->route('jobs.edit', ['job' => 'id']),
                  
-             Button::make('destroy', trans('Delete'))
-                 ->class('inline-block ml-4 py-1 align-middle text-center font-medium text-red-600 hover:underline transition duration-150 ease-in-out')
+             Button::make('destroy', trans(''))
+                 ->class('btn-delete')
                  ->target('')
                  ->route('jobs.destroy', ['job' => 'id'])
                  ->method('delete')
