@@ -75,8 +75,8 @@ nav .menu ul li a:hover {
     width: 32px;
     height: 32px;
     background-color: #333;
-    mask: url(/public/assets/images/eye.svg) no-repeat 50% 50%;
-    -webkit-mask: url(/public/assets/images/eye.svg) no-repeat 50% 50%;
+    mask: url(/assets/images/eye.svg) no-repeat 50% 50%;
+    -webkit-mask: url(/assets/images/eye.svg) no-repeat 50% 50%;
     mask-size: contain;
     transition-duration: 300ms;
 }
@@ -90,8 +90,8 @@ nav .menu ul li a:hover {
     width: 22px;
     height: 22px;
     background-color: #333;
-    mask: url(/public/assets/images/pen.svg) no-repeat 50% 50%;
-    -webkit-mask: url(/public/assets/images/pen.svg) no-repeat 50% 50%;
+    mask: url(/assets/images/pen.svg) no-repeat 50% 50%;
+    -webkit-mask: url(/assets/images/pen.svg) no-repeat 50% 50%;
     mask-size: contain;
     transition-duration: 300ms;
 }
@@ -104,8 +104,8 @@ nav .menu ul li a:hover {
     width: 24px;
     height: 24px;
     background-color: #ef4444;
-    mask: url(/public/assets/images/trash.svg) no-repeat 50% 50%;
-    -webkit-mask: url(/public/assets/images/trash.svg) no-repeat 50% 50%;
+    mask: url(/assets/images/trash.svg) no-repeat 50% 50%;
+    -webkit-mask: url(/assets/images/trash.svg) no-repeat 50% 50%;
     mask-size: contain;
     transition-duration: 300ms;
 }
