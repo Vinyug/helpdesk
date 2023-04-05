@@ -56,7 +56,6 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
             'company_id' => $companies[0]->id,
             'job' => $jobs[0],
-            'role' => 'Admin-entreprise',
         ]);
     
         $adminCompanyRole = Role::create(['name' => 'Admin-entreprise']);
@@ -84,7 +83,6 @@ class DatabaseSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'company_id' => $companies[$companyIndex]->id,
                 'job' => $jobs[rand(0,2)],
-                'role' => 'Membre'
             ]);
             
             $userMember->assignRole([$memberRole->id]);
