@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
@@ -56,11 +58,15 @@ final class UserTable extends PowerGridComponent
     {
         // left join permets to take user datas with or without company
         $query = User::query()
-        ->leftjoin('companies','users.company_id', '=', 'companies.id')
-        ->select([
-            'users.*',
-            'companies.name as company_name',
-        ]);
+            ->leftjoin('companies','users.company_id', '=', 'companies.id')
+            ->leftjoin('model_has_roles','users.id', '=', 'model_has_roles.model_id')
+            ->leftjoin('roles','model_has_roles.role_id', '=', 'roles.id')
+            ->select([
+                'users.*',
+                'companies.name as company_name',
+                DB::raw('GROUP_CONCAT(DISTINCT roles.name SEPARATOR ", ") as role_name'),
+            ])
+            ->groupBy('users.id');
 
         // if user authenticate have all-access, can see every users of DB
         if (auth()->user()->can('all-access')) {
@@ -72,6 +78,7 @@ final class UserTable extends PowerGridComponent
                 ->where('company_id', '=', auth()->user()->company_id);
         }
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -92,6 +99,9 @@ final class UserTable extends PowerGridComponent
             'company' => [
                 'name',
             ],
+            'roles' => [
+                'name',
+            ],
         ];
     }
 
@@ -110,12 +120,12 @@ final class UserTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             // ->addColumn('id')
-            // ->addColumn('company_id')
+            ->addColumn('company_id')
             ->addColumn('job')
             // custom column company of user
-            ->addColumn('company_name')
-            // custom column role of user
-            ->addColumn('role_name')
+            ->addColumn('company_name', fn (User $user) => $user->company ? $user->company->name : '')
+            // custom column roles of user
+            ->addColumn('role_name', fn (User $user) => $user->roles->pluck('name')->implode(', '))
             ->addColumn('firstname')
             ->addColumn('lastname')
             ->addColumn('email')
@@ -168,14 +178,14 @@ final class UserTable extends PowerGridComponent
                 ->makeInputText(),
                 
             Column::make(trans('Job'), 'job')
-            ->sortable()
-            ->searchable()
-            ->makeInputText(),
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
         
-            Column::make(trans('Role'), 'role')
-            ->sortable()
-            ->searchable()
-            ->makeInputText(),
+            Column::make(trans('Role'), 'role_name', 'roles.name')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
