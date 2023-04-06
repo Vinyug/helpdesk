@@ -98,9 +98,17 @@
                     <label for="role" class="custom-label">Rôle : <span class="text-red-600 font-bold">*</span></label>
                     <select class="custom-input" name="roles[]" id="role" multiple="">
                         <option value="">Choisir un rôle</option>
-                        @foreach ($roles as $role)
-                        <option value="{{ $role->id }}">{{ $role->name }}</option>   
-                        @endforeach
+                        @if (auth()->user()->can('all-access'))
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        @else
+                            @foreach ($roles as $role)
+                                @if (in_array($role->id, [2, 3]))
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endif
+                            @endforeach
+                        @endif
                     </select>
                     @error('roles')
                     <div class="custom-error">{{ $message }}</div>
