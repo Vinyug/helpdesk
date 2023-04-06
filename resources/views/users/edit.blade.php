@@ -64,7 +64,7 @@
                         @endforeach
                     </select>
                     @else
-                    <select class="custom-input" name="company_id" id="company_id" disabled readonly>
+                    <select class="custom-input" name="company_id" id="company_id">
                         <option value="{{ auth()->user()->company_id }}">{{ auth()->user()->company->name }}</option>
                     </select>
                     @endif
