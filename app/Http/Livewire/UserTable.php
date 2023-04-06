@@ -56,7 +56,7 @@ final class UserTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        // left join permets to take user datas with or without company
+        // left join permits to take user datas with or without company
         $query = User::query()
             ->leftjoin('companies','users.company_id', '=', 'companies.id')
             ->leftjoin('model_has_roles','users.id', '=', 'model_has_roles.model_id')
