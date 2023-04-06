@@ -63,6 +63,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // if user have not all-access, only roles 2 (User) and/or 3 (admin-company) can be transmit.
+        $validRoles = collect([]);
+        if (auth()->user()->can('all-access')) {
+            $validRoles = Role::pluck('id');
+        } else {
+            $validRoles = Role::whereIn('id', [2, 3])->pluck('id');
+        }
+
+        // validation
         $this->validate($request, [
             'firstname' => 'required',
             'lastname' => 'required',
@@ -70,12 +79,18 @@ class UserController extends Controller
             'password' => 'required|same:confirm-password',
             'company_id' => 'nullable|exists:companies,id',
             'job' => 'exists:listings,job|nullable',
-            'roles' => 'required',
+            'roles' => ['required', 'array', Rule::in($validRoles),
+            ],
         ]);
     
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
         
+        // if user have not all-access companies.id  = user.company_id
+        if (!auth()->user()->can('all-access')) {
+            $input['company_id'] = auth()->user()->company_id;
+        }
+
         // insert user
         $user = User::create($input);
         // assign roles at user
@@ -124,18 +139,33 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        
+        $user = User::findOrFail($id);
+
+        // if user have not all-access, only roles 2 (User) and/or 3 (admin-company) can be transmit.
+        $validRoles = collect([]);
+        if (auth()->user()->can('all-access')) {
+            $validRoles = Role::pluck('id');
+        } else {
+            $validRoles = Role::whereIn('id', [2, 3])->pluck('id');
+        }
+
+        // validation
         $this->validate($request, [
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'company_id' => 'nullable|exists:companies,id',
             'job' => 'exists:listings,job|nullable',
-            'roles' => 'required|exists:roles,id'
+            'roles' => ['required', 'array', Rule::in($validRoles),
+            ],
         ]);
 
         $input = $request->all();
+        
+        // if user have not all-access companies.id  = user.company_id
+        if (!auth()->user()->can('all-access')) {
+            $input['company_id'] = auth()->user()->company_id;
+        }
 
         // update user 
         $user->update($input);
