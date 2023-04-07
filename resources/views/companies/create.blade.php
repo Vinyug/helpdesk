@@ -24,6 +24,17 @@
 
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
                 <div class="col-span-full">
+                    <div class="flex items-center">
+                        <label for="active" class="custom-label mb-0">Compte actif  :</label>
+                        <input type="checkbox" name="active" id="active" value="1" class="ml-4 border-gray-300 text-custom-blue focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" {{ old('active') ? '' : 'checked' }}>
+                    </div>
+    
+                    @error('active')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-span-full">
                     <label for="name" class="custom-label">Nom de l'entreprise : <span class="text-red-600 font-bold">*</span></label>
                     <input type="text" name="name" id="name" class="custom-input" placeholder="Saisir le nom de l'entreprise" value="{{ old('name') }}" required>
                     @error('name')

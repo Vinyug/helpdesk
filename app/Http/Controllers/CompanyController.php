@@ -76,8 +76,15 @@ class CompanyController extends Controller
         // genererate uuid
         $uuid = Str::uuid()->toString();
 
-        // insert in DB
-        Company::create(array_merge($request->post(), ['uuid' => $uuid]));
+        // verify if checked return 1
+        $active = !isset($request->active) ? 0 : 1;
+        
+        $input = $request->all();
+        $input['active'] = $active;
+            
+        // create company 
+        Company::create(array_merge($input, ['uuid' => $uuid]));
+
 
         // redirect with message
         return redirect()->route('companies.index')->with('success','L\'entreprise a été enregistrée avec succès.');
@@ -128,7 +135,21 @@ class CompanyController extends Controller
             'email' => ['required', 'email', Rule::unique('companies')->ignore($company->id)],
         ]);
         
-        $company->fill($request->post())->save();
+        // verify if checked return 1
+        $active = isset($request->active) ? 1 : 0;
+        
+        $input = $request->all();
+        $input['active'] = $active;
+  
+        // udpate user
+        // update company 
+        $company->update($input);
+        
+        // if value of active company change, every users of company take value of active company
+        if ($active !== $company->active) {
+            $company->users()->update(['active' => $active]);
+        }
+
 
         return redirect()->route('companies.index')->with('success','L\'entreprise a été mise à jour avec succès.');
     }

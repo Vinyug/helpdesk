@@ -105,7 +105,7 @@ final class CompanyTable extends PowerGridComponent
             // ->addColumn('phone')
             ->addColumn('email')
             // ->addColumn('uuid')
-            ->addColumn('active')
+            ->addColumn('active', fn(Company $company) => $company->active ? 'Activé' : 'Désactivé')
             ->addColumn('created_at_formatted', fn (Company $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
             // ->addColumn('updated_at_formatted', fn (Company $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
             ;
@@ -170,7 +170,7 @@ final class CompanyTable extends PowerGridComponent
                 //     ->searchable()
                 //     ->makeInputText(),
                 
-                Column::make(trans('Account'), 'active')
+            Column::make(trans('Account'), 'active')
                 ->sortable(),
                 // ->toggleable(),
 
