@@ -9,9 +9,7 @@
 - Create migration table to Database : php artisan migrate
 - Open project with web browser
 - Configure a mailer in .env
-- Seed : 
-    * php artisan db:seed --class=PermissionTableSeeder
-    * php artisan db:seed --class=CreateAdminUserSeeder
+- Seed :php artisan db:seed --class=DatabaseSeeder
 
 #### Login admin :
 - email : admin@mail.com
