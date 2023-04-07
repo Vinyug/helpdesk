@@ -19,6 +19,7 @@ class Ticket extends Model
         'state',
         'service', 
         'visibility', 
+        'editable',
     ];
 
     // allow to transmit uuid in URL (instead of id by default)

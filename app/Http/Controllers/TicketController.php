@@ -180,13 +180,62 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Ticket $ticket)
+    public function show(Ticket $ticket, Comment $comment)
     {
         // if user have all-access or user belongs to a company
         if (Auth::user()->can('all-access') || Auth::user()->company_id === $ticket->company_id) {
             // get all comments of ticket
             $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
-            
+            // get last comment of ticket (first() cause DESC)
+            $lastComment = $comments->first();
+
+
+            // if user with all-access and ticket user_id IS NOT this user, open ticket. Author can not modify his ticket
+            if ((auth()->user()->can('all-access')) && (auth()->user()->id !== $ticket->user_id)) {
+                // update ticket
+                $ticket->editable = 0; 
+                $ticket->save();
+                
+                // update all comments of the ticket
+                if ($lastComment->user_id === auth()->user()->id) {
+                    // if the last comment is by the user, keep it editable
+                    foreach ($comments as $comment) {
+                        if ($comment->id !== $lastComment->id) {
+                            $comment->editable = 0;
+                            $comment->save();
+                        }
+                    }
+                    
+                } else {
+                    // update all comments of the ticket
+                    foreach ($comments as $comment) {
+                        $comment->editable = 0;
+                        $comment->save();
+                    }
+                }
+            }
+
+            // if user with all-access and ticket user_id IS this user, open ticket. Author can not modify his ticket
+            if ((auth()->user()->can('all-access')) && (auth()->user()->id === $ticket->user_id)) {
+                
+                if ($lastComment->user_id === auth()->user()->id) {
+                    // if the last comment is by the user, keep it editable
+                    foreach ($comments as $comment) {
+                        if ($comment->id !== $lastComment->id) {
+                            $comment->editable = 0;
+                            $comment->save();
+                        }
+                    }
+                    
+                } else {
+                    // update all comments of the ticket
+                    foreach ($comments as $comment) {
+                        $comment->editable = 0;
+                        $comment->save();
+                    }
+                }
+            }
+
             return view('tickets.show',compact('ticket', 'comments'));
         }
 
@@ -203,8 +252,8 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        // add super admin and admin company
-        if (Auth()->user()->id == $ticket->user_id) {
+        
+        if ((Auth()->user()->id === $ticket->user_id) && ($ticket->editable)) {
             $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
             $comment = Comment::where('ticket_id', '=', $ticket->id)->first();
             $companies = Company::get();
@@ -266,8 +315,13 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        $ticket->delete();
-        return redirect()->route('tickets.index')->with('success','Le ticket a été supprimé avec succès');
+        if ((Auth()->user()->id === $ticket->user_id) && ($ticket->editable)) {
+            $ticket->delete();
+         
+            return redirect()->route('tickets.index')->with('success','Le ticket a été supprimé avec succès');
+        }
+        
+        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
     }
 
 

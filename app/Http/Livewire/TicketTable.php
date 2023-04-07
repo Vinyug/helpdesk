@@ -274,12 +274,13 @@ final class TicketTable extends PowerGridComponent
             //Hide action edit if user have not permission
              Rule::button('edit')
                  ->when(fn() => auth()->user()->can('ticket-edit') === false)
-                 ->when(fn(Ticket $ticket) => $ticket->user_id !== auth()->user()->id)
+                 ->when(fn(Ticket $ticket) => ($ticket->user_id !== auth()->user()->id) || ($ticket->editable === 0))
                  ->hide(),
  
             //Hide action delete if user have not permission
              Rule::button('destroy')
                  ->when(fn() => auth()->user()->can('ticket-delete') === false)
+                 ->when(fn(Ticket $ticket) => ($ticket->user_id !== auth()->user()->id) || ($ticket->editable === 0))
                  ->hide(),
          ];
      }
