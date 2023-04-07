@@ -187,6 +187,12 @@ class TicketController extends Controller
             // get all comments of ticket
             $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
             
+            // if user with all-access and ticket user_id of this user, open ticket editable = 0. Author can not modify his ticket
+            if ((auth()->user()->can('all-access')) && (auth()->user()->id !== $ticket->user_id)) {
+                $ticket->editable = 0; 
+                $ticket->save();
+            }
+
             return view('tickets.show',compact('ticket', 'comments'));
         }
 
