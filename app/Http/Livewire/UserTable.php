@@ -56,7 +56,7 @@ final class UserTable extends PowerGridComponent
     */
     public function datasource(): Builder
     {
-        // left join permets to take user datas with or without company
+        // left join permits to take user datas with or without company
         $query = User::query()
             ->leftjoin('companies','users.company_id', '=', 'companies.id')
             ->leftjoin('model_has_roles','users.id', '=', 'model_has_roles.model_id')
@@ -129,6 +129,7 @@ final class UserTable extends PowerGridComponent
             ->addColumn('firstname')
             ->addColumn('lastname')
             ->addColumn('email')
+            ->addColumn('active', fn (User $user) => $user->active ? 'Activé' : 'Désactivé')
             ->addColumn('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
             // ->addColumn('updated_at_formatted', fn (User $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
             ;
@@ -186,6 +187,9 @@ final class UserTable extends PowerGridComponent
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
+            
+            Column::make(trans('Account'), 'active')
+                ->sortable(),
 
             Column::make(trans('Created at'), 'created_at_formatted', 'created_at')
                 ->searchable()
