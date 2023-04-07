@@ -123,7 +123,7 @@ class CompanyController extends Controller
             'city' => 'required|max:50',
             'zip_code' => 'required|digits:5',
             'siret' => 'digits:14|nullable',
-            'code_ape' => 'max:5|nullable',
+            'code_ape' => 'size:5|nullable',
             'phone' => 'digits:10|nullable',
             'email' => ['required', 'email', Rule::unique('companies')->ignore($company->id)],
         ]);

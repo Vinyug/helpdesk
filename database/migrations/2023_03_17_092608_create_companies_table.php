@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('city');
-            $table->integer('zip_code');
-            $table->integer('siret')->nullable();
+            $table->string('zip_code');
+            $table->string('siret')->nullable();
             $table->string('code_ape')->nullable();
-            $table->integer('phone')->nullable();
+            $table->string('phone')->nullable();
             $table->string('email');
             $table->string('uuid');
             $table->timestamps();
