@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -67,7 +68,7 @@ class CompanyController extends Controller
             'siret' => 'digits:14|nullable',
             'code_ape' => 'max:5|nullable',
             'phone' => 'digits:10|nullable',
-            'email' => 'required|unique:users,email|unique:companies,email|max:80',
+            'email' => 'required|unique:companies,email|max:80',
         ]);
         
         // dd($request);
@@ -75,8 +76,15 @@ class CompanyController extends Controller
         // genererate uuid
         $uuid = Str::uuid()->toString();
 
-        // insert in DB
-        Company::create(array_merge($request->post(), ['uuid' => $uuid]));
+        // verify if checked return 1
+        $active = !isset($request->active) ? 0 : 1;
+        
+        $input = $request->all();
+        $input['active'] = $active;
+            
+        // create company 
+        Company::create(array_merge($input, ['uuid' => $uuid]));
+
 
         // redirect with message
         return redirect()->route('companies.index')->with('success','L\'entreprise a été enregistrée avec succès.');
@@ -122,12 +130,26 @@ class CompanyController extends Controller
             'city' => 'required|max:50',
             'zip_code' => 'required|digits:5',
             'siret' => 'digits:14|nullable',
-            'code_ape' => 'max:5|nullable',
+            'code_ape' => 'size:5|nullable',
             'phone' => 'digits:10|nullable',
-            'email' => 'required|unique:users,email|unique:companies,email|max:80',
+            'email' => ['required', 'email', Rule::unique('companies')->ignore($company->id)],
         ]);
         
-        $company->fill($request->post())->save();
+        // verify if checked return 1
+        $active = isset($request->active) ? 1 : 0;
+        
+        $input = $request->all();
+        $input['active'] = $active;
+  
+        // udpate user
+        // update company 
+        $company->update($input);
+        
+        // if value of active company change, every users of company take value of active company
+        if ($active !== $company->active) {
+            $company->users()->update(['active' => $active]);
+        }
+
 
         return redirect()->route('companies.index')->with('success','L\'entreprise a été mise à jour avec succès.');
     }
