@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -67,7 +68,7 @@ class CompanyController extends Controller
             'siret' => 'digits:14|nullable',
             'code_ape' => 'max:5|nullable',
             'phone' => 'digits:10|nullable',
-            'email' => 'required|unique:users,email|unique:companies,email|max:80',
+            'email' => 'required|unique:companies,email|max:80',
         ]);
         
         // dd($request);
@@ -124,7 +125,7 @@ class CompanyController extends Controller
             'siret' => 'digits:14|nullable',
             'code_ape' => 'max:5|nullable',
             'phone' => 'digits:10|nullable',
-            'email' => 'required|unique:users,email|unique:companies,email|max:80',
+            'email' => ['required', 'email', Rule::unique('companies')->ignore($company->id)],
         ]);
         
         $company->fill($request->post())->save();
