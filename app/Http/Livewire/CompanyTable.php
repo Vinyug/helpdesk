@@ -206,7 +206,12 @@ final class CompanyTable extends PowerGridComponent
     public function actions(): array
     {
        return [
-        Button::make('edit', trans(''))
+        Button::make('show', trans(''))
+            ->class('btn-show')
+            ->target('')
+            ->route('companies.show', ['company' => 'uuid']),
+        
+            Button::make('edit', trans(''))
             ->class('btn-edit')
             ->target('')
             ->route('companies.edit', ['company' => 'uuid']),
