@@ -209,8 +209,8 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        // add super admin and admin company
-        if (Auth()->user()->id == $ticket->user_id) {
+        
+        if ((Auth()->user()->id === $ticket->user_id) && ($ticket->editable)) {
             $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
             $comment = Comment::where('ticket_id', '=', $ticket->id)->first();
             $companies = Company::get();
@@ -272,8 +272,13 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        $ticket->delete();
-        return redirect()->route('tickets.index')->with('success','Le ticket a été supprimé avec succès');
+        if ((Auth()->user()->id === $ticket->user_id) && ($ticket->editable)) {
+            $ticket->delete();
+         
+            return redirect()->route('tickets.index')->with('success','Le ticket a été supprimé avec succès');
+        }
+        
+        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
     }
 
 
