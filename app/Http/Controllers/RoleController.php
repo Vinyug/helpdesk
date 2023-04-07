@@ -57,7 +57,7 @@ class RoleController extends Controller
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index')
-                        ->with('success','Un nouveau rôle est crée.');
+                        ->with('success','Un nouveau rôle est créé.');
     }
 
     /**
