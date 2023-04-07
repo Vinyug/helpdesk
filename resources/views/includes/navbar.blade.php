@@ -45,7 +45,7 @@
             
 
             <!-- Sidebar -->
-            <div class="hidden sm:block absolute transform transition duration-700 top-0 -right-80 py-4 z-10 w-80 bg-white h-[calc(100vh-65px)] mt-[65px] border-r-[1px] border-custom-dark border-opacity-30 shadow-md shadow-gray-400" :class="{'opacity-0': ! isOpen === false, '-translate-x-full opacity-100': isOpen}">
+            <div class="hidden sm:block absolute transform transition duration-700 top-0 -right-80 py-4 z-10 w-80 bg-white h-[calc(100vh-113px)] mt-[65px] border-r-[1px] border-custom-dark border-opacity-30 shadow-md shadow-gray-400" :class="{'opacity-0': ! isOpen === false, '-translate-x-full opacity-100': isOpen}">
 
                 <div class="flex justify-between">
                     <h2 class="font-bold pl-4 text-custom-dark text-2xl sm:text-3xl">Menu</h2>

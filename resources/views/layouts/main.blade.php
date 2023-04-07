@@ -18,7 +18,8 @@
         {{-- <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> --}}
     </head>
 
-    <body class="overflow-x-hidden text-custom-dark flex flex-col min-h-screen antialiased" x-data="{ isOpen: false }" class="relative antialiased min-h-screen lg:flex" @keydown.escape.window="isOpen = false">
+    <body class="overflow-x-hidden text-custom-dark flex flex-col min-h-screen p-0 antialiased relative lg:flex" x-data="{ isOpen: false }" @keydown.escape.window="isOpen = false">
+
             
         @include('includes.header')
         
