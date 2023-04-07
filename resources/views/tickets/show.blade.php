@@ -104,7 +104,7 @@
                     Par <span class="font-medium">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
                 </div>
                 
-                @if ($loop->first && $comment->user_id == Auth::id() && ($ticket->editable || $comment->editable))
+                @if ($loop->first && $comment->user_id == Auth::id() && $comment->editable)
                 <div>
                     <a @click="editComment = !editComment" x-text="editComment ? 'Restituer' : 'Modifier'" x-bind:class="{ 'btn-blue': !editComment, 'btn-dark-blue': editComment }" class="btn-blue text-sm my-1 sm:my-2 cursor-pointer"></a>
                     

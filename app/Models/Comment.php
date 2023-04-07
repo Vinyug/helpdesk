@@ -13,6 +13,7 @@ class Comment extends Model
         'user_id',
         'ticket_id',
         'content', 
+        'editable', 
     ];
 
 
