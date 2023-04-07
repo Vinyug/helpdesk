@@ -83,8 +83,12 @@ class UserController extends Controller
             ],
         ]);
     
+        // verify if checked return 1
+        $active = !isset($request->active) ? 0 : 1;
+        
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
+        $input['active'] = $active;
         
         // if user have not all-access companies.id  = user.company_id
         if (!auth()->user()->can('all-access')) {
@@ -160,7 +164,11 @@ class UserController extends Controller
             ],
         ]);
 
+        // verify if checked return 1
+        $active = isset($request->active) ? 1 : 0;
+        
         $input = $request->all();
+        $input['active'] = $active;
         
         // if user have not all-access companies.id  = user.company_id
         if (!auth()->user()->can('all-access')) {

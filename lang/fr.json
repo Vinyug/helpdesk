@@ -1,6 +1,7 @@
 {
     "(and :count more error)": "(et :count erreur en plus)",
     "(and :count more errors)": "(et :count erreurs en plus)",
+    "Account": "Compte",
     "Address": "Adresse",
     "All rights reserved.": "Tous droits réservés.",
     "Author": "Auteur",

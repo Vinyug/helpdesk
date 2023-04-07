@@ -23,6 +23,17 @@
             @csrf
 
             <div class="grid sm:grid-cols-2 gap-4 p-4">    
+                <div class="col-span-full">
+                    <div class="flex items-center">
+                        <label for="active" class="custom-label mb-0">Compte actif :</label>
+                        <input type="checkbox" name="active" id="active" value="1" class="ml-4 border-gray-300 text-custom-blue focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" {{ old('active') ? '' : 'checked' }}>
+                    </div>
+    
+                    @error('active')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <div class="w-full">
                     <label for="firstname" class="custom-label">Prénom : <span class="text-red-600 font-bold">*</span></label>
                     <input type="text" name="firstname" id="firstname" class="custom-input" placeholder="Saisir le Prénom" value="{{ old('firstname') }}" required>
