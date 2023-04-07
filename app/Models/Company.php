@@ -19,7 +19,7 @@ class Company extends Model
         'phone', 
         'email',
         'uuid',
-        'present',
+        'active',
     ];
 
     // allow to transmit uuid in URL (instead of id by default)

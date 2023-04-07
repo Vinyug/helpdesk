@@ -24,7 +24,6 @@ return new class extends Migration
             $table->integer('phone')->nullable();
             $table->string('email');
             $table->string('uuid');
-            $table->boolean('present')->default('1');
             $table->timestamps();
         });
     }
