@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 class CompanyController extends Controller
@@ -17,7 +18,7 @@ class CompanyController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:company-list|company-create|company-edit|company-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:company-list', ['only' => ['index','show']]);
          $this->middleware('permission:company-create', ['only' => ['create','store']]);
          $this->middleware('permission:company-edit', ['only' => ['edit','update']]);
          $this->middleware('permission:company-delete', ['only' => ['destroy']]);
@@ -150,8 +151,13 @@ class CompanyController extends Controller
             $company->users()->update(['active' => $active]);
         }
 
+        $success = 'L\'entreprise a été mise à jour avec succès.';
 
-        return redirect()->route('companies.index')->with('success','L\'entreprise a été mise à jour avec succès.');
+        if (auth()->user()->can('company-list')) {
+            return redirect()->route('companies.index')->with('success', $success);
+        }
+        
+        return redirect()->back()->with('status', $success);
     }
 
     /**
