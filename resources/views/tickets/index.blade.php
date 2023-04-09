@@ -5,7 +5,11 @@
         <div class="flex flex-wrap">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <div class="pull-left mb-2">
-                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">Liste des tickets</h2>
+                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">Liste des tickets
+                        
+                    @if (auth()->user()->company() && !auth()->user()->can('all-access'))
+                        - Entreprise : {{ auth()->user()->company->name }}
+                    @endif</h2>
                 </div>
                 <div class="pull-right my-3">
                     @can('ticket-create')

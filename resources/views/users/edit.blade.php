@@ -60,10 +60,10 @@
                 </div>
 
                 <div class="w-full">
-                    <label for="company_id" class="custom-label">Entreprise : </label>
+                    <label for="company_id" class="custom-label">Entreprise : <span class="text-red-600 font-bold">*</span></label>
 
                     @if (auth()->user()->can('all-access'))
-                    <select class="custom-input" name="company_id" id="company_id">
+                    <select class="custom-input" name="company_id" id="company_id" required>
                         @if (empty($user->company_id))    
                         <option value="">Choisir une entreprise</option>
                         @else
