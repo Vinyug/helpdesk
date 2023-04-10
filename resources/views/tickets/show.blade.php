@@ -106,14 +106,77 @@
                 
                 @if ($loop->first && $comment->user_id == Auth::id() && $comment->editable)
                 <div>
-                    <a @click="editComment = !editComment" x-text="editComment ? 'Restituer' : 'Modifier'" x-bind:class="{ 'btn-blue': !editComment, 'btn-dark-blue': editComment }" class="btn-blue text-sm my-1 sm:my-2 cursor-pointer"></a>
+                    <a 
+                        class="btn-blue text-sm my-1 sm:my-2 cursor-pointer"
+                        @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
+                            href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier 
+                        @else
+                            @click="editComment = !editComment" x-text="editComment ? 'Restituer' : 'Modifier'" x-bind:class="{ 'btn-blue': !editComment, 'btn-dark-blue': editComment }">
+                        @endif 
+                    </a>
+
+                    {{-- BUTTON DELETE --}}
+                    <a class="btn-red text-sm my-1 sm:my-2 mr-2" x-data="" x-on:click.prevent="$dispatch('open-modal',
+                    @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
+                        'confirm-ticket-delete'
+                    @else
+                        'confirm-comment-delete'
+                    @endif 
+                    )"
+                    >Annuler</a>
                     
-                    <form class="btn-red text-sm my-1 sm:my-2 mr-2" action="{{ route('comments.destroy', $comment->id) }}" method="Post">
-                        @csrf
-                        @method('DELETE')
-                        
-                        <button type="submit" >Annuler</button>
-                    </form>
+                    {{-- MODAL TICKET OR COMMENT --}}
+                    @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
+                        <x-modal name="confirm-ticket-delete">
+                            <form method="post" action="{{ route('tickets.destroy', $ticket->uuid) }}" class="p-6">
+                                @csrf
+                                @method('DELETE')
+                    
+                                <h2 class="text-lg font-medium">
+                                    {{ __('Êtes-vous sûr de vouloir supprimer ce ticket ?') }}
+                                </h2>
+                    
+                                <p class="mt-1 text-sm text-custom-grey">
+                                    {{ __('Une fois ce ticket supprimé, toutes ses ressources et données seront définitivement effacées.') }}
+                                </p>
+                    
+                                <div class="mt-2 flex flex-wrap justify-end">
+                                    <x-secondary-button class="mt-4 ml-0 w-full sm:w-auto" x-on:click="$dispatch('close')">
+                                        {{ __('Annuler') }}
+                                    </x-secondary-button>
+                    
+                                    <x-danger-button class="ml-0 mt-4 sm:ml-3 w-full sm:w-auto">
+                                        {{ __('Confirmer suppression') }}
+                                    </x-danger-button>
+                                </div>
+                            </form>
+                        </x-modal>
+                    @else
+                        <x-modal name="confirm-comment-delete">
+                            <form method="post" action="{{ route('comments.destroy', $comment->id) }}" class="p-6">
+                                @csrf
+                                @method('DELETE')
+                    
+                                <h2 class="text-lg font-medium">
+                                    {{ __('Êtes-vous sûr de vouloir supprimer ce commentaire ?') }}
+                                </h2>
+                    
+                                <p class="mt-1 text-sm text-custom-grey">
+                                    {{ __('Une fois ce commentaire supprimé, toutes ses ressources et données seront définitivement effacées.') }}
+                                </p>
+                    
+                                <div class="mt-2 flex flex-wrap justify-end">
+                                    <x-secondary-button class="mt-4 ml-0 w-full sm:w-auto" x-on:click="$dispatch('close')">
+                                        {{ __('Annuler') }}
+                                    </x-secondary-button>
+                    
+                                    <x-danger-button class="ml-0 mt-4 sm:ml-3 w-full sm:w-auto">
+                                        {{ __('Confirmer suppression') }}
+                                    </x-danger-button>
+                                </div>
+                            </form>
+                        </x-modal>
+                    @endif 
                 </div>
                 @endif
             </div>
@@ -124,16 +187,14 @@
                 <div x-show="!editComment" class="py-[9px] px-[13px] rounded-b-sm">
                     <p>{!! nl2br(e($comment->content)) !!}</p> 
                     <div class="flex flex-wrap mt-2">
-                        <div class="flex flex-wrap mt-2">
-                            @foreach ($comment->uploads as $upload)
-                                <a href="{{ $upload->url }}" target="_blank"><img class="thumbnail m-1" src="{{ $upload->thumbnail_url }}" alt="{{ $upload->filename }}"></a>  
-                            @endforeach
-                        </div>
+                        @foreach ($comment->uploads as $upload)
+                            <a href="{{ $upload->url }}" target="_blank"><img class="thumbnail m-1" src="{{ $upload->thumbnail_url }}" alt="{{ $upload->filename }}"></a>  
+                        @endforeach
                     </div>
                 </div>
 
                 {{-- TOGGLE editComment TRUE --}}
-                <form x-show="editComment" class="mb-2" action="{{ route('comments.update', $comment->id) }}" method="POST" enctype="multipart/form-data">
+                <form x-cloak x-show="editComment" class="mb-2" action="{{ route('comments.update', $comment->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
 

@@ -24,7 +24,7 @@ class CreateDataTestSeeder extends Seeder
 
         // LISTINGS
         $jobs = ['Poste A', 'Poste B', 'Poste C'];
-        $states = ['Etat A', 'Etat B', 'Etat C'];
+        $states = ['Non lu', 'Lu', 'En cours', 'En attente de réponse', 'Résolu'];
         $services = ['Service A', 'Service B', 'Service C'];
         
         foreach ($jobs as $job) {
@@ -65,7 +65,7 @@ class CreateDataTestSeeder extends Seeder
     
         $adminCompanyRole = Role::create(['name' => 'Admin-entreprise']);
      
-        $adminPermissions = Permission::whereIn('id', [22, 23, 24, 25, 26, 27, 28, 29, 30])->get();
+        $adminPermissions = Permission::whereIn('id', [4, 22, 23, 24, 25, 26, 27, 28, 29, 30])->get();
    
         $adminCompanyRole->syncPermissions($adminPermissions);
      

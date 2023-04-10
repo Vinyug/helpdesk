@@ -30,6 +30,13 @@
         <div class="mt-4 sm:mt-6 p-4 sm:p-8 shadow sm:rounded-sm">
             @include('includes.profile.delete-user-form')
         </div>
+
+        @if (auth()->user()->company)
+        <div class="mt-4 sm:mt-6 p-4 sm:p-8 shadow sm:rounded-sm">
+            @include('includes.profile.read-company-information')
+        </div>
+            
+        @endif
     </div>
 @endsection
     
