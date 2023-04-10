@@ -13,7 +13,7 @@
                 </div>
                 <div class="pull-right my-3">
                     @can('ticket-create')
-                    <a class="btn-green" href="{{ route('tickets.create') }}"> Créer un ticket</a>
+                    <a class="btn-solid-orange" href="{{ route('tickets.create') }}"> Créer un ticket</a>
                     @endcan
                 </div>
             </div>
