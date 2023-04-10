@@ -227,38 +227,41 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket, Comment $comment)
     {
-        $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'subject' => 'required|max:80',
-            'service' => 'required|exists:listings,service',
-            'content' => 'required',
-            'visibility' => 'boolean',
-        ]);
-        
-        // company_id
-        if (Auth::user()->can('all-access')) {
-            $ticket->fill([
-                'company_id' => $request['company_id'],
+        if(auth()->user()->id === $comment->user_id) {
+            $request->validate([
+                'company_id' => 'required|exists:companies,id',
+                'subject' => 'required|max:80',
+                'service' => 'required|exists:listings,service',
+                'content' => 'required',
+                'visibility' => 'boolean',
             ]);
+            
+            // company_id
+            if (Auth::user()->can('all-access')) {
+                $ticket->fill([
+                    'company_id' => $request['company_id'],
+                ]);
+            }
+
+            //------ UPDATE --------
+            // DB tickets
+            $ticket->fill([
+                'subject' => $request['subject'],
+                'service' => $request['service'],
+                'visibility' => $request['visibility'] ? 0 : 1,
+            ]);
+            $ticket->update();
+            
+            // DB comments
+            $comment->fill([
+                'content' => $request['content'],
+            ]);
+            $comment->update();
+
+            return redirect()->route('tickets.index')->with('success','Le ticket a été mis à jour avec succès.');
         }
 
-        //------ UPDATE --------
-        // DB tickets
-        $ticket->fill([
-            'subject' => $request['subject'],
-            'service' => $request['service'],
-            'visibility' => $request['visibility'] ? 0 : 1,
-        ]);
-        $ticket->update();
-        
-        // DB comments
-        $comment->fill([
-            'content' => $request['content'],
-        ]);
-        $comment->update();
-
-        return redirect()->route('tickets.index')->with('success','Le ticket a été mis à jour avec succès.');
- 
+        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
     }
 
     /**
@@ -275,7 +278,7 @@ class TicketController extends Controller
             return redirect()->route('tickets.index')->with('success','Le ticket a été supprimé avec succès');
         }
         
-        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
+        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de supprimer ce ticket.');
     }
 
 
