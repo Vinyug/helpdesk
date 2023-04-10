@@ -180,74 +180,16 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Ticket $ticket, Comment $comment)
+    public function show(Ticket $ticket)
     {
+        // get all comments of ticket
+        $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
+
         // if user have all-access or user belongs to a company
         if (Auth::user()->can('all-access') || Auth::user()->company_id === $ticket->company_id) {
-            // get all comments of ticket
-            $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
-            // get last comment of ticket (first() cause DESC)
-            $lastComment = $comments->first();
-            // Modify state of ticket
-            $TicketSeen = 'Lu';
-
-            // if user with all-access and ticket user_id IS NOT this user, open ticket. Author can not modify his ticket
-            if ((auth()->user()->can('all-access')) && (auth()->user()->id !== $ticket->user_id)) {
-                // update ticket
-                $ticket->editable = 0; 
-                $ticket->state = $TicketSeen; 
-                $ticket->save();
-                
-                // update all comments of the ticket
-                if ($lastComment->user_id === auth()->user()->id) {
-                    // if the last comment is by the user, keep it editable
-                    foreach ($comments as $comment) {
-                        if ($comment->id !== $lastComment->id) {
-                            $comment->editable = 0;
-                            $comment->save();
-                        }
-                    }
-                    
-                } else {
-                    // update all comments of the ticket
-                    foreach ($comments as $comment) {
-                        $comment->editable = 0;
-                        $comment->save();
-                    }
-                }
-            }
-
-            // if user with all-access and ticket user_id IS this user, open ticket. Author can not modify his ticket
-            if ((auth()->user()->can('all-access')) && (auth()->user()->id === $ticket->user_id)) {
-                // get number of comments
-                $numberComments = count($comments);
-
-                // if number of comment > 1, ticket is not editable
-                if ($numberComments > 1) {
-                    // update ticket
-                    $ticket->editable = 0; 
-                    $ticket->state = $TicketSeen; 
-                    $ticket->save();
-                }
-
-                // if the last comment is by the user, keep it editable
-                if ($lastComment->user_id === auth()->user()->id) {
-                    foreach ($comments as $comment) {
-                        if ($comment->id !== $lastComment->id) {
-                            $comment->editable = 0;
-                            $comment->save();
-                        }
-                    }
-                    
-                } else {
-                    // update all comments of the ticket
-                    foreach ($comments as $comment) {
-                        $comment->editable = 0;
-                        $comment->save();
-                    }
-                }
-            }
-
+            
+            $this->verifyTicketCanEditable($ticket, $comments);
+            
             return view('tickets.show',compact('ticket', 'comments'));
         }
 
@@ -341,6 +283,8 @@ class TicketController extends Controller
      * Custom method
      *
      */
+
+    // Generate Ticket Number
     public function generateTicketNumber()
     {
         // user nesbot/carbon to know date of day
@@ -357,4 +301,78 @@ class TicketController extends Controller
         return $ticket_number;
     }
 
+    // Verify if ticket, can be editable
+    public function verifyTicketCanEditable(Ticket $ticket, $comments)
+    {
+        // get last comment of ticket (first() cause DESC)
+        $lastComment = $comments->first();
+        // Modify state of ticket
+        $TicketSeen = 'Lu';
+        
+        // if user with all-access and ticket user_id IS NOT this user, open ticket. Author can not modify his ticket
+        if ((auth()->user()->can('all-access')) && (auth()->user()->id !== $ticket->user_id)) {
+            // update ticket
+            $this->ticketEditableLocked($ticket, $TicketSeen);
+            
+            // update all comments of the ticket
+            if ($lastComment->user_id === auth()->user()->id) {
+                // if the last comment is by the user, keep it editable
+                foreach ($comments as $comment) {
+                    if ($comment->id !== $lastComment->id) {
+                        $this->commentEditableLocked($comment);
+                    }
+                }
+                
+            } else {
+                // update all comments of the ticket
+                foreach ($comments as $comment) {
+                    $this->commentEditableLocked($comment);
+                }
+            }
+        }
+        
+        // if user with all-access and ticket user_id IS this user, open ticket. Author can not modify his ticket
+        if ((auth()->user()->can('all-access')) && (auth()->user()->id === $ticket->user_id)) {
+            // get number of comments
+            $numberComments = count($comments);
+            
+            // if number of comment > 1, ticket is not editable
+            if ($numberComments > 1) {
+                // update ticket
+                $this->ticketEditableLocked($ticket, $TicketSeen);
+            }
+            
+            // if the last comment is by the user, keep it editable
+            if ($lastComment->user_id === auth()->user()->id) {
+                foreach ($comments as $comment) {
+                    if ($comment->id !== $lastComment->id) {
+                        $this->commentEditableLocked($comment);
+                    }
+                }
+                
+            } else {
+                // update all comments of the ticket
+                foreach ($comments as $comment) {
+                    $this->commentEditableLocked($comment);
+                }
+            }
+        }
+    }
+
+    public function ticketEditableLocked(Ticket $ticket, $TicketSeen)
+    {
+        $ticket->editable = 0; 
+        $ticket->state = $TicketSeen; 
+        $ticket->save();
+    }
+
+    public function commentEditableLocked($comment)
+    {
+        // updated_at lock
+        $comment->timestamps = false;
+        $comment->editable = 0;
+        $comment->save();
+        // updated_at unlock
+        $comment->timestamps = true;
+    }
 }
