@@ -97,8 +97,20 @@
                     <div class="custom-error">{{ $message }}</div>
                     @enderror
                 </div>
-
-                <input class="custom-input-file" type="file" name="file" id="file" multiple>
+                
+                <div class="col-span-full">
+                    <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
+                    <div class="flex flex-wrap mt-2">
+                        @foreach ($comment->uploads as $upload)
+                            <a href="{{ $upload->url }}" target="_blank"><img class="thumbnail m-1" src="{{ $upload->thumbnail_url }}" alt="{{ $upload->filename }}"></a>  
+                        @endforeach
+                    </div>
+                    @if(old('form') == 'update')
+                        @error('filename.*')
+                        <div class="custom-error">{{ $message }}</div>
+                        @enderror
+                    @endif
+                </div>
                 
                 <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>
 
