@@ -24,7 +24,7 @@ class CreateDataTestSeeder extends Seeder
 
         // LISTINGS
         $jobs = ['Poste A', 'Poste B', 'Poste C'];
-        $states = ['Non lu', 'En cours', 'En attente de réponse', 'Résolu'];
+        $states = ['Non lu', 'Lu', 'En cours', 'En attente de réponse', 'Résolu'];
         $services = ['Service A', 'Service B', 'Service C'];
         
         foreach ($jobs as $job) {
