@@ -188,12 +188,14 @@ class TicketController extends Controller
             $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
             // get last comment of ticket (first() cause DESC)
             $lastComment = $comments->first();
-
+            // Modify state of ticket
+            $TicketSeen = 'Lu';
 
             // if user with all-access and ticket user_id IS NOT this user, open ticket. Author can not modify his ticket
             if ((auth()->user()->can('all-access')) && (auth()->user()->id !== $ticket->user_id)) {
                 // update ticket
                 $ticket->editable = 0; 
+                $ticket->state = $TicketSeen; 
                 $ticket->save();
                 
                 // update all comments of the ticket
@@ -217,9 +219,19 @@ class TicketController extends Controller
 
             // if user with all-access and ticket user_id IS this user, open ticket. Author can not modify his ticket
             if ((auth()->user()->can('all-access')) && (auth()->user()->id === $ticket->user_id)) {
-                
+                // get number of comments
+                $numberComments = count($comments);
+
+                // if number of comment > 1, ticket is not editable
+                if ($numberComments > 1) {
+                    // update ticket
+                    $ticket->editable = 0; 
+                    $ticket->state = $TicketSeen; 
+                    $ticket->save();
+                }
+
+                // if the last comment is by the user, keep it editable
                 if ($lastComment->user_id === auth()->user()->id) {
-                    // if the last comment is by the user, keep it editable
                     foreach ($comments as $comment) {
                         if ($comment->id !== $lastComment->id) {
                             $comment->editable = 0;
