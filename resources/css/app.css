@@ -58,6 +58,14 @@
 }
 /* END COMPONENTS */
 
+
+/* GLOBAL */
+[x-cloak] {
+    display: none;
+}
+/* END GLOBAL */
+
+
 /* NAVBAR */
 nav .logo-navbar {
     width: 64px;

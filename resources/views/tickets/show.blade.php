@@ -133,7 +133,7 @@
                 </div>
 
                 {{-- TOGGLE editComment TRUE --}}
-                <form x-show="editComment" class="mb-2" action="{{ route('comments.update', $comment->id) }}" method="POST" enctype="multipart/form-data">
+                <form x-cloak x-show="editComment" class="mb-2" action="{{ route('comments.update', $comment->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
 
