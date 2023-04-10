@@ -9,7 +9,7 @@
                 </div>
                 <div class="pull-right my-3">
                     @can('state-create')
-                    <a class="btn-green" href="{{ route('states.create') }}"> Créer un état</a>
+                    <a class="btn-solid-orange" href="{{ route('states.create') }}"> Créer un état</a>
                     @endcan
                 </div>
             </div>

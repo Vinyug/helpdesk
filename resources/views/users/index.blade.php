@@ -9,7 +9,7 @@
                 </div>
                 <div class="pull-right my-3">
                     @can('user-create')
-                    <a class="btn-green" href="{{ route('users.create') }}"> Créer un utilisateur</a>
+                    <a class="btn-solid-orange" href="{{ route('users.create') }}"> Créer un utilisateur</a>
                     @endcan
                 </div>
             </div>
@@ -56,7 +56,7 @@
                     </td>
                     <td>
                         <div class="flex justify-center">
-                            <a class="btn-green" href="{{ route('users.show', $user->id) }}">Show</a>
+                            <a class="btn-solid-orange" href="{{ route('users.show', $user->id) }}">Show</a>
                     
                             @can('user-edit')
                             <a class="btn-blue" href="{{ route('users.edit', $user->id) }}">Edit</a>

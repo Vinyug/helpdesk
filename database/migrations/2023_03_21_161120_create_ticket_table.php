@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('company_id');
             $table->string('ticket_number')->unique();
             $table->string('uuid');
-            $table->string('state')->default('Non lu');
+            $table->string('state')->default('En attente');
             $table->string('service');
             $table->boolean('visibility')->default('1');
             $table->timestamps();

@@ -9,7 +9,7 @@
                 </div>
                 <div class="pull-right my-3">
                     @can('company-create')
-                    <a class="btn-green" href="{{ route('companies.create') }}"> Créer une entreprise</a>
+                    <a class="btn-solid-orange" href="{{ route('companies.create') }}"> Créer une entreprise</a>
                     @endcan
                 </div>
             </div>
