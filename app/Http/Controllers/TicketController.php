@@ -184,13 +184,18 @@ class TicketController extends Controller
     {
         // get all comments of ticket
         $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
-
+        // get states of listing
+        $states = Listing::whereNotIn('state', ['Non lu', 'Lu', ''])
+            ->whereNotNull('state')
+            ->distinct()
+            ->pluck('state');
+        
         // if user have all-access or user belongs to a company
         if (Auth::user()->can('all-access') || Auth::user()->company_id === $ticket->company_id) {
             
             $this->verifyTicketCanEditable($ticket, $comments);
             
-            return view('tickets.show',compact('ticket', 'comments'));
+            return view('tickets.show',compact('ticket', 'comments', 'states'));
         }
 
         // return error http
