@@ -13,6 +13,7 @@ class Listing extends Model
         'job',
         'state',
         'service',
+        'hourly_rate',
     ];
 
     // MUTATOR - ACCESSOR

@@ -24,17 +24,20 @@
                 <p>{{ $message }}</p>
             </div>
         @endif
-
-        {{-- Header --}}
+        
+        
+        {{-----------------------------------------------------------------------------------------------------}}
+        {{------------------------------------------ HEADER ---------------------------------------------------}}
+        {{-----------------------------------------------------------------------------------------------------}}
         <div class="flex flex-wrap mb-12">
             <div class="w-full pr-4 pl-4 mt-5">
                 <p class="mb-2"><span class="font-bold">Sujet : </span>{{ $ticket->subject }}</p>
                 <p class="mb-2"><span class="font-bold">Service : </span>{{ $ticket->service }}</p>
                 <p class="mb-2"><span class="font-bold">N° Ticket : </span>{{ $ticket->ticket_number }}</p>
                 <p class="mb-2"><span class="font-bold">Crée par : </span>{{ $ticket->user->firstname }} {{ $ticket->user->lastname }}</p>
-                <p class="mb-2"><span class="font-bold">État : </span>{{ $ticket->state }}</p>
                 
                 @if(!auth()->user()->can('all-access'))
+                    <p class="mb-2"><span class="font-bold">État : </span>{{ $ticket->state }}</p>
                     <div>
                         <div class="group inline relative mb-2">
                             <span class="font-bold cursor-help hover:text-custom-blue mb-2">Visibilité : </span>
@@ -46,9 +49,9 @@
                         <span> @if ($ticket->visibility) publique @else privée @endif</span>
                     </div>
                 @else
-                    <form action="{{ route('tickets.update',$ticket->uuid) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('times.store', $ticket->uuid) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
+                        @method('PATCH')
             
                         <div class="grid sm:grid-cols-2 gap-2">  
             
@@ -72,18 +75,38 @@
                                 @enderror
                             </div>
                             
-                            <div class="col-span-full sm:w-1/2 lg:w-1/4 flex h-8">
-                                <label for="state" class="custom-label pr-4 mb-0 whitespace-nowrap self-center">État :</label>
-                                <select class="custom-input py-0" name="state" id="state">
-                                    <option value="{{ $ticket->state }}">{{ $ticket->state }}</option>
-                                </select>
+                            <div class="flex flex-col col-span-full sm:w-3/5 lg:w-1/3 xl:w-1/4">
+                                <div class="flex">
+                                    <label for="state" class="custom-label pr-2 mb-0 whitespace-nowrap self-center">État :</label>
+                                    <select class="custom-input py-0 h-8" name="state" id="state">
+                                        <option value="{{ $ticket->state }}">{{ $ticket->state }}</option>
+                            
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state }}">{{ $state }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @error('state')
                                 <div class="custom-error">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            
+                            <div class="flex flex-col md:flex-row justify-between col-span-full">
+                                <div class="flex flex-col w-full sm:w-3/5 lg:w-1/3 xl:w-1/4 mr-4 mb-2">
+                                    <div class="flex items-center">
+                                        <label for="time_spent" class="custom-label pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
+                                        <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="{{ old('time_spent') }}"><span class="font-bold pl-1">h</span>
+                                    </div>
+                                    @error('time_spent')
+                                    <div class="custom-error">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <span class="custom-label mt-1">Temps total du ticket : {{ $totalTime }}h</span>
+                            </div>
             
                             <div class="col-span-full">
-                                <button type="submit" class="btn-comment-orange">Modifier</button>
+                                <button type="submit" class="btn-comment-orange">Enregistrer</button>
                             </div>
                         </div>
                     </form>
@@ -92,7 +115,9 @@
         </div>
 
 
-        {{-- CREATE COMMENT --}}
+        {{-----------------------------------------------------------------------------------------------------}}
+        {{-------------------------------------- CREATE COMMENT -----------------------------------------------}}
+        {{-----------------------------------------------------------------------------------------------------}}
         <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
             <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
             <form class="p-4 rounded-b-sm" action="{{ route('comments.store', $ticket->uuid) }}" method="POST" enctype="multipart/form-data">
@@ -125,25 +150,28 @@
         </div>
 
 
-        {{-- COMMENTS --}}
+        {{-----------------------------------------------------------------------------------------------------}}
+        {{----------------------------------------- COMMENTS --------------------------------------------------}}
+        {{-----------------------------------------------------------------------------------------------------}}
         <h3 class="border-t-[2px] border-b-[2px] mt-12 mb-8 p-4 border-custom-blue text-2xl">Fil de discussion</h3>
-
-
+        
+        
         @foreach ($comments as $comment)
         <div 
-            {{-- if comments.update has error on content, toggle to see textarea --}}
-            x-data="
-            @if ($loop->first && old('form') == 'update')
-            { editComment: 
-                @if ($errors->has('content') || $errors->has('filename.*')) true 
-                @else false 
-                @endif } 
+        {{-- if comments.update has error on content, toggle to see textarea --}}
+        x-data="
+        @if ($loop->first && old('form') == 'update')
+        { editComment: 
+            @if ($errors->has('content') || $errors->has('filename.*')) true 
+            @else false 
+            @endif } 
             @else
             { editComment: false}
             @endif"
-
+            
             class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
-            {{-- HEAD COMMENT --}}
+
+            {{----------------------------------------- HEAD COMMENT --------------------------------------------------}}
             <div class="flex flex-wrap justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
                 <div class="mx-2 mt-2">
                     Par <span class="font-medium">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
@@ -151,6 +179,7 @@
                 
                 @if ($loop->first && $comment->user_id == Auth::id() && $comment->editable)
                 <div>
+                    {{--------------------------- BUTTON EDIT ------------------------}}
                     <a 
                         class="btn-blue text-sm my-1 sm:my-2 cursor-pointer"
                         @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
@@ -160,8 +189,8 @@
                         @endif 
                     </a>
 
-                    {{-- BUTTON DELETE --}}
-                    <a class="btn-red text-sm my-1 sm:my-2 mr-2" x-data="" x-on:click.prevent="$dispatch('open-modal',
+                    {{--------------------------- BUTTON DELETE ------------------------}}
+                    <a class="btn-red text-sm my-1 sm:my-2 mr-2 cursor-pointer" x-data="" x-on:click.prevent="$dispatch('open-modal',
                     @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
                         'confirm-ticket-delete'
                     @else
@@ -170,7 +199,7 @@
                     )"
                     >Annuler</a>
                     
-                    {{-- MODAL TICKET OR COMMENT --}}
+                    {{----------------------- MODAL TICKET OR COMMENT ------------------------}}
                     @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
                         <x-modal name="confirm-ticket-delete">
                             <form method="post" action="{{ route('tickets.destroy', $ticket->uuid) }}" class="p-6">
@@ -226,9 +255,9 @@
                 @endif
             </div>
 
-            {{-- BODY COMMENT --}}
+            {{----------------------------------------- BODY COMMENT --------------------------------------------------}}
             <div class="p-4 rounded-b-sm">
-                {{-- TOGGLE editComment FALSE --}}
+                {{---------------- TOGGLE editComment FALSE -----------------}}
                 <div x-show="!editComment" class="py-[9px] px-[13px] rounded-b-sm">
                     <p>{!! nl2br(e($comment->content)) !!}</p> 
                     <div class="flex flex-wrap mt-2">
@@ -238,7 +267,7 @@
                     </div>
                 </div>
 
-                {{-- TOGGLE editComment TRUE --}}
+                {{---------------- TOGGLE editComment TRUE -----------------}}
                 <form x-cloak x-show="editComment" class="mb-2" action="{{ route('comments.update', $comment->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')

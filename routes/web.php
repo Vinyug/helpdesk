@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tickets/comment/{comment}/delete', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('/tickets/{ticket}/comment', [CommentController::class, 'store'])->name('comments.store');
     
+    // Time
+    Route::patch('/tickets/{ticket}/time', [TimeController::class, 'store'])->name('times.store');
+
     // Company
     Route::resource('companies', CompanyController::class);
     

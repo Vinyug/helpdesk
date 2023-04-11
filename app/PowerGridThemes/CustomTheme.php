@@ -32,8 +32,8 @@ class CustomTheme extends Tailwind
             ->th('font-semibold px-2 pr-4 py-3 text-left text-white tracking-wider whitespace-nowrap')
             ->tbody('text-custom-dark')
             ->trBody('border border-slate-300 hover:bg-sky-50')
-            ->tdBody('px-3 py-2 whitespace-nowrap')
-            ->tdBodyTotalColumns('px-3 py-2 whitespace-nowrap text-custom-dark text-right space-y-2');
+            ->tdBody('px-3 py-2')
+            ->tdBodyTotalColumns('px-3 py-2 text-custom-dark text-right space-y-2');
     }
 
     public function footer(): Footer
