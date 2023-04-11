@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tickets/{ticket}/comment', [CommentController::class, 'store'])->name('comments.store');
     
     // Time
-    Route::post('/tickets/{ticket}/time', [TimeController::class, 'store'])->name('times.store');
+    Route::patch('/tickets/{ticket}/time', [TimeController::class, 'store'])->name('times.store');
 
     // Company
     Route::resource('companies', CompanyController::class);

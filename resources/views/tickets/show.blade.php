@@ -49,9 +49,9 @@
                         <span> @if ($ticket->visibility) publique @else privée @endif</span>
                     </div>
                 @else
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('times.store', $ticket->uuid) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
+                        @method('PATCH')
             
                         <div class="grid sm:grid-cols-2 gap-2">  
             
@@ -96,17 +96,17 @@
                                 <div class="flex flex-col w-full sm:w-3/5 lg:w-1/3 xl:w-1/4 mr-4 mb-2">
                                     <div class="flex items-center">
                                         <label for="time_spent" class="custom-label pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
-                                        <input type="text" name="time_spent" id="time_spent" class="custom-input h-8" placeholder="en heure" value="{{ old('time_spent') }}">
+                                        <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="{{ old('time_spent') }}"><span class="font-bold pl-1">h</span>
                                     </div>
                                     @error('time_spent')
                                     <div class="custom-error">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <span class="custom-label mt-1">Temps total du ticket : 00h00</span>
+                                <span class="custom-label mt-1">Temps total du ticket : {{ $totalTime }}h</span>
                             </div>
             
                             <div class="col-span-full">
-                                <button type="submit" class="btn-comment-orange">Modifier</button>
+                                <button type="submit" class="btn-comment-orange">Enregistrer</button>
                             </div>
                         </div>
                     </form>

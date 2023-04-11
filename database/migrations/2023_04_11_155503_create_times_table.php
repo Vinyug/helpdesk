@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('ticket_id');
             $table->string('time_spent')->nullable();
             $table->string('hourly_rate');
-            $table->timestamp('created_at');
+            $table->timestamps();
         });
     }
 

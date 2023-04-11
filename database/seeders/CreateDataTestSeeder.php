@@ -26,12 +26,14 @@ class CreateDataTestSeeder extends Seeder
         $jobs = ['Poste A', 'Poste B', 'Poste C'];
         $states = ['Non lu', 'Lu', 'En cours', 'En attente de réponse', 'Résolu'];
         $services = ['Service A', 'Service B', 'Service C'];
+        $hourly_rate = ['20'];
         
         foreach ($jobs as $job) {
             Listing::factory()->create([
                 'job' => $job,
                 'state' => null,
                 'service' => null,
+                'hourly_rate' => null,
             ]);
         }
         
@@ -40,6 +42,7 @@ class CreateDataTestSeeder extends Seeder
                 'job' => null,
                 'state' => $state,
                 'service' => null,
+                'hourly_rate' => null,
             ]);
         }
         
@@ -47,10 +50,17 @@ class CreateDataTestSeeder extends Seeder
             Listing::factory()->create([
                 'job' => null,
                 'state' => null,
-                'service' => $service
+                'service' => $service,
+                'hourly_rate' => null,
             ]);
         }
 
+        Listing::factory()->create([
+            'job' => null,
+            'state' => null,
+            'service' => null,
+            'hourly_rate' => $hourly_rate,
+        ]);
 
         // USERS
         // User with role 'admin-entreprise'

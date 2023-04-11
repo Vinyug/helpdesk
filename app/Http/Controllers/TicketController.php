@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Listing;
 use App\Models\Ticket;
+use App\Models\Time;
 use App\Models\Upload;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -182,6 +183,8 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
+        // get ticket id
+        $ticket_id = $ticket->id;
         // get all comments of ticket
         $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
         // get states of listing
@@ -194,8 +197,9 @@ class TicketController extends Controller
         if (Auth::user()->can('all-access') || Auth::user()->company_id === $ticket->company_id) {
             
             $this->verifyTicketCanEditable($ticket, $comments);
+            $totalTime = $this->calculateTicketTotalTime($ticket_id);
             
-            return view('tickets.show',compact('ticket', 'comments', 'states'));
+            return view('tickets.show',compact('ticket', 'comments', 'states', 'totalTime'));
         }
 
         // return error http
@@ -382,5 +386,18 @@ class TicketController extends Controller
         $comment->save();
         // updated_at unlock
         $comment->timestamps = true;
+    }
+
+    public function calculateTicketTotalTime($ticket_id)
+    {
+        $times = Time::where('ticket_id', $ticket_id)->get();
+        $totalTime = 0;
+
+        foreach($times as $time) {
+            $time_spent = $time->time_spent;
+            $totalTime += $time_spent;
+        }
+
+        return $totalTime;
     }
 }
