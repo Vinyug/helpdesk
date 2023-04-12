@@ -103,6 +103,11 @@ class TicketController extends Controller
         $ticket_number = $this->generateTicketNumber();
         // genererate uuid
         $uuid = Str::uuid()->toString();
+        // get hourly_rate
+        $hourly_rate = Listing::whereNotNull('hourly_rate')
+            ->where('hourly_rate','!=', '')
+            ->pluck('hourly_rate')
+            ->last();
         
         
         // ---------------------------------------------------------------
@@ -115,7 +120,7 @@ class TicketController extends Controller
             'service' => $request['service'],
             'visibility' => $request['visibility'] ? 0 : 1,
         ], 
-        compact('user_id', 'company_id', 'ticket_number', 'uuid')));
+        compact('user_id', 'company_id', 'ticket_number', 'uuid', 'hourly_rate')));
         
         // --------------------------- COMMENT ----------------------------
         // get ticket_id
