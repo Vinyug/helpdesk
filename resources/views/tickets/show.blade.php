@@ -287,7 +287,7 @@
                         @enderror
                     @endif
 
-                    <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
+                    <input type="file" class="custom-input-file" name="filename[]" id="filename" multiple>
                     @if(old('form') == 'update')
                         @error('filename.*')
                         <div class="custom-error">{{ $message }}</div>
@@ -295,7 +295,7 @@
                     @endif
 
                     @if (auth()->user()->can('all-access'))
-                    <div class="flex flex-col w-full">
+                    <div class="flex flex-col w-full mb-4">
                         <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4">
                             <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
                             <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="@if(old('form') == 'store' || $errors->has('time_spent')) {{ $comment->time_spent }} @else {{ old('time_spent', $comment->time_spent) }} @endif"><span class="font-medium pl-1">h</span>
