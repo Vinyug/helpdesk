@@ -26,7 +26,7 @@ class CreateDataTestSeeder extends Seeder
         $jobs = ['Poste A', 'Poste B', 'Poste C'];
         $states = ['Non lu', 'Lu', 'En cours', 'En attente de réponse', 'Résolu'];
         $services = ['Service A', 'Service B', 'Service C'];
-        $hourly_rate = ['25'];
+        $hourly_rate = '25';
         
         foreach ($jobs as $job) {
             Listing::factory()->create([
