@@ -109,6 +109,7 @@
         {{-----------------------------------------------------------------------------------------------------}}
         {{-------------------------------------- CREATE COMMENT -----------------------------------------------}}
         {{-----------------------------------------------------------------------------------------------------}}
+        @if ($ticket->state !== 'Résolu')
         <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
             <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
             <form class="p-4 rounded-b-sm" action="{{ route('comments.store', $ticket->uuid) }}" method="POST" enctype="multipart/form-data">
@@ -153,13 +154,14 @@
                 </div>
             </form>
         </div>
+        @endif
 
 
         {{-----------------------------------------------------------------------------------------------------}}
         {{----------------------------------------- COMMENTS --------------------------------------------------}}
         {{-----------------------------------------------------------------------------------------------------}}
+       
         <h3 class="border-t-[2px] border-b-[2px] mt-12 mb-8 p-4 border-custom-blue text-2xl">Fil de discussion</h3>
-        
         
         @foreach ($comments as $comment)
         <div 
@@ -177,12 +179,18 @@
             class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
 
             {{----------------------------------------- HEAD COMMENT --------------------------------------------------}}
-            <div class="flex flex-wrap justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
-                <div class="mx-2 mt-2">
+            <div class="flex flex-wrap flex-col sm:flex-row justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
+                <div class="mx-2 my-2">
                     Par <span class="font-medium">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
                 </div>
+
+                @if (auth()->user()->can('all-access') && $comment->time_spent)
+                <div class="ml-2 sm:ml-auto mr-2 my-1 sm:my-2">
+                    <span>Temps sur commentaire : {{ $comment->time_spent }}h</span>
+                </div>
+                @endif
                 
-                @if ($loop->first && $comment->user_id == Auth::id() && $comment->editable)
+                @if ($loop->first && $comment->user_id == Auth::id() && $comment->editable && $ticket->state !== 'Résolu')
                 <div>
                     {{--------------------------- BUTTON EDIT ------------------------}}
                     <a 

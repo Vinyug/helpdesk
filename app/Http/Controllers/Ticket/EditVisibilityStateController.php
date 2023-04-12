@@ -16,10 +16,15 @@ class EditVisibilityStateController extends Controller
                 'state' => 'required|exists:listings,state|not_in:null,',
             ]);
 
+            if($request['state'] !== 'Non lu') {
+                $ticket->editable = 0;
+            }
+
             //------ UPDATE --------
             $ticket->fill([
                 'visibility' => $request['visibility'] ? 0 : 1,
                 'state' => $request['state'],
+                'editable' => $ticket->editable,
             ]);
             $ticket->update();
 
