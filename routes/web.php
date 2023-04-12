@@ -9,8 +9,8 @@ use App\Http\Controllers\Listing\StateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Ticket\EditVisibilityStateController;
 use App\Http\Controllers\Ticket\TicketController;
-use App\Http\Controllers\TimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,15 +39,13 @@ Route::middleware('auth')->group(function () {
 
     // Ticket
     Route::resource('tickets', TicketController::class);
+    Route::patch('/tickets/{ticket}/udpate-visibility-state', [EditVisibilityStateController::class, 'update'])->name('tickets.updateVisibilityState');
     
     // Comment
     Route::patch('/tickets/comment/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/tickets/comment/{comment}/delete', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('/tickets/{ticket}/comment', [CommentController::class, 'store'])->name('comments.store');
     
-    // Time
-    Route::patch('/tickets/{ticket}/time', [TimeController::class, 'store'])->name('times.store');
-
     // Company
     Route::resource('companies', CompanyController::class);
     

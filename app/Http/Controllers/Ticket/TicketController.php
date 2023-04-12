@@ -195,8 +195,8 @@ class TicketController extends Controller
             ->distinct()
             ->pluck('state');
         
-        // if user have all-access or user belongs to a company
-        if (Auth::user()->can('all-access') || Auth::user()->company_id === $ticket->company_id) {
+        // if user have all-access, ticket-private or (user belongs to a company and ticket is public) or (user is author and ticket is private)
+        if (auth()->user()->can('all-access') || auth()->user()->can('ticket-private') || (auth()->user()->company_id === $ticket->company_id && $ticket->visibility) || (auth()->user()->id === $ticket->user_id && !$ticket->visibility)) {
             
             $this->verifyTicketCanEditable($ticket, $comments);
             // Total time and price on ticket
@@ -323,12 +323,13 @@ class TicketController extends Controller
         // get last comment of ticket (first() cause DESC)
         $lastComment = $comments->first();
         // Modify state of ticket
-        $TicketSeen = 'Lu';
+        $ticketSeen = 'Lu';
+        $ticketNotSeen = 'Non Lu';
         
         // if user with all-access and ticket user_id IS NOT this user, open ticket. Author can not modify his ticket
         if ((auth()->user()->can('all-access')) && (auth()->user()->id !== $ticket->user_id)) {
             // update ticket
-            $this->ticketEditableLocked($ticket, $TicketSeen);
+            $this->ticketEditableLocked($ticket, $ticketSeen, $ticketNotSeen);
             
             // update all comments of the ticket
             if ($lastComment->user_id === auth()->user()->id) {
@@ -355,7 +356,7 @@ class TicketController extends Controller
             // if number of comment > 1, ticket is not editable
             if ($numberComments > 1) {
                 // update ticket
-                $this->ticketEditableLocked($ticket, $TicketSeen);
+                $this->ticketEditableLocked($ticket, $ticketSeen, $ticketNotSeen);
             }
             
             // if the last comment is by the user, keep it editable
@@ -375,11 +376,13 @@ class TicketController extends Controller
         }
     }
 
-    public function ticketEditableLocked(Ticket $ticket, $TicketSeen)
+    public function ticketEditableLocked(Ticket $ticket, $ticketSeen, $ticketNotSeen)
     {
-        $ticket->editable = 0; 
-        $ticket->state = $TicketSeen; 
-        $ticket->save();
+        if($ticketNotSeen === $ticket->state) {
+            $ticket->editable = 0; 
+            $ticket->state = $ticketSeen; 
+            $ticket->save();
+        }
     }
 
     public function commentEditableLocked($comment)
