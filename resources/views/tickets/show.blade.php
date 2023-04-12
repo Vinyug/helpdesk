@@ -49,12 +49,12 @@
                         <span> @if ($ticket->visibility) publique @else privée @endif</span>
                     </div>
                 @else
-                    <form action="{{ route('times.store', $ticket->uuid) }}" method="POST" enctype="multipart/form-data">
+                    {{---------------------------- UPDATE VISIBILITY OR STATE OF TICKET -------------------------}}
+                    <form action="" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
             
                         <div class="grid sm:grid-cols-2 gap-2">  
-            
                             <div class="col-span-full">
                                 <div class="flex items-center">
                                     <div class="group inline relative">
@@ -91,25 +91,16 @@
                                 @enderror
                             </div>
 
-                            
-                            <div class="flex flex-col md:flex-row justify-between col-span-full">
-                                <div class="flex flex-col w-full sm:w-3/5 lg:w-1/3 xl:w-1/4 mr-4 mb-2">
-                                    <div class="flex items-center">
-                                        <label for="time_spent" class="custom-label pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
-                                        <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="{{ old('time_spent') }}"><span class="font-bold pl-1">h</span>
-                                    </div>
-                                    @error('time_spent')
-                                    <div class="custom-error">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <span class="custom-label mt-1">Temps total du ticket : {{ $totalTime }}h</span>
-                            </div>
-            
                             <div class="col-span-full">
-                                <button type="submit" class="btn-comment-orange">Enregistrer</button>
+                                <button type="submit" class="btn-comment-orange">Modifier</button>
                             </div>
                         </div>
                     </form>
+
+                    <div class="mt-4">
+                        <p class="mb-2"><span class="font-bold">Temps total du ticket : </span>{{ $totalTime }}h</p>
+                        <p class="mb-2"><span class="font-bold">Montant total H.T. du ticket : </span>x.xxx,xx Euros</p>
+                    </div>
                 @endif
             </div>
         </div>
@@ -142,6 +133,18 @@
                         @enderror
                     @endif
                 </div>
+
+                @if (auth()->user()->can('all-access'))
+                <div class="flex flex-col w-full sm:w-3/5 lg:w-1/3 xl:w-1/4 mr-4 mb-2">
+                    <div class="flex items-center">
+                        <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
+                        <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="{{ old('time_spent') }}"><span class="font-medium pl-1">h</span>
+                    </div>
+                    @error('time_spent')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+                @endif
     
                 <div class="col-span-full">
                     <button type="submit" class="btn-comment-orange">Envoyer</button>
