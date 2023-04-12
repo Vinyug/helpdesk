@@ -329,7 +329,7 @@ class TicketController extends Controller
         $lastComment = $comments->first();
         // Modify state of ticket
         $ticketSeen = 'Lu';
-        $ticketNotSeen = 'Non Lu';
+        $ticketNotSeen = 'Non lu';
         
         // if user with all-access and ticket user_id IS NOT this user, open ticket. Author can not modify his ticket
         if ((auth()->user()->can('all-access')) && (auth()->user()->id !== $ticket->user_id)) {
@@ -383,7 +383,7 @@ class TicketController extends Controller
 
     public function ticketEditableLocked(Ticket $ticket, $ticketSeen, $ticketNotSeen)
     {
-        if($ticketNotSeen === $ticket->state) {
+        if($ticket->state === $ticketNotSeen) {
             $ticket->editable = 0; 
             $ticket->state = $ticketSeen; 
             $ticket->save();
