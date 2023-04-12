@@ -3,14 +3,15 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\Listing\HourlyRateController;
 use App\Http\Controllers\Listing\JobController;
 use App\Http\Controllers\Listing\ServiceController;
 use App\Http\Controllers\Listing\StateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\TimeController;
+use App\Http\Controllers\Ticket\EditVisibilityStateController;
+use App\Http\Controllers\Ticket\TicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,15 +40,13 @@ Route::middleware('auth')->group(function () {
 
     // Ticket
     Route::resource('tickets', TicketController::class);
+    Route::patch('/tickets/{ticket}/udpate-visibility-state', [EditVisibilityStateController::class, 'update'])->name('tickets.updateVisibilityState');
     
     // Comment
     Route::patch('/tickets/comment/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/tickets/comment/{comment}/delete', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('/tickets/{ticket}/comment', [CommentController::class, 'store'])->name('comments.store');
     
-    // Time
-    Route::patch('/tickets/{ticket}/time', [TimeController::class, 'store'])->name('times.store');
-
     // Company
     Route::resource('companies', CompanyController::class);
     
@@ -64,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('jobs', JobController::class);
     Route::resource('states', StateController::class);
     Route::resource('services', ServiceController::class);
+    Route::resource('hourly_rate', HourlyRateController::class);
 });
 
 require __DIR__.'/auth.php';

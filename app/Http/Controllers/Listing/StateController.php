@@ -6,8 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
+
 class StateController extends Controller
 {
+    protected $notSeen = 'Non lu';
+    protected $seen = 'Lu';
+    protected $resolved = 'Résolu';
+
     function __construct()
     {
          $this->middleware('permission:state-list|state-create|state-edit|state-delete', ['only' => ['index','show']]);
@@ -78,8 +85,14 @@ class StateController extends Controller
     public function edit($id)
     {
         $listing = Listing::findOrFail($id);
+        $states = Listing::where('state', '!=', '')->whereNotNull('state')->pluck('state');
+        
+        if($states->contains($listing->state)) {
+            return view('states.edit',compact('listing'));
+        }
+
+        return redirect()->back()->with('status', 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.');
      
-        return view('states.edit',compact('listing'));
     }
 
     /**
@@ -96,11 +109,15 @@ class StateController extends Controller
         ]);
     
         $listing = Listing::findOrFail($id);
-        $listing->state = $request->input('state');
-        $listing->save();
-    
-        return redirect()->route('states.index')
-                        ->with('success','L\'état est mis à jour.');
+        if ($listing->state !== $this->seen && $listing->state !== $this->notSeen && $listing->state !== $this->resolved) {
+            $listing->state = $request->input('state');
+            $listing->save();
+
+            return redirect()->route('states.index')
+                            ->with('success','L\'état est mis à jour.');
+        }
+        return redirect()->back()->with('status','Cet état ne peut pas être modifié.');
+        
     }
 
     /**
@@ -111,8 +128,14 @@ class StateController extends Controller
      */
     public function destroy($id)
     {
-        Listing::findOrFail($id)->delete();
-        return redirect()->route('states.index')
-                        ->with('success','L\'état est supprimé');
+        $listing = Listing::findOrFail($id);
+
+        if ($listing->state !== $this->seen && $listing->state !== $this->notSeen && $listing->state !== $this->resolved) {
+            $listing->delete();
+
+            return redirect()->route('states.index')
+                            ->with('success','L\'état est supprimé');
+        }
+        return redirect()->back()->with('status','Cet état ne peut pas être modifié.');
     }
 }

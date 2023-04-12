@@ -19,6 +19,7 @@ class CommentController extends Controller
     protected $ticket_number_separate = '/';
     protected $thumbnail_width = 100;
     protected $thumbnail_height = 100;
+    protected $resolved = 'Résolu';
 
 
      /**
@@ -62,83 +63,88 @@ class CommentController extends Controller
      */
     public function store(Request $request, Ticket $ticket)
     {
-        // ---------------------------------------------------------------
-        // ---------------------- DATA VALIDATION ------------------------
-        // ---------------------------------------------------------------
-        $request->validate([
-            'content' => 'required|max:2000',
-            'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
-        ]);
+        if($ticket->state !== $this->resolved) {
+            // ---------------------------------------------------------------
+            // ---------------------- DATA VALIDATION ------------------------
+            // ---------------------------------------------------------------
+            $request->validate([
+                'content' => 'required|max:2000',
+                'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
+                'time_spent' => 'sometimes|nullable|numeric|regex:/^\d{1,4}(\.\d{1,2})?$/', //number 0000.00
+            ], [
+                'time_spent.regex' => 'Le champ temps passé doit être un nombre respectant dans sa valeur maximum cette syntaxe 0000.00'
+            ]);
 
-        // dd($request);
-        // user_id
+            // dd($request);
 
 
-        // ---------------------------------------------------------------
-        // --------------------------- VARIABLE --------------------------
-        // ---------------------------------------------------------------
-        // get user_id
-        $user_id = Auth::user()->id;
-        // get ticket_id
-        $ticket_id = $ticket->id;
-        
-        
-        // ---------------------------------------------------------------
-        // --------------------------- INSERT ----------------------------
-        // ---------------------------------------------------------------
-        
-        // --------------------------- COMMENT ----------------------------
-        $comment = Comment::create(array_merge($request->post(), compact('user_id', 'ticket_id')));
-        
-        // --------------------------- UPLOAD ----------------------------
-        // get ticket_number
-        $ticket_number = $ticket->ticket_number;
-        // get comment_id
-        $comment_id = $comment->id;
+            // ---------------------------------------------------------------
+            // --------------------------- VARIABLE --------------------------
+            // ---------------------------------------------------------------
+            // get user_id
+            $user_id = Auth::user()->id;
+            // get ticket_id
+            $ticket_id = $ticket->id;
+            
+            
+            // ---------------------------------------------------------------
+            // --------------------------- INSERT ----------------------------
+            // ---------------------------------------------------------------
+            
+            // --------------------------- COMMENT ----------------------------
+            $comment = Comment::create(array_merge($request->post(), compact('user_id', 'ticket_id')));
+            
+            // --------------------------- UPLOAD ----------------------------
+            // get ticket_number
+            $ticket_number = $ticket->ticket_number;
+            // get comment_id
+            $comment_id = $comment->id;
 
-        // verify files if file exist and isValid, to insert in DB
-        if ($request->hasFile('filename')) {
-            $i = 0;
-            foreach ($request->file('filename') as $file) {
-                if ($file->isValid()) {
-                    // get file extension
-                    $ext = $file->extension();
-                    // rename each file
-                    $name = str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'_'.$i.'.'.$ext;
-                    $i++;
+            // verify files if file exist and isValid, to insert in DB
+            if ($request->hasFile('filename')) {
+                $i = 0;
+                foreach ($request->file('filename') as $file) {
+                    if ($file->isValid()) {
+                        // get file extension
+                        $ext = $file->extension();
+                        // rename each file
+                        $name = str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'_'.$i.'.'.$ext;
+                        $i++;
 
-                    // upload each file in folder named by ticket number and comment id
-                    $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id, $name);
+                        // upload each file in folder named by ticket number and comment id
+                        $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id, $name);
 
-                    // resize thumbnail
-                    $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function($constraint){
-                        $constraint->upsize();
-                    })->encode($ext, 50); //reduce sizing by 50%
-                    // thumbnail path
-                    $thumbnailPath = 'files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id.'/thumbnail/thumb_'.$name;
-                    // stock file. first parameter : where ; second parameter : what
-                    Storage::put($thumbnailPath, $thumbnailFile);
+                        // resize thumbnail
+                        $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function($constraint){
+                            $constraint->upsize();
+                        })->encode($ext, 50); //reduce sizing by 50%
+                        // thumbnail path
+                        $thumbnailPath = 'files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id.'/thumbnail/thumb_'.$name;
+                        // stock file. first parameter : where ; second parameter : what
+                        Storage::put($thumbnailPath, $thumbnailFile);
 
-                    // insert
-                    $upload = Upload::create(array_merge([
-                        'filename' => $name,
-                        'url' => Storage::url($path),
-                        'path' => $path,
-                        'thumbnail_url' => Storage::url($thumbnailPath),
-                        'thumbnail_path' => $thumbnailPath,
-                    ], 
-                    compact('comment_id')));
+                        // insert
+                        $upload = Upload::create(array_merge([
+                            'filename' => $name,
+                            'url' => Storage::url($path),
+                            'path' => $path,
+                            'thumbnail_url' => Storage::url($thumbnailPath),
+                            'thumbnail_path' => $thumbnailPath,
+                        ], 
+                        compact('comment_id')));
+                    }
                 }
             }
+
+
+            // ---------------------------------------------------------------
+            // ---------------------------- VIEW -----------------------------
+            // ---------------------------------------------------------------
+
+            return redirect()->back()->with('success','Le commentaire a été enregistré avec succès.');
         }
-
-
-        // ---------------------------------------------------------------
-        // ---------------------------- VIEW -----------------------------
-        // ---------------------------------------------------------------
-
-        return redirect()->back()->with('success','Le commentaire a été enregistré avec succès.');
-            
+    
+        return redirect()->back()->with('status','Le ticket est cloturé, vous ne pouvez plus créer un commentaire.');
     }
 
     /**
@@ -170,15 +176,18 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Upload $upload, Comment $comment, Ticket $ticket)
+    public function update(Request $request, Upload $upload, Comment $comment, Ticket $ticket)
     {
-            if(auth()->user()->id === $comment->user_id) {
+            if(auth()->user()->id === $comment->user_id && $ticket->state !== $this->resolved) {
             // ---------------------------------------------------------------
             // ---------------------- DATA VALIDATION ------------------------
             // ---------------------------------------------------------------
             $request->validate([
                 'content' => 'required|max:2000',
                 'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
+                'time_spent' => 'sometimes|nullable|numeric|regex:/^\d{1,4}(\.\d{1,2})?$/', //number 0000.00
+            ], [
+                'time_spent.regex' => 'Le champ temps passé doit être un nombre respectant dans sa valeur maximum cette syntaxe 0000.00'
             ]);
 
 
@@ -196,6 +205,7 @@ class CommentController extends Controller
             // --------------------------- COMMENT ----------------------------
             $comment->fill([
                 'content' => $request['content'],
+                'time_spent' => $request['time_spent'],
             ]);
             $comment->update();
 
@@ -270,9 +280,9 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment, Ticket $ticket)
     {
-        if(auth()->user()->id === $comment->user_id) {
+        if(auth()->user()->id === $comment->user_id && $ticket->state !== $this->resolved) {
             $comment->delete();
             return redirect()->back()->with('success','Le commentaire a été supprimé avec succès.');
         }

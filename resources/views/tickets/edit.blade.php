@@ -37,7 +37,7 @@
                             </div>
                         </div>
     
-                        <input type="checkbox" name="visibility" id="visibility" value="{{ $ticket->visibility }}" class="ml-4 border-gray-300 text-custom-blue focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" {{ old('visibility', !$ticket->visibility) ? 'checked' : '' }}>
+                        <input type="checkbox" name="visibility" id="visibility" value="1" class="ml-4 border-gray-300 text-custom-blue focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" {{ old('visibility', !$ticket->visibility) ? 'checked' : '' }}>
                     </div>
     
                     @error('visibility')

@@ -14,6 +14,7 @@ class Comment extends Model
         'ticket_id',
         'content', 
         'editable', 
+        'time_spent', 
     ];
 
 

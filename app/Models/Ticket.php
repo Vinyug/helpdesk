@@ -19,6 +19,7 @@ class Ticket extends Model
         'state',
         'service', 
         'visibility', 
+        'hourly_rate',
         'editable',
     ];
 
@@ -43,11 +44,6 @@ class Ticket extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
-    }
-
-    public function times()
-    {
-        return $this->hasMany(Time::class);
     }
 
 

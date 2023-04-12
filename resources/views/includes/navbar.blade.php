@@ -78,6 +78,12 @@
                         {{ __('Entreprises') }}
                     </x-dropleft-link>
                     @endcan
+                    
+                    @can('times-list')
+                    <x-dropleft-link :href="route('hourly_rate.index')" :active="request()->routeIs('hourly_rate.index')">
+                        {{ __('Heures') }}
+                    </x-dropleft-link>
+                    @endcan
 
                     @can('role-list')
                     <x-dropleft-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
@@ -183,6 +189,11 @@
                 </x-responsive-nav-link>
                 @endcan
 
+                @can('times-list')
+                <x-responsive-nav-link :href="route('hourly_rate.index')" :active="request()->routeIs('hourly_rate.index')">
+                    {{ __('Heures') }}
+                </x-responsive-nav-link>
+                @endcan
 
                 @can('role-list')
                 <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
