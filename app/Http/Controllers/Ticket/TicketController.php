@@ -411,6 +411,6 @@ class TicketController extends Controller
     {
         $totalPrice = $totalTime * $hourlyRate;
 
-        return number_format($totalPrice, 2);
+        return number_format($totalPrice, 2, ',', '.');
     }
 }
