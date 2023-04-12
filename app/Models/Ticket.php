@@ -19,6 +19,7 @@ class Ticket extends Model
         'state',
         'service', 
         'visibility', 
+        'hourly_rate',
         'editable',
     ];
 
