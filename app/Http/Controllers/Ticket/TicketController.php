@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Ticket;
 
+use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Listing;

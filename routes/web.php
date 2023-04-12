@@ -9,7 +9,7 @@ use App\Http\Controllers\Listing\StateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\TicketController;
+use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\TimeController;
 use Illuminate\Support\Facades\Route;
 
