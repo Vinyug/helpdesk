@@ -45,11 +45,6 @@ class Ticket extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function times()
-    {
-        return $this->hasMany(Time::class);
-    }
-
 
     // MUTATOR - ACCESSOR
     /**
