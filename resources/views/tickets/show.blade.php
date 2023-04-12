@@ -137,7 +137,7 @@
 
                 @if (auth()->user()->can('all-access'))
                 <div class="flex flex-col w-full">
-                    <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4">
+                    <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4 mb-4">
                         <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
                         <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="{{ old('time_spent') }}"><span class="font-medium pl-1">h</span>
                     </div>
@@ -194,7 +194,7 @@
                 <div>
                     {{--------------------------- BUTTON EDIT ------------------------}}
                     <a 
-                        class="btn-blue text-sm my-1 sm:my-2 ml-2 cursor-pointer"
+                        class="btn-blue text-sm my-1 sm:my-2 ml-2 mr-0 cursor-pointer"
                         @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
                             href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier 
                         @else
@@ -203,7 +203,7 @@
                     </a>
 
                     {{--------------------------- BUTTON DELETE ------------------------}}
-                    <a class="btn-red text-sm my-1 sm:my-2 mr-2 cursor-pointer" x-data="" x-on:click.prevent="$dispatch('open-modal',
+                    <a class="btn-red text-sm my-1 sm:my-2 mx-2 cursor-pointer" x-data="" x-on:click.prevent="$dispatch('open-modal',
                     @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
                         'confirm-ticket-delete'
                     @else

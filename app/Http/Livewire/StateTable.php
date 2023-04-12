@@ -211,11 +211,13 @@ final class StateTable extends PowerGridComponent
             //Hide action edit if user have not permission
              Rule::button('edit')
                  ->when(fn() => auth()->user()->can('state-edit') === false)
+                 ->when(fn(Listing $listing) => ($listing->state === 'Non lu' || $listing->state === 'Lu' || $listing->state === 'Résolu'))
                  ->hide(),
  
             //Hide action delete if user have not permission
              Rule::button('destroy')
                  ->when(fn() => auth()->user()->can('state-delete') === false)
+                 ->when(fn(Listing $listing) => ($listing->state === 'Non lu' || $listing->state === 'Lu' || $listing->state === 'Résolu'))
                  ->hide(),
          ];
      }
