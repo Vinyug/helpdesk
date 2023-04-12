@@ -49,7 +49,7 @@
         <div class="mt-12">
             <h3 class="text-base sm:text-lg font-bold mb-4">Liste des heures d'intervention</h3>
             
-
+            @livewire('time-table')
         </div>
 
     </div>
