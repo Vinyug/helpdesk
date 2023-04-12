@@ -68,10 +68,12 @@ class CommentController extends Controller
         $request->validate([
             'content' => 'required|max:2000',
             'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
+            'time_spent' => 'sometimes|nullable|numeric|regex:/^\d{1,4}(\.\d{1,2})?$/', //number 0000.00
+        ], [
+            'time_spent.regex' => 'Le champ temps passé doit être un nombre respectant dans sa valeur maximum cette syntaxe 0000.00'
         ]);
 
         // dd($request);
-        // user_id
 
 
         // ---------------------------------------------------------------
@@ -179,6 +181,9 @@ class CommentController extends Controller
             $request->validate([
                 'content' => 'required|max:2000',
                 'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
+                'time_spent' => 'sometimes|nullable|numeric|regex:/^\d{1,4}(\.\d{1,2})?$/', //number 0000.00
+            ], [
+                'time_spent.regex' => 'Le champ temps passé doit être un nombre respectant dans sa valeur maximum cette syntaxe 0000.00'
             ]);
 
 
@@ -196,6 +201,7 @@ class CommentController extends Controller
             // --------------------------- COMMENT ----------------------------
             $comment->fill([
                 'content' => $request['content'],
+                'time_spent' => $request['time_spent'],
             ]);
             $comment->update();
 

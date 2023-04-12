@@ -99,7 +99,7 @@
 
                     <div class="mt-4">
                         <p class="mb-2"><span class="font-bold">Temps total du ticket : </span>{{ $totalTime }}h</p>
-                        <p class="mb-2"><span class="font-bold">Montant total H.T. du ticket : </span>x.xxx,xx Euros</p>
+                        <p class="mb-2"><span class="font-bold">Montant total H.T. du ticket : </span>{{ $totalPrice }} Euros</p>
                     </div>
                 @endif
             </div>
@@ -135,14 +135,16 @@
                 </div>
 
                 @if (auth()->user()->can('all-access'))
-                <div class="flex flex-col w-full sm:w-3/5 lg:w-1/3 xl:w-1/4 mr-4 mb-2">
-                    <div class="flex items-center">
+                <div class="flex flex-col w-full">
+                    <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4">
                         <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
                         <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="{{ old('time_spent') }}"><span class="font-medium pl-1">h</span>
                     </div>
-                    @error('time_spent')
-                    <div class="custom-error">{{ $message }}</div>
-                    @enderror
+                    @if(old('form') == 'store')
+                        @error('time_spent')
+                        <div class="custom-error mb-2">{{ $message }}</div>
+                        @enderror
+                    @endif
                 </div>
                 @endif
     
@@ -165,7 +167,7 @@
         x-data="
         @if ($loop->first && old('form') == 'update')
         { editComment: 
-            @if ($errors->has('content') || $errors->has('filename.*')) true 
+            @if ($errors->has('content') || $errors->has('filename.*') || $errors->has('time_spent')) true 
             @else false 
             @endif } 
             @else
@@ -184,7 +186,7 @@
                 <div>
                     {{--------------------------- BUTTON EDIT ------------------------}}
                     <a 
-                        class="btn-blue text-sm my-1 sm:my-2 cursor-pointer"
+                        class="btn-blue text-sm my-1 sm:my-2 ml-2 cursor-pointer"
                         @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
                             href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier 
                         @else
@@ -290,6 +292,20 @@
                         @error('filename.*')
                         <div class="custom-error">{{ $message }}</div>
                         @enderror
+                    @endif
+
+                    @if (auth()->user()->can('all-access'))
+                    <div class="flex flex-col w-full">
+                        <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4">
+                            <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
+                            <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="@if(old('form') == 'store' || $errors->has('time_spent')) {{ $comment->time_spent }} @else {{ old('time_spent', $comment->time_spent) }} @endif"><span class="font-medium pl-1">h</span>
+                        </div>
+                        @if(old('form') == 'update')
+                            @error('time_spent')
+                            <div class="custom-error mb-2">{{ $message }}</div>
+                            @enderror
+                        @endif
+                    </div>
                     @endif
 
                     <button type="submit" class="btn-comment-orange">Modifier</button>

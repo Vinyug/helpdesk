@@ -7,7 +7,6 @@ use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Listing;
 use App\Models\Ticket;
-use App\Models\Time;
 use App\Models\Upload;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -186,6 +185,8 @@ class TicketController extends Controller
     {
         // get ticket id
         $ticket_id = $ticket->id;
+        // get ticket hourly_rate
+        $hourlyRate = $ticket->hourly_rate;
         // get all comments of ticket
         $comments = Comment::where('ticket_id', '=', $ticket->id)->latest()->get();
         // get states of listing
@@ -198,9 +199,11 @@ class TicketController extends Controller
         if (Auth::user()->can('all-access') || Auth::user()->company_id === $ticket->company_id) {
             
             $this->verifyTicketCanEditable($ticket, $comments);
+            // Total time and price on ticket
             $totalTime = $this->calculateTicketTotalTime($ticket_id);
+            $totalPrice = $this->calculateTicketTotalPrice($hourlyRate, $totalTime);
             
-            return view('tickets.show',compact('ticket', 'comments', 'states', 'totalTime'));
+            return view('tickets.show',compact('ticket', 'comments', 'states', 'totalTime', 'totalPrice'));
         }
 
         // return error http
@@ -391,14 +394,23 @@ class TicketController extends Controller
 
     public function calculateTicketTotalTime($ticket_id)
     {
-        $times = Time::where('ticket_id', $ticket_id)->get();
+        $commentTimes = Comment::where('ticket_id', $ticket_id)
+            ->whereNotNull('time_spent')
+            ->where('time_spent', '!=', '')
+            ->pluck('time_spent');
         $totalTime = 0;
-
-        foreach($times as $time) {
-            $time_spent = $time->time_spent;
-            $totalTime += $time_spent;
+               
+        foreach($commentTimes as $commentTime) {
+            $totalTime += $commentTime;
         }
 
         return $totalTime;
+    }
+
+    public function calculateTicketTotalPrice($hourlyRate, $totalTime)
+    {
+        $totalPrice = $totalTime * $hourlyRate;
+
+        return number_format($totalPrice, 2);
     }
 }
