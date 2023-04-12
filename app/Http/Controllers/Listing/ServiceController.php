@@ -78,8 +78,13 @@ class ServiceController extends Controller
     public function edit($id)
     {
         $listing = Listing::findOrFail($id);
-     
-        return view('services.edit',compact('listing'));
+        $services = Listing::where('service', '!=', '')->whereNotNull('service')->pluck('service');
+        
+        if($services->contains($listing->service)) {
+            return view('services.edit',compact('listing'));
+        }
+
+        return redirect()->back()->with('status', 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.');
     }
 
     /**

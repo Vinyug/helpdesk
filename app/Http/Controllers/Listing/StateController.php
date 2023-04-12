@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
+
 class StateController extends Controller
 {
     protected $notSeen = 'Non lu';
@@ -82,8 +85,14 @@ class StateController extends Controller
     public function edit($id)
     {
         $listing = Listing::findOrFail($id);
+        $states = Listing::where('state', '!=', '')->whereNotNull('state')->pluck('state');
+        
+        if($states->contains($listing->state)) {
+            return view('states.edit',compact('listing'));
+        }
+
+        return redirect()->back()->with('status', 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.');
      
-        return view('states.edit',compact('listing'));
     }
 
     /**

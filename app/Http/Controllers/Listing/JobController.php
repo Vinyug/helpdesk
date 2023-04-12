@@ -79,8 +79,13 @@ class JobController extends Controller
     public function edit($id)
     {
         $listing = Listing::findOrFail($id);
-     
-        return view('jobs.edit',compact('listing'));
+        $jobs = Listing::where('job', '!=', '')->whereNotNull('job')->pluck('job');
+        
+        if($jobs->contains($listing->job)) {
+            return view('jobs.edit',compact('listing'));
+        }
+
+        return redirect()->back()->with('status', 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.');
     }
 
     /**

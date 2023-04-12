@@ -14,7 +14,7 @@
         </div>
 
         @if(session('status'))
-        <div class="custom-status">
+        <div class="custom-status-error">
             {{ session('status') }}
         </div>
         @endif
