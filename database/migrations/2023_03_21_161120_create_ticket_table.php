@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('company_id');
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade');
+            $table->foreignId('company_id')->constrained()->onUpdate('cascade');
             $table->string('ticket_number')->unique();
             $table->string('uuid');
             $table->string('state')->default('En attente');

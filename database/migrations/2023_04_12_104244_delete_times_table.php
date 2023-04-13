@@ -25,7 +25,7 @@ return new class extends Migration
     {
         Schema::create('times', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_id');
+            $table->foreignId('ticket_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('time_spent')->nullable();
             $table->string('hourly_rate');
             $table->timestamps();
