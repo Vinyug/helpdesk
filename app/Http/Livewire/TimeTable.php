@@ -2,16 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Ticket;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Footer;
-use PowerComponents\LivewirePowerGrid\Header;
-use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
-use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use Illuminate\Database\Eloquent\Builder;
+use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
+use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
 final class TimeTable extends PowerGridComponent
 {
@@ -23,27 +20,9 @@ final class TimeTable extends PowerGridComponent
 
     /*
     |--------------------------------------------------------------------------
-    |  Datasource
+    |  Features Setup
     |--------------------------------------------------------------------------
-    | Provides data to your Table using a Model or Collection
-    |
-    */
-    public function datasource(): ?Collection
-    {
-        return collect([
-            ['id' => 1, 'name' => 'Name 1', 'price' => 1.58, 'created_at' => now(),],
-            ['id' => 2, 'name' => 'Name 2', 'price' => 1.68, 'created_at' => now(),],
-            ['id' => 3, 'name' => 'Name 3', 'price' => 1.78, 'created_at' => now(),],
-            ['id' => 4, 'name' => 'Name 4', 'price' => 1.88, 'created_at' => now(),],
-            ['id' => 5, 'name' => 'Name 5', 'price' => 1.98, 'created_at' => now(),],
-        ]);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    |  Relationship Search
-    |--------------------------------------------------------------------------
-    | Configure here relationships to be used by the Search and Table Filters.
+    | Setup Table's general features
     |
     */
     public function setUp(): array
@@ -63,6 +42,62 @@ final class TimeTable extends PowerGridComponent
 
     /*
     |--------------------------------------------------------------------------
+    |  Datasource
+    |--------------------------------------------------------------------------
+    | Provides data to your Table using a Model or Collection
+    |
+    */
+
+    /**
+    * PowerGrid datasource.
+    *
+    * @return Builder<\App\Models\Ticket>
+    */
+    public function datasource(): Builder
+    {
+        return Ticket::query()
+            ->leftJoin('companies', 'tickets.company_id', '=', 'companies.id')
+            ->leftJoin('comments', 'tickets.id', '=', 'comments.ticket_id')
+            ->select([
+                'tickets.*',
+                'companies.name as company_name',
+                'comments.time_spent as comment_time_spent',
+                'comments.content as comment_content',
+                'comments.created_at as comment_created_at',
+            ])
+            ->whereNotNull('comments.time_spent')
+            ->where('comments.time_spent', '!=', '');
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    |  Relationship Search
+    |--------------------------------------------------------------------------
+    | Configure here relationships to be used by the Search and Table Filters.
+    |
+    */
+
+    /**
+     * Relationship search.
+     *
+     * @return array<string, array<int, string>>
+     */
+    public function relationSearch(): array
+    {
+        return [
+            'comments' => [
+                'content',
+                'time_spent',
+                'created_at',
+            ],
+            'company' => [
+                'name',
+            ],
+        ];
+    }
+    /*
+    |--------------------------------------------------------------------------
     |  Add Column
     |--------------------------------------------------------------------------
     | Make Datasource fields available to be used as columns.
@@ -72,12 +107,11 @@ final class TimeTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('id')
-            ->addColumn('name')
-            ->addColumn('price')
-            ->addColumn('created_at_formatted', function ($entry) {
-                return Carbon::parse($entry->created_at)->format('d/m/Y');
-            });
+            ->addColumn('ticket_number')
+            ->addColumn('company_name')
+            ->addColumn('comment_time_spent')
+            // ->addColumn('comment_content')
+            ->addColumn('comment_created_at', fn (Ticket $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -97,21 +131,55 @@ final class TimeTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('ID', 'id')
-                ->searchable()
-                ->sortable(),
-
-            Column::make('Name', 'name')
-                ->searchable()
-                ->makeInputText('name')
-                ->sortable(),
-
-            Column::make('Price', 'price')
+            Column::make(trans('Ticket number'), 'ticket_number')
                 ->sortable()
-                ->makeInputRange('price', '.', ''),
+                ->searchable()
+                ->makeInputText(),
 
-            Column::make('Created', 'created_at_formatted')
-                ->makeInputDatePicker('created_at'),
+            Column::make(trans('Company'), 'company_name', 'companies.name')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+                
+                Column::make(trans('Hour'), 'comment_time_spent', 'comments.time_spent')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            // Column::make(trans('Message'), 'comment_content', 'comments.content')
+            //     ->sortable()
+            //     ->searchable()
+            //     ->makeInputText(),
+                
+            Column::make(trans('Created at'), 'comment_created_at', 'comments.created_at')
+                ->searchable()
+                ->sortable(),
+                // ->makeInputDatePicker()
         ];
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Actions Method
+    |--------------------------------------------------------------------------
+    | Enable the method below only if the Routes below are defined in your app.
+    |
+    */
+
+     /**
+     * PowerGrid Ticket Action Buttons.
+     *
+     * @return array<int, Button>
+     */
+
+     public function actions(): array
+     {
+        return [
+            Button::make('show', trans(''))
+                ->class('btn-show')
+                ->target('')
+                ->route('tickets.show', ['ticket' => 'uuid']),
+  
+        ];
+     }
 }

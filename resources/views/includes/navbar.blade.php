@@ -36,7 +36,13 @@
                             {{ __('Déconnexion') }}
                         </x-nav-link>
                     </form>
-
+                    
+                    @can('ticket-create')
+                    <x-nav-link :href="route('tickets.create')" :active="request()->routeIs('tickets.create')">
+                        {{ __('Nouveau ticket') }}
+                    </x-nav-link> 
+                    @endcan
+                    
                     <x-nav-link @click="isOpen = !isOpen">
                         {{ __('Menu') }}
                     </x-nav-link>
@@ -153,6 +159,12 @@
                         {{ __('Déconnexion') }}
                     </x-responsive-nav-link>
                 </form>
+
+                @can('ticket-create')
+                    <x-responsive-nav-link :href="route('tickets.create')" :active="request()->routeIs('tickets.create')">
+                        {{ __('Nouveau ticket') }}
+                    </x-responsive-nav-link> 
+                @endcan
             @endauth
         </div>
 
