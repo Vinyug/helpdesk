@@ -5,7 +5,7 @@
         <div class="flex flex-wrap">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <div class="pull-left mb-2">
-                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">{{ $ticket->company->name }} - Ticket N° {{ $ticket->ticket_number }}</h2>
+                    <h2 class="font-share-tech mt-8 mb-12 text-4xl">@if($ticket->company) {{ $ticket->company->name }} @else Entreprise anonyme @endif - Ticket N° {{ $ticket->ticket_number }}</h2>
                 </div>
                 <div class="pull-right my-3">
                     <a class="btn-blue" href="{{ route('tickets.index') }}"> Retour</a>
@@ -34,7 +34,7 @@
                 <p class="mb-2"><span class="font-bold">Sujet : </span>{{ $ticket->subject }}</p>
                 <p class="mb-2"><span class="font-bold">Service : </span>{{ $ticket->service }}</p>
                 <p class="mb-2"><span class="font-bold">N° Ticket : </span>{{ $ticket->ticket_number }}</p>
-                <p class="mb-2"><span class="font-bold">Crée par : </span>{{ $ticket->user->firstname }} {{ $ticket->user->lastname }}</p>
+                <p class="mb-2"><span class="font-bold">Crée par : </span>@if($ticket->user){{ $ticket->user->firstname }} {{ $ticket->user->lastname }} @else Anonyme @endif</p>
                 
                 @if(!auth()->user()->can('all-access'))
                     <p class="mb-2"><span class="font-bold">État : </span>{{ $ticket->state }}</p>
@@ -181,7 +181,7 @@
             {{----------------------------------------- HEAD COMMENT --------------------------------------------------}}
             <div class="flex flex-wrap flex-col sm:flex-row justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
                 <div class="mx-2 my-2">
-                    Par <span class="font-medium">{{ $comment->user->firstname }} {{ $comment->user->lastname }}</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
+                    Par <span class="font-medium">@if($comment->user){{ $comment->user->firstname }} {{ $comment->user->lastname }} @else Anonyme @endif</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
                 </div>
 
                 @if (auth()->user()->can('all-access') && $comment->time_spent)

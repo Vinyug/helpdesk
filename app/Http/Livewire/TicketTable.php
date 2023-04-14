@@ -60,8 +60,8 @@ final class TicketTable extends PowerGridComponent
             ->leftJoin('users', 'tickets.user_id', '=', 'users.id')
             ->select([
                 'tickets.*',
-                DB::raw("CONCAT(users.firstname, ' ', users.lastname) as user_fullname"),
-                'companies.name as company_name',
+                DB::raw("COALESCE(CONCAT(users.firstname, ' ', users.lastname), 'Anonyme') as user_fullname"),
+                DB::raw("COALESCE(companies.name, 'Entreprise anonyme') as company_name"),
             ]);
         
         // if user authenticate have all-access, can see every tickets of DB
