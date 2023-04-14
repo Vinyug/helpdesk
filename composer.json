@@ -16,7 +16,8 @@
         "nesbot/carbon": "^2.66",
         "power-components/livewire-powergrid": "^3.7",
         "spatie/laravel-permission": "^5.9",
-        "spatie/laravel-sluggable": "^3.4"
+        "spatie/laravel-sluggable": "^3.4",
+        "wire-elements/modal": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",
