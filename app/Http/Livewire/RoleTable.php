@@ -180,11 +180,9 @@ final class RoleTable extends PowerGridComponent
                  ->target('')
                  ->route('roles.edit', ['role' => 'id']),
                  
-             Button::make('destroy', trans(''))
-                 ->class('btn-delete')
-                 ->target('')
-                 ->route('roles.destroy', ['role' => 'id'])
-                 ->method('delete')
+            Button::make('destroy', trans(''))
+                ->class('btn-delete')
+                ->openModal('delete-role', ['role' => 'id']),
          ];
      }
 
