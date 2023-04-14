@@ -244,12 +244,6 @@ final class TicketTable extends PowerGridComponent
                 ->class('btn-edit')
                 ->target('')
                 ->route('tickets.edit', ['ticket' => 'uuid']),
-                
-            // Button::make('destroy', trans(''))
-            //     ->class('btn-delete')
-            //     ->target('')
-            //     ->route('tickets.destroy', ['ticket' => 'uuid'])
-            //     ->method('delete')
 
             Button::make('destroy', trans(''))
                 ->class('btn-delete')
