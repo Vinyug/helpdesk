@@ -19,6 +19,11 @@
                 <p>{{ $message }}</p>
             </div>
         @endif
+        @if ($message = Session::get('status'))
+            <div class="custom-status-error">
+                <p>{{ $message }}</p>
+            </div>
+        @endif
 
         <div class="mt-12">
             @livewire('company-table')

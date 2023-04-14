@@ -168,7 +168,11 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        $company->delete();
-        return redirect()->route('companies.index')->with('success','L\'entreprise a été supprimée avec succès');
+        if(!$company->users()->exists()) {
+            $company->delete();
+            return redirect()->route('companies.index')->with('success','L\'entreprise a été supprimée avec succès');
+        }
+
+        return redirect()->back()->with('status','Vous ne pouvez pas supprimer l\'entreprise, elle possède encore des employés');
     }
 }

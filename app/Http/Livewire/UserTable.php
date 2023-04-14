@@ -232,11 +232,9 @@ final class UserTable extends PowerGridComponent
                  ->target('')
                  ->route('users.edit', ['user' => 'id']),
                  
-             Button::make('destroy', trans(''))
+                 Button::make('destroy', trans(''))
                  ->class('btn-delete')
-                 ->target('')
-                 ->route('users.destroy', ['user' => 'id'])
-                 ->method('delete')
+                 ->openModal('delete-user', ['user' => 'id']),
          ];
      }
 

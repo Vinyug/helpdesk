@@ -183,11 +183,9 @@ final class ServiceTable extends PowerGridComponent
                  ->target('')
                  ->route('services.edit', ['service' => 'id']),
                  
-             Button::make('destroy', trans(''))
-                 ->class('btn-delete')
-                 ->target('')
-                 ->route('services.destroy', ['service' => 'id'])
-                 ->method('delete')
+            Button::make('destroy', trans(''))
+                ->class('btn-delete')
+                ->openModal('delete-service', ['listing' => 'id']),
          ];
      }
 

@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Ticket;
 use LivewireUI\Modal\ModalComponent;
+use Spatie\Permission\Models\Role;
 
-class DeleteTicket extends ModalComponent
+class DeleteRole extends ModalComponent
 {
-    public Ticket $ticket;
+    public Role $role;
 
     public static function modalMaxWidth(): string
     {
@@ -31,8 +31,8 @@ class DeleteTicket extends ModalComponent
 
     public function confirm()
     {
-        if ($this->ticket) {
-            Ticket::query()->find($this->ticket->uuid)->delete();
+        if ($this->role) {
+            Role::query()->find($this->role->id)->delete();
         }
 
         $this->closeModalWithEvents([
@@ -41,6 +41,6 @@ class DeleteTicket extends ModalComponent
     }
     public function render()
     {
-        return view('livewire.modal_powergrid.delete-ticket');
+        return view('livewire.modal_powergrid.delete-role');
     }
 }
