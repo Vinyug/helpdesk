@@ -9,11 +9,6 @@ class DeleteTicket extends ModalComponent
 {
     public Ticket $ticket;
 
-    public string $confirmationTitle = '';
-
-    public string $confirmationDescription = '';
-
-
     public static function modalMaxWidth(): string
     {
         return 'md';
