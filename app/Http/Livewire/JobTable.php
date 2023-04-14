@@ -183,11 +183,9 @@ final class JobTable extends PowerGridComponent
                  ->target('')
                  ->route('jobs.edit', ['job' => 'id']),
                  
-             Button::make('destroy', trans(''))
-                 ->class('btn-delete')
-                 ->target('')
-                 ->route('jobs.destroy', ['job' => 'id'])
-                 ->method('delete')
+            Button::make('destroy', trans(''))
+                ->class('btn-delete')
+                ->openModal('delete-job', ['listing' => 'id']),
          ];
      }
 

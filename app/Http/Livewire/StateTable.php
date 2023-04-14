@@ -183,11 +183,9 @@ final class StateTable extends PowerGridComponent
                  ->target('')
                  ->route('states.edit', ['state' => 'id']),
                  
-             Button::make('destroy', trans(''))
-                 ->class('btn-delete')
-                 ->target('')
-                 ->route('states.destroy', ['state' => 'id'])
-                 ->method('delete')
+            Button::make('destroy', trans(''))
+                ->class('btn-delete')
+                ->openModal('delete-state', ['listing' => 'id']),
          ];
      }
 
