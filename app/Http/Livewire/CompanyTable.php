@@ -218,9 +218,7 @@ final class CompanyTable extends PowerGridComponent
             
         Button::make('destroy', trans(''))
             ->class('btn-delete')
-            ->target('')
-            ->route('companies.destroy', ['company' => 'uuid'])
-            ->method('delete')
+            ->openModal('delete-company', ['company' => 'uuid']),
         ];
     }
     
