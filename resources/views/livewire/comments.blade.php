@@ -108,7 +108,7 @@
                 <a 
                     class="btn-blue text-sm my-1 sm:my-2 ml-2 mr-0 cursor-pointer"
                     @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
-                        href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier 
+                        href="{{ route('tickets.edit', $ticket->uuid) }}"> 
                     @else
                         @click="editComment = !editComment" 
                         x-text="editComment ? 'Restituer' : 'Modifier'" 
@@ -118,6 +118,7 @@
                         @endif
                         >
                     @endif 
+                    Modifier
                 </a>
 
                 {{--------------------------- BUTTON DELETE ------------------------}}
