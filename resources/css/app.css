@@ -22,6 +22,9 @@
     .custom-input-file {
         @apply focus:outline-none mb-4 p-1 custom-input border-none shadow-none text-sm file:btn-blue file:border-0 file:mr-4 file:ml-0;
     }
+    .custom-input-file::file-selector-button {
+        @apply cursor-pointer hover:shadow-md hover:shadow-gray-200;
+    }
     .custom-error {
         @apply relative pt-2 text-red-600 text-sm sm:text-base;
     }
@@ -36,6 +39,9 @@
     }
     .btn-blue {
         @apply inline-block mr-4 py-1 px-6 align-middle text-center text-sm sm:text-base font-medium rounded-sm text-white bg-custom-light-blue hover:bg-sky-600 hover:shadow-gray-400 hover:shadow-md transition duration-150 ease-in-out;   
+    }
+    .btn-white {
+        @apply inline-block mr-4 py-1 px-6 align-middle text-center text-sm sm:text-base font-semibold rounded-sm text-custom-light-blue bg-white hover:bg-gray-200 hover:shadow-md transition duration-150 ease-in-out;   
     }
     .btn-green {
         @apply inline-block mr-4 py-1 px-6 align-middle text-center text-sm sm:text-base font-medium rounded-sm text-white bg-green-500 hover:bg-green-600 hover:shadow-gray-400 hover:shadow-md transition duration-150 ease-in-out;   
