@@ -2,12 +2,14 @@
 
 @section('content')
     <x-guest-layout>
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+        <p class="font-share-tech text-center text-3xl font-medium mb-4">Mot de passe oublié</p>
+
+        <div class="mb-4 text-sm lg:text-base">
+            {{ __('Vous avez oublié votre mot de passe ? Pas de problème. Indiquez-nous votre adresse électronique et nous vous enverrons un lien de réinitialisation du mot de passe qui vous permettra d\'en choisir un nouveau.') }}
         </div>
 
         <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+        <x-auth-session-status class="mb-4 text-sm lg:text-base text-custom-blue" :status="session('status')" />
 
         <form method="POST" action="{{ route('password.email') }}">
             @csrf
@@ -19,9 +21,9 @@
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
+            <div class="mt-8">
                 <x-primary-button>
-                    {{ __('Email Password Reset Link') }}
+                    {{ __('Lien de réinitialisation d\'email') }}
                 </x-primary-button>
             </div>
         </form>
