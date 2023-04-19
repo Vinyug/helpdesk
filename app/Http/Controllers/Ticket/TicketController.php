@@ -178,7 +178,6 @@ class TicketController extends Controller
         // ------------------------ NOTIFICATION -------------------------
         // ---------------------------------------------------------------
         
-        dd($ticket->user);
         // if user have all-access or (user have ticket-private and belongs to company) or (user belongs to a company and ticket is public) or (user is author and ticket is private)
         if (auth()->user()->can('all-access') || (auth()->user()->can('ticket-private') && auth()->user()->company_id === $ticket->company_id) || (auth()->user()->company_id === $ticket->company_id && $ticket->visibility) || (auth()->user()->id === $ticket->user_id && !$ticket->visibility)) {
             $ticket->user->notify(new NewTicket($ticket));
