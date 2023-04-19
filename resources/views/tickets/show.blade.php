@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="container mb-16 mx-auto px-4 text-sm sm:text-base">
+    <div x-data="{ showMessage: true }" class="container mb-16 mx-auto px-4 text-sm sm:text-base">
         <div class="flex flex-wrap">
             <div class="lg:w-full pr-4 pl-4 mt-5">
                 <div class="pull-left mb-2">
@@ -13,19 +13,7 @@
             </div>
         </div>
 
-        @if($message = Session::get('status'))
-        <div class="custom-status-error">
-            {{ $message }}
-        </div>
-        @endif
-
-        @if ($message = Session::get('success'))
-            <div class="custom-status">
-                <p>{{ $message }}</p>
-            </div>
-        @endif
-        
-        
+    
         {{-----------------------------------------------------------------------------------------------------}}
         {{------------------------------------------ HEADER ---------------------------------------------------}}
         {{-----------------------------------------------------------------------------------------------------}}
@@ -107,220 +95,10 @@
 
 
         {{-----------------------------------------------------------------------------------------------------}}
-        {{-------------------------------------- CREATE COMMENT -----------------------------------------------}}
+        {{---------------------------------------- LIVEWIRE ---------------------------------------------------}}
         {{-----------------------------------------------------------------------------------------------------}}
-        @if ($ticket->state !== 'Résolu')
-        <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
-            <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
-            <form class="p-4 rounded-b-sm" action="{{ route('comments.store', $ticket->uuid) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                {{-- hidden input to verify if store is called --}}
-                <input type="hidden" name="form" value="store">
-    
-                <div class="col-span-full mb-4">
-                    <textarea class="custom-input h-20" name="content" id="content" placeholder="Saisir un message">{{ old('content') }}</textarea>
-                    @if(old('form') == 'store')
-                        @error('content')
-                            <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    @endif
-                </div>
-
-                <div class="col-span-full">
-                    <input type="file" class="custom-input-file"  name="filename[]" id="filename" multiple>
-                    @if(old('form') == 'store')
-                        @error('filename.*')
-                        <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    @endif
-                </div>
-
-                @if (auth()->user()->can('all-access'))
-                <div class="flex flex-col w-full">
-                    <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4 mb-4">
-                        <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
-                        <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="{{ old('time_spent') }}"><span class="font-medium pl-1">h</span>
-                    </div>
-                    @if(old('form') == 'store')
-                        @error('time_spent')
-                        <div class="custom-error mb-2">{{ $message }}</div>
-                        @enderror
-                    @endif
-                </div>
-                @endif
-    
-                <div class="col-span-full">
-                    <button type="submit" class="btn-comment-orange">Envoyer</button>
-                </div>
-            </form>
-        </div>
-        @endif
-
-
-        {{-----------------------------------------------------------------------------------------------------}}
-        {{----------------------------------------- COMMENTS --------------------------------------------------}}
-        {{-----------------------------------------------------------------------------------------------------}}
-       
-        <h3 class="border-t-[2px] border-b-[2px] mt-12 mb-8 p-4 border-custom-blue text-2xl">Fil de discussion</h3>
         
-        @foreach ($comments as $comment)
-        <div 
-        {{-- if comments.update has error on content, toggle to see textarea --}}
-        x-data="
-        @if ($loop->first && old('form') == 'update')
-        { editComment: 
-            @if ($errors->has('content') || $errors->has('filename.*') || $errors->has('time_spent')) true 
-            @else false 
-            @endif } 
-            @else
-            { editComment: false}
-            @endif"
-            
-            class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
-
-            {{----------------------------------------- HEAD COMMENT --------------------------------------------------}}
-            <div class="flex flex-wrap flex-col sm:flex-row justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
-                <div class="mx-2 my-2">
-                    Par <span class="font-medium">@if($comment->user){{ $comment->user->firstname }} {{ $comment->user->lastname }} @else Anonyme @endif</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
-                </div>
-
-                @if (auth()->user()->can('all-access') && $comment->time_spent)
-                <div class="ml-2 sm:ml-auto mr-2 my-1 sm:my-2">
-                    <span>Temps sur commentaire : {{ $comment->time_spent }}h</span>
-                </div>
-                @endif
-                
-                @if ($loop->first && $comment->user_id == Auth::id() && $comment->editable && $ticket->state !== 'Résolu')
-                <div>
-                    {{--------------------------- BUTTON EDIT ------------------------}}
-                    <a 
-                        class="btn-blue text-sm my-1 sm:my-2 ml-2 mr-0 cursor-pointer"
-                        @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
-                            href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier 
-                        @else
-                            @click="editComment = !editComment" x-text="editComment ? 'Restituer' : 'Modifier'" x-bind:class="{ 'btn-blue': !editComment, 'btn-dark-blue': editComment }">
-                        @endif 
-                    </a>
-
-                    {{--------------------------- BUTTON DELETE ------------------------}}
-                    <a class="btn-red text-sm my-1 sm:my-2 mx-2 cursor-pointer" x-data="" x-on:click.prevent="$dispatch('open-modal',
-                    @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
-                        'confirm-ticket-delete'
-                    @else
-                        'confirm-comment-delete'
-                    @endif 
-                    )"
-                    >Annuler</a>
-                    
-                    {{----------------------- MODAL TICKET OR COMMENT ------------------------}}
-                    @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
-                        <x-modal name="confirm-ticket-delete">
-                            <form method="post" action="{{ route('tickets.destroy', $ticket->uuid) }}" class="p-6">
-                                @csrf
-                                @method('DELETE')
-                    
-                                <h2 class="text-lg font-medium">
-                                    {{ __('Êtes-vous sûr de vouloir supprimer ce ticket ?') }}
-                                </h2>
-                    
-                                <p class="mt-1 text-sm text-custom-grey">
-                                    {{ __('Une fois ce ticket supprimé, toutes ses ressources et données seront définitivement effacées.') }}
-                                </p>
-                    
-                                <div class="mt-2 flex flex-wrap justify-end">
-                                    <x-secondary-button class="mt-4 ml-0 w-full sm:w-auto" x-on:click="$dispatch('close')">
-                                        {{ __('Annuler') }}
-                                    </x-secondary-button>
-                    
-                                    <x-danger-button class="ml-0 mt-4 sm:ml-3 w-full sm:w-auto">
-                                        {{ __('Confirmer suppression') }}
-                                    </x-danger-button>
-                                </div>
-                            </form>
-                        </x-modal>
-                    @else
-                        <x-modal name="confirm-comment-delete">
-                            <form method="post" action="{{ route('comments.destroy', $comment->id) }}" class="p-6">
-                                @csrf
-                                @method('DELETE')
-                    
-                                <h2 class="text-lg font-medium">
-                                    {{ __('Êtes-vous sûr de vouloir supprimer ce commentaire ?') }}
-                                </h2>
-                    
-                                <p class="mt-1 text-sm text-custom-grey">
-                                    {{ __('Une fois ce commentaire supprimé, toutes ses ressources et données seront définitivement effacées.') }}
-                                </p>
-                    
-                                <div class="mt-2 flex flex-wrap justify-end">
-                                    <x-secondary-button class="mt-4 ml-0 w-full sm:w-auto" x-on:click="$dispatch('close')">
-                                        {{ __('Annuler') }}
-                                    </x-secondary-button>
-                    
-                                    <x-danger-button class="ml-0 mt-4 sm:ml-3 w-full sm:w-auto">
-                                        {{ __('Confirmer suppression') }}
-                                    </x-danger-button>
-                                </div>
-                            </form>
-                        </x-modal>
-                    @endif 
-                </div>
-                @endif
-            </div>
-
-            {{----------------------------------------- BODY COMMENT --------------------------------------------------}}
-            <div class="p-4 rounded-b-sm">
-                {{---------------- TOGGLE editComment FALSE -----------------}}
-                <div x-show="!editComment" class="py-[9px] px-[13px] rounded-b-sm">
-                    <p>{!! nl2br(e($comment->content)) !!}</p> 
-                    <div class="flex flex-wrap mt-2">
-                        @foreach ($comment->uploads as $upload)
-                            <a href="{{ $upload->url }}" target="_blank"><img class="thumbnail m-1" src="{{ $upload->thumbnail_url }}" alt="{{ $upload->filename }}"></a>  
-                        @endforeach
-                    </div>
-                </div>
-
-                {{---------------- TOGGLE editComment TRUE -----------------}}
-                <form x-cloak x-show="editComment" class="mb-2" action="{{ route('comments.update', $comment->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PATCH')
-
-                    {{-- hidden input to verify if update is called --}}
-                    <input type="hidden" name="form" value="update">
-
-                    <textarea class="custom-input border-custom-blue shadow-gray-400 shadow-sm h-20 mb-2" name="content" id="content" placeholder="Saisir un message">@if(empty(old('content'))){{ $comment->content }}@else{{ old('content', $comment->content) }}@endif</textarea>
-                    @if(old('form') == 'update')
-                        @error('content')
-                            <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    @endif
-
-                    <input type="file" class="custom-input-file" name="filename[]" id="filename" multiple>
-                    @if(old('form') == 'update')
-                        @error('filename.*')
-                        <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    @endif
-
-                    @if (auth()->user()->can('all-access'))
-                    <div class="flex flex-col w-full mb-4">
-                        <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4">
-                            <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
-                            <input type="text" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value="@if(old('form') == 'store' || $errors->has('time_spent')) {{ $comment->time_spent }} @else {{ old('time_spent', $comment->time_spent) }} @endif"><span class="font-medium pl-1">h</span>
-                        </div>
-                        @if(old('form') == 'update')
-                            @error('time_spent')
-                            <div class="custom-error mb-2">{{ $message }}</div>
-                            @enderror
-                        @endif
-                    </div>
-                    @endif
-
-                    <button type="submit" class="btn-comment-orange">Modifier</button>
-                </form>
-            </div>
-        </div>
-        @endforeach
-
+        @livewire('comments', ['ticket' => $ticket], key($ticket->uuid))
+    
     </div>
 @endsection
