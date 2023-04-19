@@ -104,6 +104,7 @@
             
             @if ($loop->first && $comment->user_id == Auth::id() && $comment->editable && $ticket->state !== 'Résolu')
             <div>
+                
                 {{--------------------------- BUTTON EDIT ------------------------}}
                 <a 
                     class="btn-white text-sm my-1 sm:my-2 ml-2 mr-0 cursor-pointer"
@@ -142,7 +143,7 @@
                             @csrf
                             @method('DELETE')
                 
-                            <h2 class="text-lg font-medium">
+                            <h2 class="text-lg text-custom-grey font-medium">
                                 {{ __('Êtes-vous sûr de vouloir supprimer ce ticket ?') }}
                             </h2>
                 
@@ -155,7 +156,7 @@
                                     {{ __('Annuler') }}
                                 </x-secondary-button>
                 
-                                <x-danger-button class="ml-0 mt-4 sm:ml-3 w-full sm:w-auto">
+                                <x-danger-button class="ml-0 mt-4 sm:ml-3 w-full sm:w-auto" x-on:click="$dispatch('close')">
                                     {{ __('Confirmer suppression') }}
                                 </x-danger-button>
                             </div>
@@ -188,7 +189,7 @@
             </div>
             @endif
         </div>
-
+    
         {{----------------------------------------- BODY COMMENT --------------------------------------------------}}
         <div class="p-4 rounded-b-sm">
             {{---------------- TOGGLE editComment FALSE -----------------}}
