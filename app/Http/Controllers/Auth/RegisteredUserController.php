@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\NewUser;
+use App\Notifications\NewRegister;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -51,7 +51,7 @@ class RegisteredUserController extends Controller
 
         // notify all users have all-access
         $admin = User::permission('all-access')->get();
-        Notification::send($admin, new NewUser($user));
+        Notification::send($admin, new NewRegister($user));
 
         Auth::login($user);
 
