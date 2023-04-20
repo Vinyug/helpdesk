@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Listing;
 use App\Models\User;
+use App\Notifications\AssignCompanyUser;
 use App\Notifications\NewUser;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
@@ -159,6 +160,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
+        $userCurrentCompany = $user->company_id;
+
 
         // if user have not all-access, only roles 2 (User) and/or 3 (admin-company) can be transmit.
         $validRoles = collect([]);
@@ -196,6 +199,18 @@ class UserController extends Controller
         // assign roles to user (delete and assign)
         DB::table('model_has_roles')->where('model_id',$id)->delete();
         $user->assignRole($request->input('roles'));
+
+        // ---------------- Notification ---------------------
+        if($userCurrentCompany !== $user->company->id) {
+            // Notify user and admin company of company
+            $adminCompany = User::permission('ticket-private')
+                ->where('company_id','=', $user->company_id)
+                ->get(); 
+            // merge to send
+            $userAndAdminCompany = collect([$user])->merge($adminCompany);;
+
+            Notification::send($userAndAdminCompany, new AssignCompanyUser($user));
+        }
     
         return redirect()->route('users.index')
                         ->with('success','L\'utilisateur a été mis à jour.');
