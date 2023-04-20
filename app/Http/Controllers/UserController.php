@@ -7,11 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Listing;
 use App\Models\User;
+use App\Notifications\NewUser;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 class UserController extends Controller
 {
@@ -94,12 +96,25 @@ class UserController extends Controller
         if (!auth()->user()->can('all-access')) {
             $input['company_id'] = auth()->user()->company_id;
         }
-
+        
         // insert user
         $user = User::create($input);
         // assign roles at user
         $user->assignRole($request->input('roles'));
     
+        // ---------------- Notification ---------------------
+        // Notify new user, super admin, and admin company of company
+        // get users admin have all-access
+        $admin = User::permission('all-access')->get();
+        // get users admin company of company
+        $adminCompany = User::permission('ticket-private')
+            ->where('company_id','=', $user->company_id)
+            ->get(); 
+        // merge to send
+        $userAdminAndAdminCompany = collect([$user])->merge($admin)->merge($adminCompany);;
+
+        Notification::send($userAdminAndAdminCompany, new NewUser($user));
+
         return redirect()->route('users.index')
                         ->with('success','L\'utilisateur est créé.');
     }
