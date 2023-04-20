@@ -181,31 +181,7 @@ class TicketController extends Controller
         // ------------------------ NOTIFICATION -------------------------
         // ---------------------------------------------------------------
         
-        // -------------- ADMIN ---------------
-        // get users have all-access
-        $admin = User::permission('all-access')->get();
-        
-        // ------------- COMPANY --------------
-        // get users belongs to company of ticket
-        $usersCompany = $ticket->company->users;
-        
-        // get users admin company belongs to company of ticket
-        $usersAdminCompany = User::permission('ticket-private')
-            ->where('company_id','=', $ticket->company_id)
-            ->get();
-
-        // filter users company of ticket
-        // if ticket is public
-        if($ticket->visibility) {
-            $usersCompanyFiltered = $usersCompany;
-        } 
-        
-        // if ticket is private and (author of ticket belongs to ticket company)
-        if(!$ticket->visibility && (auth()->user()->id === $ticket->user_id)) {
-            $usersCompanyFiltered = collect([$ticket->user]);
-        }
-
-        $usersNotifiable = $admin->merge($usersAdminCompany)->merge($usersCompanyFiltered);
+        $usersNotifiable = $this->listOfUsersNotifiable($ticket);
 
         Notification::send($usersNotifiable, new NewTicket($ticket));
         
@@ -513,5 +489,36 @@ class TicketController extends Controller
         $totalPrice = $totalTime * $hourlyRate;
 
         return number_format($totalPrice, 2, ',', '.');
+    }
+
+    public function listOfUsersNotifiable(Ticket $ticket)
+    {
+        // -------------- ADMIN ---------------
+        // get users have all-access
+        $admin = User::permission('all-access')->get();
+        
+        // ------------- COMPANY --------------
+        // get users belongs to company of ticket
+        $usersCompany = $ticket->company->users;
+        
+        // get users admin company belongs to company of ticket
+        $usersAdminCompany = User::permission('ticket-private')
+            ->where('company_id','=', $ticket->company_id)
+            ->get();
+
+        // filter users company of ticket
+        // if ticket is public
+        if($ticket->visibility) {
+            $usersCompanyFiltered = $usersCompany;
+        } 
+        
+        // if ticket is private and (author of ticket belongs to ticket company)
+        if(!$ticket->visibility && (auth()->user()->id === $ticket->user_id)) {
+            $usersCompanyFiltered = collect([$ticket->user]);
+        }
+
+        $usersNotifiable = $admin->merge($usersAdminCompany)->merge($usersCompanyFiltered);
+
+        return $usersNotifiable;
     }
 }
