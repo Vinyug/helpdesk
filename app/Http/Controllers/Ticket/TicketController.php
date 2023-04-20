@@ -8,10 +8,12 @@ use App\Models\Company;
 use App\Models\Listing;
 use App\Models\Ticket;
 use App\Models\Upload;
+use App\Models\User;
 use App\Notifications\NewTicket;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -178,11 +180,35 @@ class TicketController extends Controller
         // ------------------------ NOTIFICATION -------------------------
         // ---------------------------------------------------------------
         
-        // if user have all-access or (user have ticket-private and belongs to company) or (user belongs to a company and ticket is public) or (user is author and ticket is private)
-        if (auth()->user()->can('all-access') || (auth()->user()->can('ticket-private') && auth()->user()->company_id === $ticket->company_id) || (auth()->user()->company_id === $ticket->company_id && $ticket->visibility) || (auth()->user()->id === $ticket->user_id && !$ticket->visibility)) {
-            $ticket->user->notify(new NewTicket($ticket));
+        // -------------- ADMIN ---------------
+        // get users have all-access
+        $admin = User::permission('all-access')->get();
+        
+        // ------------- COMPANY --------------
+        // get users belongs to company of ticket
+        $usersCompany = $ticket->company->users;
+        
+        // get users admin company belongs to company of ticket
+        $usersAdminCompany = User::permission('ticket-private')
+            ->where('company_id','=', $ticket->company_id)
+            ->get();
+
+        // filter users company of ticket
+        // if ticket is public
+        if($ticket->visibility) {
+            $usersCompanyFiltered = $usersCompany;
+        } 
+        
+        // if ticket is private and (author of ticket belongs to ticket company)
+        if(!$ticket->visibility && (auth()->user()->id === $ticket->user_id)) {
+            $usersCompanyFiltered = collect([$ticket->user]);
         }
 
+        $usersNotifiable = $admin->merge($usersAdminCompany)->merge($usersCompanyFiltered);
+
+        Notification::send($usersNotifiable, new NewTicket($ticket));
+        
+        
         // ---------------------------------------------------------------
         // ---------------------------- VIEW -----------------------------
         // ---------------------------------------------------------------

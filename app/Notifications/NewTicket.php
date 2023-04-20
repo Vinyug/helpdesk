@@ -45,7 +45,7 @@ class NewTicket extends Notification
     {
         return (new MailMessage)
                     ->subject('Nouveau Ticket: Entreprise - '.$this->ticket->company->name.' / N° Ticket - '.$this->ticket->ticket_number)
-                    ->greeting('Bonjour '.$this->ticket->user->firstname.' '.$this->ticket->user->lastname)
+                    ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')
                     ->line('
                         Un nouveau ticket N° '.$this->ticket->ticket_number.
                         ' à été ouvert par l\'entreprise '.$this->ticket->company->name.
