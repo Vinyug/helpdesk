@@ -22,8 +22,8 @@
     {{-----------------------------------------------------------------------------------------------------}}
 
     @if ($ticket->state !== 'Résolu' && !$editMode)
-    <div class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
-        <div class="p-2 font-medium border-b border-gray-300 bg-sky-50 rounded-t-md">Ecrire un nouveau message</div>
+    <div class="flex flex-col border border-gray-400 rounded-t-md rounded-sm mb-4 shadow shadow-grey-500">
+        <div class="p-2 font-medium border-b border-gray-400 text-white bg-custom-light-blue">Ecrire un nouveau message</div>
         <form class="p-4 rounded-b-sm">
 
             <div class="col-span-full mb-4">
@@ -88,10 +88,10 @@
         { editComment: false}
     @endif"
         
-        class="flex flex-col border border-gray-300 rounded-t-md rounded-sm mb-4">
+        class="flex flex-col border border-gray-400  rounded-t-md rounded-sm mb-4 shadow shadow-grey-500">
 
         {{----------------------------------------- HEAD COMMENT --------------------------------------------------}}
-        <div class="flex flex-wrap flex-col sm:flex-row justify-between border-b border-gray-300 bg-sky-50 rounded-t-md">
+        <div class="flex flex-wrap flex-col sm:flex-row justify-between border-b border-gray-400 text-white bg-custom-light-blue">
             <div class="mx-2 my-2">
                 Par <span class="font-medium">@if($comment->user){{ $comment->user->firstname }} {{ $comment->user->lastname }} @else Anonyme @endif</span>, @if($comment->created_at == $comment->updated_at) écrit le {{ $comment->created_at->format('d/m/Y à H\hi') }} @else modifié le {{ $comment->updated_at->format('d/m/Y à H\hi') }} @endif
             </div>
@@ -104,24 +104,26 @@
             
             @if ($loop->first && $comment->user_id == Auth::id() && $comment->editable && $ticket->state !== 'Résolu')
             <div>
+                
                 {{--------------------------- BUTTON EDIT ------------------------}}
                 <a 
-                    class="btn-blue text-sm my-1 sm:my-2 ml-2 mr-0 cursor-pointer"
+                    class="btn-white text-sm my-1 sm:my-2 ml-2 mr-0 cursor-pointer"
                     @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
-                        href="{{ route('tickets.edit', $ticket->uuid) }}">Modifier 
+                        href="{{ route('tickets.edit', $ticket->uuid) }}"> 
                     @else
                         @click="editComment = !editComment" 
                         x-text="editComment ? 'Restituer' : 'Modifier'" 
-                        x-bind:class="{ 'btn-blue': !editComment, 'btn-dark-blue': editComment }"
+                        x-bind:class="{ 'btn-white': !editComment, 'btn-dark-blue hover:shadow-none': editComment }"
                         @if($editMode) wire:click.prevent="cancel"
                         @else wire:click.prevent="edit({{ $comment->id }})"
                         @endif
                         >
                     @endif 
+                    Modifier
                 </a>
 
                 {{--------------------------- BUTTON DELETE ------------------------}}
-                <a class="btn-red text-sm my-1 sm:my-2 mx-2 cursor-pointer"
+                <a class="btn-red hover:shadow-none text-sm my-1 sm:my-2 mx-2 cursor-pointer"
                     @click="editComment = false"
                     wire:click.prevent="cancel"
                     x-data="" 
@@ -141,7 +143,7 @@
                             @csrf
                             @method('DELETE')
                 
-                            <h2 class="text-lg font-medium">
+                            <h2 class="text-lg text-custom-grey font-medium">
                                 {{ __('Êtes-vous sûr de vouloir supprimer ce ticket ?') }}
                             </h2>
                 
@@ -154,7 +156,7 @@
                                     {{ __('Annuler') }}
                                 </x-secondary-button>
                 
-                                <x-danger-button class="ml-0 mt-4 sm:ml-3 w-full sm:w-auto">
+                                <x-danger-button class="ml-0 mt-4 sm:ml-3 w-full sm:w-auto" x-on:click="$dispatch('close')">
                                     {{ __('Confirmer suppression') }}
                                 </x-danger-button>
                             </div>
@@ -164,7 +166,7 @@
                     <x-modal name="confirm-comment-delete">
                         <form class="p-6">
                 
-                            <h2 class="text-lg font-medium">
+                            <h2 class="text-lg font-medium text-custom-grey">
                                 {{ __('Êtes-vous sûr de vouloir supprimer ce commentaire ?') }}
                             </h2>
                 
@@ -187,7 +189,7 @@
             </div>
             @endif
         </div>
-
+    
         {{----------------------------------------- BODY COMMENT --------------------------------------------------}}
         <div class="p-4 rounded-b-sm">
             {{---------------- TOGGLE editComment FALSE -----------------}}

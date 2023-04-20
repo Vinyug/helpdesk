@@ -8,9 +8,12 @@ use App\Models\Company;
 use App\Models\Listing;
 use App\Models\Ticket;
 use App\Models\Upload;
+use App\Models\User;
+use App\Notifications\NewTicket;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -25,6 +28,7 @@ class TicketController extends Controller
     protected $ticket_number_separate = '/';
     protected $thumbnail_width = 100;
     protected $thumbnail_height = 100;
+    protected $resolved = 'Résolu';
 
 
     /**
@@ -174,6 +178,15 @@ class TicketController extends Controller
 
 
         // ---------------------------------------------------------------
+        // ------------------------ NOTIFICATION -------------------------
+        // ---------------------------------------------------------------
+        
+        $usersNotifiable = $this->listOfUsersNotifiable($ticket);
+
+        Notification::send($usersNotifiable, new NewTicket($ticket));
+        
+        
+        // ---------------------------------------------------------------
         // ---------------------------- VIEW -----------------------------
         // ---------------------------------------------------------------
 
@@ -245,24 +258,28 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket, Comment $comment)
     {
-        if(auth()->user()->id === $comment->user_id) {
+        if(auth()->user()->id === $ticket->user_id && $ticket->state !== $this->resolved) {
             $request->validate([
                 'company_id' => 'required|exists:companies,id',
                 'subject' => 'required|max:80',
                 'service' => 'required|exists:listings,service',
                 'content' => 'required',
+                'filename.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
                 'visibility' => 'boolean',
             ]);
             
             // company_id
-            if (Auth::user()->can('all-access')) {
+            if (auth()->user()->can('all-access')) {
                 $ticket->fill([
                     'company_id' => $request['company_id'],
                 ]);
             }
 
-            //------ UPDATE --------
-            // DB tickets
+            // ---------------------------------------------------------------
+            // --------------------------- UPDATE ----------------------------
+            // ---------------------------------------------------------------
+            
+            // --------------------------- TICKET ----------------------------
             $ticket->fill([
                 'subject' => $request['subject'],
                 'service' => $request['service'],
@@ -270,11 +287,63 @@ class TicketController extends Controller
             ]);
             $ticket->update();
             
-            // DB comments
+            // --------------------------- COMMENT ----------------------------
             $comment->fill([
                 'content' => $request['content'],
             ]);
             $comment->update();
+
+            // --------------------------- UPLOAD ----------------------------
+            // get comment_id
+            $comment_id = $ticket->comments->firstOrFail()->id;
+            // get ticket_number
+            $ticket_number = $ticket->ticket_number;
+
+            // verify files if file exist and isValid, to insert in DB
+            if ($request->hasFile('filename')) {
+                
+                // delete every uploads of comment
+                $uploads = Upload::where('comment_id', $comment_id)->get();
+                foreach ($uploads as $upload) {
+                    Storage::delete([$upload->path, $upload->thumbnail_path]);
+                    $upload->delete();
+                }
+                
+                // Insert new uploads 
+                $i = 0;
+                foreach ($request->file('filename') as $file) {
+                    if ($file->isValid()) {
+                        // get file extension
+                        $ext = $file->extension();
+                        // rename each file
+                        $name = str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'_'.$i.'.'.$ext;
+                        $i++;
+
+                        // upload each file in folder named by ticket number and comment id
+                        $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id, $name);
+
+                        // resize thumbnail
+                        $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function($constraint){
+                            $constraint->upsize();
+                        })->encode($ext, 50); //reduce sizing by 50%
+                        // thumbnail path
+                        $thumbnailPath = 'files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id.'/thumbnail/thumb_'.$name;
+                        // stock file. first parameter : where ; second parameter : what
+                        Storage::put($thumbnailPath, $thumbnailFile);
+
+                        // insert
+                        $upload = Upload::create(array_merge([
+                            'filename' => $name,
+                            'url' => Storage::url($path),
+                            'path' => $path,
+                            'thumbnail_url' => Storage::url($thumbnailPath),
+                            'thumbnail_path' => $thumbnailPath,
+                        ], 
+                        compact('comment_id')));
+                    }
+                }
+            }
+
 
             return redirect()->route('tickets.index')->with('success','Le ticket a été mis à jour avec succès.');
         }
@@ -420,5 +489,36 @@ class TicketController extends Controller
         $totalPrice = $totalTime * $hourlyRate;
 
         return number_format($totalPrice, 2, ',', '.');
+    }
+
+    public function listOfUsersNotifiable(Ticket $ticket)
+    {
+        // -------------- ADMIN ---------------
+        // get users have all-access
+        $admin = User::permission('all-access')->get();
+        
+        // ------------- COMPANY --------------
+        // get users belongs to company of ticket
+        $usersCompany = $ticket->company->users;
+        
+        // get users admin company belongs to company of ticket
+        $usersAdminCompany = User::permission('ticket-private')
+            ->where('company_id','=', $ticket->company_id)
+            ->get();
+
+        // filter users company of ticket
+        // if ticket is public
+        if($ticket->visibility) {
+            $usersCompanyFiltered = $usersCompany;
+        } 
+        
+        // if ticket is private and (author of ticket belongs to ticket company)
+        if(!$ticket->visibility && (auth()->user()->id === $ticket->user_id)) {
+            $usersCompanyFiltered = collect([$ticket->user]);
+        }
+
+        $usersNotifiable = $admin->merge($usersAdminCompany)->merge($usersCompanyFiltered);
+
+        return $usersNotifiable;
     }
 }
