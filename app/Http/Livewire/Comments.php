@@ -207,7 +207,7 @@ class Comments extends Component
                     $upload->delete();
                 }
                 
-                // Insert new uploads comment
+                // Insert new uploads
                 $i = 0;
                 foreach ($this->input['filenames'] as $file) {
                     if ($file->isValid()) {
