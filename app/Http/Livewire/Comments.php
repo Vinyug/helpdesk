@@ -129,7 +129,9 @@ class Comments extends Component
             // Notify author of ticket, admin, and admin company of company
             $listOfUsersNotifiable = $this->listOfUsersNotifiable($comment);
             
-            Notification::send($listOfUsersNotifiable, new NewComment($comment));
+            if(env('MAIL_USERNAME')) {
+                Notification::send($listOfUsersNotifiable, new NewComment($comment));
+            }
 
 
             // ---------------------------------------------------------------

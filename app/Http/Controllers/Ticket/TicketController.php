@@ -184,7 +184,9 @@ class TicketController extends Controller
         
         $usersNotifiable = $this->listOfUsersNotifiable($ticket);
 
-        Notification::send($usersNotifiable, new NewTicket($ticket));
+        if(env('MAIL_USERNAME')) {
+            Notification::send($usersNotifiable, new NewTicket($ticket));
+        }
         
         
         // ---------------------------------------------------------------
@@ -231,7 +233,9 @@ class TicketController extends Controller
                 // merge to send
                 $userAndAdminCompany = collect([$ticket->user])->merge($adminCompany)->unique('id');
 
-                Notification::send($userAndAdminCompany, new UpdateTicketState($ticket));
+                if(env('MAIL_USERNAME')) {
+                    Notification::send($userAndAdminCompany, new UpdateTicketState($ticket));
+                }
 
                 // update ticket to mark notification sent
                 $ticket->notification_sent = 1;
