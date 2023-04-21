@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-
+use Ramsey\Uuid\Type\Integer;
 
 class TicketController extends Controller
 {
@@ -400,11 +400,11 @@ class TicketController extends Controller
         // format into ddmmyy
         $dateFormat = $date->format('dmy');
         // get the max ticket number for the day
-        $maxTicketNumber = Ticket::whereDate('created_at', $date)->max('ticket_number');
+        $maxTicketNumber = Ticket::whereDate('created_at', $date)->latest()->pluck('ticket_number')->first();
         // extract the number part of the ticket number
-        $maxTicketNumber = substr($maxTicketNumber, -1);
+        $maxTicketNumber = explode($this->ticket_number_separate, $maxTicketNumber);
         // increment it
-        $dayTicket = intval($maxTicketNumber) + 1;
+        $dayTicket = intval(end($maxTicketNumber)) + 1;
         // format ticket number on format - #ddmmyy/i
         $ticket_number = "#{$dateFormat}/{$dayTicket}";
         
