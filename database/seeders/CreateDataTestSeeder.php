@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Faker\Factory as Faker;
 use App\Models\Company;
 use App\Models\Listing;
 use App\Models\User;
@@ -18,14 +19,15 @@ class CreateDataTestSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Faker::create();
+        
         // COMPANIES
         $companies = Company::factory()->count(3)->create();
-
 
         // LISTINGS
         $jobs = ['Poste A', 'Poste B', 'Poste C'];
         $states = ['Non lu', 'Lu', 'En cours', 'En attente de réponse', 'Résolu'];
-        $services = ['Service A', 'Service B', 'Service C'];
+        $services = ['Support informatique', 'Sécurité informatique', 'Réseau informatique', 'Application logicielle', 'Matériel informatique', 'Téléphonie / Communication', 'Conseil assistance générale', 'Autre'];
         $hourly_rate = '25';
         
         foreach ($jobs as $job) {
@@ -34,6 +36,7 @@ class CreateDataTestSeeder extends Seeder
                 'state' => null,
                 'service' => null,
                 'hourly_rate' => null,
+                'description' => null,
             ]);
         }
         
@@ -43,6 +46,7 @@ class CreateDataTestSeeder extends Seeder
                 'state' => $state,
                 'service' => null,
                 'hourly_rate' => null,
+                'description' => null,
             ]);
         }
         
@@ -52,6 +56,7 @@ class CreateDataTestSeeder extends Seeder
                 'state' => null,
                 'service' => $service,
                 'hourly_rate' => null,
+                'description' => $faker->paragraph(),
             ]);
         }
 
@@ -60,6 +65,7 @@ class CreateDataTestSeeder extends Seeder
             'state' => null,
             'service' => null,
             'hourly_rate' => $hourly_rate,
+            'description' => null,
         ]);
 
         // USERS

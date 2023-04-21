@@ -14,6 +14,7 @@ class Listing extends Model
         'state',
         'service',
         'hourly_rate',
+        'description',
     ];
 
     // MUTATOR - ACCESSOR
@@ -49,6 +50,16 @@ class Listing extends Model
 
     protected function getServiceAttribute($value)
     {
-        return ucfirst(strtolower($this->attributes['service']));
+        return ucfirst($this->attributes['service']);
+    }
+
+    protected function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = ucfirst(strtolower($value));
+    }
+
+    protected function getDescriptionAttribute($value)
+    {
+        return ucfirst($this->attributes['description']);
     }
 }
