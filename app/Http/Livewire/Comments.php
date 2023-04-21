@@ -5,7 +5,10 @@ namespace App\Http\Livewire;
 use App\Models\Comment;
 use App\Models\Ticket;
 use App\Models\Upload;
+use App\Models\User;
+use App\Notifications\NewComment;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
@@ -117,6 +120,16 @@ class Comments extends Component
             
             // Remove all temporary files
             File::cleanDirectory(storage_path('app/public/livewire-tmp/'));
+
+
+            // ---------------------------------------------------------------
+            // ------------------------ NOTIFICATION -------------------------
+            // ---------------------------------------------------------------
+
+            // Notify author of ticket, admin, and admin company of company
+            $listOfUsersNotifiable = $this->listOfUsersNotifiable($comment);
+            
+            Notification::send($listOfUsersNotifiable, new NewComment($comment));
 
 
             // ---------------------------------------------------------------
@@ -287,4 +300,23 @@ class Comments extends Component
             'editMode', $this->editMode,
         ]);
     }
+
+    public function listOfUsersNotifiable(Comment $comment)
+    {
+        // -------------- ADMIN ---------------
+        // get users have all-access
+        $admin = User::permission('all-access')->get();
+        // ------------- COMPANY --------------
+        // get author of ticket
+        $authorTicket = $comment->ticket->user;
+        // get admin company
+        $adminCompany = User::permission('ticket-private')
+        ->where('company_id','=', $comment->ticket->company_id)
+        ->get(); 
+        // merge to send
+        $authorTicketAdminAndAdminCompany = collect([$authorTicket])->merge($admin)->merge($adminCompany)->unique('id');
+        
+        return $authorTicketAdminAndAdminCompany;
+    }
+    
 }
