@@ -1,4 +1,4 @@
-<div class="relative mt-24 md:mt-36 mb-8 md:mb-16">
+<div class="relative mt-16 md:mt-24 mb-8 md:mb-16">
 
     {{--------------------- HEADER ----------------------}}
     <div class="text-center">
