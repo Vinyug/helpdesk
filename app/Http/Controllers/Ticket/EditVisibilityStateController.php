@@ -4,12 +4,17 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\User;
+use App\Notifications\UpdateTicketState;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class EditVisibilityStateController extends Controller
 {
     public function update(Request $request, Ticket $ticket)
     {
+        $ticketCurrentState = $ticket->state;
+
         if(auth()->user()->can('all-access')) {
             $request->validate([
                 'visibility' => 'boolean',
@@ -27,6 +32,18 @@ class EditVisibilityStateController extends Controller
                 'editable' => $ticket->editable,
             ]);
             $ticket->update();
+
+            // ---------------- Notification ---------------------
+            if($request['state'] !== $ticketCurrentState) {
+                // Notify user and admin company of company
+                $adminCompany = User::permission('ticket-private')
+                ->where('company_id','=', $ticket->user->company_id)
+                ->get(); 
+                // merge to send
+                $userAndAdminCompany = collect([$ticket->user])->merge($adminCompany)->unique('id');
+
+                Notification::send($userAndAdminCompany, new UpdateTicketState($ticket));
+            }
 
             return redirect()->back()->with('success','Le ticket a été mis à jour avec succès.');
         }
