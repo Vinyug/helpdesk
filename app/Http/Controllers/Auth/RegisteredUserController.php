@@ -51,7 +51,9 @@ class RegisteredUserController extends Controller
 
         // notify all users have all-access
         $admin = User::permission('all-access')->get();
-        Notification::send($admin, new NewRegister($user));
+        if(env('MAIL_USERNAME')) {
+            Notification::send($admin, new NewRegister($user));
+        }
 
         Auth::login($user);
 

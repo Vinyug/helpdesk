@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Listing;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class HomepageController extends Controller
 {
@@ -14,12 +14,8 @@ class HomepageController extends Controller
      */
     public function index(Request $request)
     {
-        if(Auth::check()) {
-            $user = Auth::user();
+        $services = Listing::where('service', '!=', '')->whereNotNull('service')->pluck('description', 'service');
 
-            return view('index', compact('user'));
-        }
-
-        return view('index');
+        return view('index', compact('services'));
     }
 }

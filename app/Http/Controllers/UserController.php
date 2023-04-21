@@ -114,7 +114,9 @@ class UserController extends Controller
         // merge to send
         $userAdminAndAdminCompany = collect([$user])->merge($admin)->merge($adminCompany);;
 
-        Notification::send($userAdminAndAdminCompany, new NewUser($user));
+        if(env('MAIL_USERNAME')) {
+            Notification::send($userAdminAndAdminCompany, new NewUser($user));
+        }
 
         return redirect()->route('users.index')
                         ->with('success','L\'utilisateur est créé.');
@@ -209,7 +211,9 @@ class UserController extends Controller
             // merge to send
             $userAndAdminCompany = collect([$user])->merge($adminCompany);;
 
-            Notification::send($userAndAdminCompany, new AssignCompanyUser($user));
+            if(env('MAIL_USERNAME')) {
+                Notification::send($userAndAdminCompany, new AssignCompanyUser($user));
+            }
         }
     
         return redirect()->route('users.index')

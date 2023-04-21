@@ -10,7 +10,7 @@
 
         @auth
         <div class="md:ml-auto">
-            Bonjour {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
+            Bonjour {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}
         </div>
         @endauth
     </div>

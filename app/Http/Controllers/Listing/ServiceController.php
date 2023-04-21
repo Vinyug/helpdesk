@@ -48,11 +48,15 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'service' => 'required|max:200',
+            'description' => 'required',
         ]);
     
-        Listing::create(['service' => $request->input('service')]);
+        Listing::create([
+            'service' => $request->input('service'), 
+            'description' => $request->input('description'), 
+        ]);
     
         return redirect()->route('services.index')
                         ->with('success','Un nouveau service est crée.');
@@ -96,12 +100,14 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $request->validate([
             'service' => 'required|max:200',
+            'description' => 'required',
         ]);
     
         $listing = Listing::findOrFail($id);
         $listing->service = $request->input('service');
+        $listing->service = $request->input('description');
         $listing->save();
     
         return redirect()->route('services.index')

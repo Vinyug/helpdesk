@@ -21,6 +21,7 @@ class Ticket extends Model
         'visibility', 
         'hourly_rate',
         'editable',
+        'notification_sent',
     ];
 
     // allow to transmit uuid in URL (instead of id by default)

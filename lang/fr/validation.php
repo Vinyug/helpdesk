@@ -161,7 +161,7 @@ return [
         'date_of_birth'            => 'date de naissance',
         'day'                      => 'jour',
         'deleted_at'               => 'supprimé à',
-        'description'              => 'la description',
+        'description'              => 'description',
         'district'                 => 'quartier',
         'duration'                 => 'durée',
         'email'                    => 'adresse e-mail',

@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\Upload;
 use App\Models\User;
 use App\Notifications\NewTicket;
+use App\Notifications\UpdateTicketState;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-
+use Ramsey\Uuid\Type\Integer;
 
 class TicketController extends Controller
 {
@@ -105,7 +106,7 @@ class TicketController extends Controller
         }
         // generate ticket number
         $ticket_number = $this->generateTicketNumber();
-        // genererate uuid
+        // generate uuid
         $uuid = Str::uuid()->toString();
         // get hourly_rate
         $hourly_rate = Listing::whereNotNull('hourly_rate')
@@ -183,7 +184,9 @@ class TicketController extends Controller
         
         $usersNotifiable = $this->listOfUsersNotifiable($ticket);
 
-        Notification::send($usersNotifiable, new NewTicket($ticket));
+        if(env('MAIL_USERNAME')) {
+            Notification::send($usersNotifiable, new NewTicket($ticket));
+        }
         
         
         // ---------------------------------------------------------------
@@ -220,7 +223,26 @@ class TicketController extends Controller
             // Total time and price on ticket
             $totalTime = $this->calculateTicketTotalTime($ticket_id);
             $totalPrice = $this->calculateTicketTotalPrice($hourlyRate, $totalTime);
+
+            // ---------------- Notification ---------------------
+            if(!$ticket->editable && !$ticket->notification_sent) {
+                // Notify user and admin company of company
+                $adminCompany = User::permission('ticket-private')
+                ->where('company_id','=', $ticket->user->company_id)
+                ->get(); 
+                // merge to send
+                $userAndAdminCompany = collect([$ticket->user])->merge($adminCompany)->unique('id');
+
+                if(env('MAIL_USERNAME')) {
+                    Notification::send($userAndAdminCompany, new UpdateTicketState($ticket));
+                }
+
+                // update ticket to mark notification sent
+                $ticket->notification_sent = 1;
+                $ticket->save();
+            }
             
+
             return view('tickets.show',compact('ticket', 'comments', 'states', 'totalTime', 'totalPrice'));
         }
 
@@ -381,10 +403,12 @@ class TicketController extends Controller
         $date = Carbon::now();
         // format into ddmmyy
         $dateFormat = $date->format('dmy');
-        // count the number of tickets of the day
-        $dayTicket = Ticket::whereDate('created_at', $date)->count();
-        // and increment it
-        $dayTicket++;
+        // get the max ticket number for the day
+        $maxTicketNumber = Ticket::whereDate('created_at', $date)->latest()->pluck('ticket_number')->first();
+        // extract the number part of the ticket number
+        $maxTicketNumber = explode($this->ticket_number_separate, $maxTicketNumber);
+        // increment it
+        $dayTicket = intval(end($maxTicketNumber)) + 1;
         // format ticket number on format - #ddmmyy/i
         $ticket_number = "#{$dateFormat}/{$dayTicket}";
         
@@ -518,7 +542,7 @@ class TicketController extends Controller
         }
 
         $usersNotifiable = $admin->merge($usersAdminCompany)->merge($usersCompanyFiltered);
-
+        
         return $usersNotifiable;
     }
 }

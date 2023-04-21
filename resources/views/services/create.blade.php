@@ -31,6 +31,14 @@
                     @enderror
                 </div>
 
+                <div class="col-span-full">
+                    <label for="description" class="custom-label">Description : <span class="text-red-600 font-bold">*</span></label>
+                    <textarea class="custom-input h-80" name="description" id="description" placeholder="Saisir une description">{{ old('description') }}</textarea>
+                    @error('description')
+                    <div class="custom-error">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>
 
                 <div class="col-span-full">

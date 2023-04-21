@@ -27,14 +27,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomepageController::class, 'index'])->name('index');
 
-// Useless
-Route::get('/test', function () {
-    return view('test');
-});
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 // Auth
 Route::middleware(['auth', 'verified'])->group(function () {
 

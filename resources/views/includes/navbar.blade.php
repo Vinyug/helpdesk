@@ -13,7 +13,7 @@
                 <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
                     {{ __('Accueil') }}
                 </x-nav-link>
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-nav-link >
                     {{ __('Contact') }}
                 </x-nav-link>
 
@@ -136,7 +136,7 @@
             <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
                 {{ __('Accueil') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link>
                 {{ __('Contact') }}
             </x-responsive-nav-link>
 
