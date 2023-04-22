@@ -116,6 +116,8 @@ class ReviewController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Review::findOrFail($id)->delete();
+        return redirect()->route('reviews.index')
+                        ->with('success','L\'avis est supprimé');
     }
 }
