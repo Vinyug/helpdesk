@@ -114,6 +114,12 @@
                         {{ __('Services') }}
                     </x-dropleft-link>
                     @endcan
+
+                    @can('review-list')
+                    <x-dropleft-link :href="route('reviews.index')" :active="request()->routeIs('reviews.index')">
+                        {{ __('Avis') }}
+                    </x-dropleft-link>
+                    @endcan
             </div>
 
 
@@ -228,6 +234,12 @@
                 @can('service-list')
                 <x-responsive-nav-link :href="route('services.index')" :active="request()->routeIs('services.index')">
                     {{ __('Services') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @can('review-list')
+                <x-responsive-nav-link :href="route('reviews.index')" :active="request()->routeIs('reviews.index')">
+                    {{ __('Avis') }}
                 </x-responsive-nav-link>
                 @endcan
             </div>

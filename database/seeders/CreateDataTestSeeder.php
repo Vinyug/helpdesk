@@ -81,7 +81,7 @@ class CreateDataTestSeeder extends Seeder
     
         $adminCompanyRole = Role::create(['name' => 'Admin-entreprise']);
      
-        $adminPermissions = Permission::whereIn('id', [4, 23, 24, 25, 26, 27, 29, 31, 32])->get();
+        $adminPermissions = Permission::whereIn('id', [4, 24, 25, 26, 27, 28, 30, 32, 33])->get();
    
         $adminCompanyRole->syncPermissions($adminPermissions);
      
@@ -90,7 +90,7 @@ class CreateDataTestSeeder extends Seeder
         // User with role 'membre'
         $memberRole = Role::create(['name' => 'Membre']);
      
-        $memberPermissions = Permission::whereIn('id', [23, 24, 25, 26, 32])->get();
+        $memberPermissions = Permission::whereIn('id', [24, 25, 26, 27, 33])->get();
                 
         $memberRole->syncPermissions($memberPermissions);
                 

@@ -200,6 +200,7 @@ return [
         'postal_code'              => 'code postal',
         'price'                    => 'prix',
         'province'                 => 'région',
+        'rate'                     => 'note',
         'recaptcha_response_field' => 'champ de réponse recaptcha',
         'remember'                 => 'se souvenir',
         'restored_at'              => 'restauré à',

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('rate')->default('5');
             $table->longText('content')->nullable();
             $table->boolean('visibility')->default('0');
+            $table->boolean('show')->default('0');
             $table->timestamps();
         });
     }
