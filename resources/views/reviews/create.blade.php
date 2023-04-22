@@ -16,12 +16,12 @@
     
                 <div class="grid sm:grid-cols-2 gap-4 p-4">  
                     
-                    <div class="col-span-full flex flex-col">
+                    <div class="col-span-full flex items-center justify-center">
                         <div x-data="{rating: 5}" class="flex rating mb-4 space-x-4">
                             <template x-for="value in [1, 2, 3, 4, 5]">
                                 <label :for="'star'+value" x-on:click="rating = value">
                                     <input type="radio" :id="'star'+value" name="rate" :value="value" x-model="rating"/>
-                                    <img class="star-full w-10" :src="(value <= rating) ? '{{ asset('assets/images/star-full.png') }}' : '{{ asset('assets/images/star-empty.png') }}'" :alt="value + ' étoile(s)'"/>
+                                    <img class="star-full cursor-pointer w-10" :src="(value <= rating) ? '{{ asset('assets/images/star-full.png') }}' : '{{ asset('assets/images/star-empty.png') }}'" :alt="value + ' étoile(s)'"/>
                                 </label>
                             </template>
                         </div>
