@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -91,9 +92,14 @@ class ReviewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Review $review, User $user)
     {
-        //
+        if (Auth()->user()->can('review-list')) {
+
+            return view('reviews.edit', compact('review', 'user'));
+        }
+        
+        return redirect()->route('index');
     }
 
     /**
@@ -105,7 +111,22 @@ class ReviewController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if (Auth()->user()->can('review-list')) {
+
+            // ----- DATA VALIDATION ----- 
+            $request->validate([
+                'show' => 'boolean',
+            ]);
+
+            // ----- UPDATE -----
+            $review = Review::find($id);
+            $review->show = $request->input('show') ? 0 : 1;
+            $review->save();
+       
+            return redirect()->route('reviews.index')->with('success','L\'avis a été mis à jour avec succès.');
+        }
+        
+        return redirect()->route('index');
     }
 
     /**
