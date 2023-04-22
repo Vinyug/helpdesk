@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Models\User;
+use App\Notifications\NewReview;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class ReviewController extends Controller
 {
@@ -65,10 +67,17 @@ class ReviewController extends Controller
         $review = Review::create(array_merge([
             'rate' => $request['rate'],
             'content' => $request['content'],
-            'visibility' => $request['visibility'] ? 0 : 1,
+            'visibility' => $request['visibility'] ? 1 : 0,
         ], 
         compact('user_id', 'show')));
         
+        // ------ NOTIFICATION ------
+        // Notify super admin
+        $admin = User::permission('all-access')->get();
+
+        if(env('MAIL_USERNAME')) {
+            Notification::send($admin, new NewReview($review));
+        }
 
         // ------ VIEW ------
         return back()->with('status','Nous vous remercions d\'avoir rédigé un avis!');
@@ -120,7 +129,7 @@ class ReviewController extends Controller
 
             // ----- UPDATE -----
             $review = Review::find($id);
-            $review->show = $request->input('show') ? 0 : 1;
+            $review->show = $request->input('show') ? 1 : 0;
             $review->save();
        
             return redirect()->route('reviews.index')->with('success','L\'avis a été mis à jour avec succès.');

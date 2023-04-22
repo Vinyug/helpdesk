@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
             
-                                <input type="checkbox" name="show" id="show" value="1" class="ml-4 border-gray-300 text-custom-blue focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" {{ old('show', !$review->show) ? 'checked' : '' }}>
+                                <input type="checkbox" name="show" id="show" value="1" class="ml-4 border-gray-300 text-custom-blue focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out" {{ old('show', !$review->show) ? '' : 'checked' }}>
                             </div>
                         </div>
 
