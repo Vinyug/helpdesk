@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="z-10 sticky top-0 bg-white border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-200 ">
+<nav x-data="{ open: false }" class="z-10 sticky top-12 bg-white border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-200 ">
     <!-- Primary Navigation Menu -->
     <div class="z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -51,7 +51,7 @@
             
 
             <!-- Sidebar -->
-            <div class="hidden sm:block absolute transform transition duration-700 top-0 -right-80 py-4 z-10 w-80 bg-white h-[calc(100vh-113px)] mt-[65px] border-r-[1px] border-custom-dark border-opacity-30 shadow-md shadow-gray-400" :class="{'opacity-0': ! isOpen === false, '-translate-x-full opacity-100': isOpen}">
+            <div class="sidebar hidden sm:block absolute transform transition duration-700 top-0 -right-80 py-4 z-10 w-80 bg-white h-[calc(100vh-113px)] mt-[65px] border-r-[1px] border-custom-dark border-opacity-30 shadow-md shadow-gray-400" :class="{'opacity-0': ! isOpen === false, '-translate-x-full opacity-100': isOpen}">
 
                 <div class="flex justify-between">
                     <h2 class="font-bold pl-4 text-custom-dark text-2xl sm:text-3xl">Menu</h2>

@@ -11,7 +11,7 @@
             <form class="mt-8" action="" method="POST">
                 <div class="grid sm:grid-cols-2 gap-4 p-4">    
                     <div class="w-full">
-                        <label for="fullname" class="custom-label">Prénom / NOM : <span class="text-red-600 font-bold">*</span></label>
+                        <label for="fullname" class="custom-label">Prénom / NOM : <span class="text-custom-blue font-bold">*</span></label>
                         <input type="text" name="fullname" id="fullname" class="custom-input" placeholder="Saisir votre nom complet" required>
                         @error('fullname')
                         <div class="custom-error">{{ $message }}</div>
@@ -19,7 +19,7 @@
                     </div>
     
                     <div class="w-full">
-                        <label for="email" class="custom-label">Email : <span class="text-red-600 font-bold">*</span></label>
+                        <label for="email" class="custom-label">Email : <span class="text-custom-blue font-bold">*</span></label>
                         <input type="email" name="email" id="email" class="custom-input" placeholder="Saisir l'email" required>
                         @error('email')
                         <div class="custom-error">{{ $message }}</div>
@@ -43,17 +43,17 @@
                     </div>
     
                     <div class="col-span-full">
-                        <label for="content" class="custom-label">Message : <span class="text-red-600 font-bold">*</span></label>
+                        <label for="content" class="custom-label">Message : <span class="text-custom-blue font-bold">*</span></label>
                         <textarea class="custom-input h-40" name="content" id="content" placeholder="Saisir un message"></textarea>
                         @error('content')
                         <div class="custom-error">{{ $message }}</div>
                         @enderror
                     </div>
     
-                    <div class="block col-span-full text-red-600 mb-5 ml-4">* les champs obligatoires</div>
+                    <div class="block col-span-full text-custom-blue mb-5 ml-4">* les champs obligatoires</div>
     
                     <div class="col-span-full">
-                        <button type="submit" class="btn-orange sm:w-auto px-8 sm:ml-auto sm:mr-0">Modifier</button>
+                        <button type="submit" class="btn-orange sm:w-auto px-8 sm:ml-auto sm:mr-0 uppercase tracking-wide">Envoyer</button>
                     </div>
                 </div>
             </form>
@@ -78,7 +78,7 @@
                     <img src="{{ asset('assets/images/phone.png') }}" alt="icône-téléphone" class="object-none self-start">
                     <div class="flex flex-col ml-6 self-start">
                         <h4 class="font-share-tech font-medium text-xl sm:text-2xl mb-4">Téléphone</h4>
-                        <span class="font-medium text-sm sm:text-base">06 81 87 52 03</span>
+                        <span class="font-medium text-sm sm:text-base">06.81.87.52.03</span>
                     </div>
                 </div>
             </div>
