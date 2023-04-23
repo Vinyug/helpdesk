@@ -8,50 +8,8 @@
         </div>
 
         <div class="flex flex-col lg:flex-row justify-start md:justify-center gap-4">
-            <form class="mt-8 w-full lg:w-2/3 xl:w-1/2 2xl:w-2/5" action="" method="POST">
-                <div class="grid sm:grid-cols-2 gap-4 p-4">    
-                    <div class="w-full">
-                        <input type="text" name="fullname" id="fullname" class="custom-input-contact" placeholder="Prénom / NOM *" required>
-                        @error('fullname')
-                        <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    </div>
-    
-                    <div class="w-full">
-                        <input type="email" name="email" id="email" class="custom-input-contact" placeholder="Email *" required>
-                        @error('email')
-                        <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    </div>
-    
-                    <div class="w-full">
-                        <input type="text" name="address" id="address" class="custom-input-contact" placeholder="Adresse">
-                        @error('address')
-                        <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    </div>
-    
-                    <div class="w-full">
-                        <input type="text" name="company" id="company" class="custom-input-contact" placeholder="Entreprise">
-                        @error('company')
-                        <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    </div>
-    
-                    <div class="col-span-full">
-                        <textarea class="custom-input-contact h-40" name="content" id="content" placeholder="Message *"></textarea>
-                        @error('content')
-                        <div class="custom-error">{{ $message }}</div>
-                        @enderror
-                    </div>
-    
-                    <div class="block col-span-full text-custom-blue mb-5 ml-4">* les champs obligatoires</div>
-    
-                    <div class="col-span-full">
-                        <button type="submit" class="btn-orange sm:w-auto px-8 sm:ml-auto sm:mr-0 uppercase tracking-wide">Envoyer</button>
-                    </div>
-                </div>
-            </form>
+            
+            @livewire('contact-form')
 
             <div class="flex flex-col md:mt-8 p-4">
                 <div class="flex">
