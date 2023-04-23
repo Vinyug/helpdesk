@@ -133,6 +133,27 @@ nav .menu ul li a:hover {
 /* END POWERGRID  */
 
 
+/* REVIEW */
+.rating input[type="radio"] {
+    display: none;
+}
+.star-full {
+    transition: all 0.3s;
+    background-clip: content-box;
+}
+.create-review.star-full:hover {
+    filter: 
+        invert(40%) 
+        sepia(28%) 
+        saturate(1766%) 
+        brightness(107%) 
+        contrast(102%);
+    transition: all 0.3s;
+    background-clip: content-box;
+}
+/* END REVIEW */
+
+
 /* FOOTER */
 footer img:hover {
     filter: 

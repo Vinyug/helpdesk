@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Review extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'ticket_id',
+        'user_id', 
+        'rate', 
         'content', 
-        'editable', 
-        'time_spent', 
+        'visibility', 
+        'show', 
     ];
 
 
@@ -24,19 +24,10 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function ticket()
-    {
-        return $this->belongsTo(Ticket::class);
-    }
-
-    public function uploads()
-    {
-        return $this->hasMany(Upload::class);
-    }
 
     // MUTATOR - ACCESSOR
     /**
-     * Interact with the user.
+     * Interact with the review.
      *
      * @return  \Illuminate\Database\Eloquent\Casts\Attribute
      */
@@ -49,5 +40,4 @@ class Comment extends Model
     {
         return ucfirst($this->attributes['content']);
     }
-
 }

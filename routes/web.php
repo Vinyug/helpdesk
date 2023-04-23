@@ -8,6 +8,7 @@ use App\Http\Controllers\Listing\JobController;
 use App\Http\Controllers\Listing\ServiceController;
 use App\Http\Controllers\Listing\StateController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Ticket\EditVisibilityStateController;
@@ -56,6 +57,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('states', StateController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('hourly_rate', HourlyRateController::class);
+    
+    // Review 
+    Route::resource('reviews', ReviewController::class);
 });
 
 require __DIR__.'/auth.php';

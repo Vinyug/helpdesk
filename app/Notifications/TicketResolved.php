@@ -47,11 +47,8 @@ class TicketResolved extends Notification
                         ->subject(config('app.name').' - Ticket N° : '.$this->ticket->ticket_number)
                         ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')
                         ->line('Votre administrateur sur '.config('app.name').' a cloturé le ticket n°'.$this->ticket->ticket_number.'.')
-                        ->line('Vous pouvez toujours consulter ce ticket.')
-                        // ->line('')
-                        // ->line('Nous vous remercions par avance de rédiger un avis en cliquant sur le bouton ci-dessous.')
-                        // ->action('Avis', route('review'))
-                        ->action('Voir ticket', route('tickets.show', $this->ticket->uuid)) // delete when review will be done
+                        ->line('Nous vous remercions par avance de rédiger un avis en cliquant sur le bouton ci-dessous.')
+                        ->action('Écrite un avis', route('reviews.create'))
                         ->salutation('A bientôt sur '.config('app.name').'!');
         } else {
             

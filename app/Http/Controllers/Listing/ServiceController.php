@@ -106,10 +106,9 @@ class ServiceController extends Controller
         ]);
     
         $listing = Listing::findOrFail($id);
-        $listing->service = $request->input('service');
-        $listing->service = $request->input('description');
-        $listing->save();
-    
+        $input = $request->all();
+        $listing->update($input);
+
         return redirect()->route('services.index')
                         ->with('success','Le service est mis à jour.');
     }
