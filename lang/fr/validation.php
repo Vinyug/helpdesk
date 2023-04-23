@@ -171,6 +171,7 @@ return [
         'filter'                   => 'filtre',
         'first_name'               => 'prénom',
         'firstname'                => 'prénom',
+        'fullname'                 => 'nom complet',
         'gender'                   => 'genre',
         'group'                    => 'groupe',
         'hour'                     => 'heure',

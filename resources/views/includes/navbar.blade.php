@@ -13,7 +13,7 @@
                 <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
                     {{ __('Accueil') }}
                 </x-nav-link>
-                <x-nav-link href="#contactForm">
+                <x-nav-link :href="route('index') . '#contactForm'">
                     {{ __('Contact') }}
                 </x-nav-link>
 
@@ -142,7 +142,7 @@
             <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
                 {{ __('Accueil') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#contactForm">
+            <x-responsive-nav-link :href="route('index') . '#contactForm'">
                 {{ __('Contact') }}
             </x-responsive-nav-link>
 

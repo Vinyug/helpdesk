@@ -48,7 +48,7 @@
             <div class="flex flex-col w-full">
                 <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4 mb-4">
                     <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
-                    <input type="text" wire:model="input.time_spent" name="time_spent" id="time_spent" class="custom-input h-8 text-right" placeholder="en heure" value=""><span class="font-medium pl-1">h</span>
+                    <input type="text" wire:model="input.time_spent" name="time_spent" id="time_spent" class="custom-input h-8 text-right"  value=""><span class="font-medium pl-1">h</span>
                 </div>
                 @if($storeSubmitted)
                     @error('input.time_spent')
@@ -112,7 +112,7 @@
                         href="{{ route('tickets.edit', $ticket->uuid) }}"> 
                     @else
                         @click="editComment = !editComment" 
-                        x-text="editComment ? 'Restituer' : 'Modifier'" 
+                        x-text="editComment ? 'Annuler' : 'Modifier'" 
                         x-bind:class="{ 'btn-white': !editComment, 'btn-dark-blue hover:shadow-none': editComment }"
                         @if($editMode) wire:click.prevent="cancel"
                         @else wire:click.prevent="edit({{ $comment->id }})"
@@ -134,7 +134,7 @@
                     'confirm-comment-delete'
                 @endif 
                 )"
-                >Annuler</a>
+                >Supprimer</a>
                 
                 {{----------------------- MODAL TICKET OR COMMENT ------------------------}}
                 @if($ticket->comments->first() && $comment->id === $ticket->comments->first()->id)  
@@ -224,7 +224,7 @@
                     <div class="flex flex-col w-full mb-4">
                         <div class="flex items-center sm:w-3/5 lg:w-1/3 xl:w-1/4">
                             <label for="time_spent" class="custom-label font-medium pr-2 mb-0 whitespace-nowrap self-center">Temps d'intervention : </label>
-                            <input type="text" class="custom-input h-8 text-right" wire:model="input.time_spent" x-on:click="showMessage = false" name="time_spent" id="time_spent" placeholder="en heure"><span class="font-medium pl-1">h</span>
+                            <input type="text" class="custom-input h-8 text-right" wire:model="input.time_spent" x-on:click="showMessage = false" name="time_spent" id="time_spent"><span class="font-medium pl-1">h</span>
                         </div>
                         @if($updateSubmitted)
                             @error('input.time_spent')

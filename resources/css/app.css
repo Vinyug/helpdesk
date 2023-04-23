@@ -19,6 +19,9 @@
     .custom-input {
         @apply block w-full text-sm sm:text-base border-gray-300 focus:border-custom-blue focus:ring-custom-blue rounded-sm shadow-sm transition duration-300 ease-in-out;
     }
+    .custom-input-contact {
+        @apply block w-full text-sm sm:text-base font-medium border-t-0 border-r-0 border-l-0 border-b-2 border-custom-blue placeholder-custom-dark focus:border-t-0 focus:border-r-0 focus:border-l-0 focus:border-b-2 focus:border-custom-blue focus:ring-0 rounded-sm;
+    }
     .custom-input-file {
         @apply focus:outline-none mb-4 p-1 custom-input border-none shadow-none text-sm file:btn-blue file:border-0 file:mr-4 file:ml-0;
     }
