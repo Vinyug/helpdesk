@@ -7,44 +7,39 @@
             <span class="absolute w-full -top-7 sm:-top-9 md:-top-16 left-0 font-share-tech uppercase text-custom-grey opacity-[3%] tracking-wide text-5xl sm:text-6xl md:text-8xl">Contact</span>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-start md:justify-center gap-8">
-            <form class="mt-8" action="" method="POST">
+        <div class="flex flex-col lg:flex-row justify-start md:justify-center gap-4">
+            <form class="mt-8 w-full lg:w-2/3 xl:w-1/2 2xl:w-2/5" action="" method="POST">
                 <div class="grid sm:grid-cols-2 gap-4 p-4">    
                     <div class="w-full">
-                        <label for="fullname" class="custom-label">Prénom / NOM : <span class="text-custom-blue font-bold">*</span></label>
-                        <input type="text" name="fullname" id="fullname" class="custom-input" placeholder="Saisir votre nom complet" required>
+                        <input type="text" name="fullname" id="fullname" class="custom-input-contact" placeholder="Prénom / NOM *" required>
                         @error('fullname')
                         <div class="custom-error">{{ $message }}</div>
                         @enderror
                     </div>
     
                     <div class="w-full">
-                        <label for="email" class="custom-label">Email : <span class="text-custom-blue font-bold">*</span></label>
-                        <input type="email" name="email" id="email" class="custom-input" placeholder="Saisir l'email" required>
+                        <input type="email" name="email" id="email" class="custom-input-contact" placeholder="Email *" required>
                         @error('email')
                         <div class="custom-error">{{ $message }}</div>
                         @enderror
                     </div>
     
                     <div class="w-full">
-                        <label for="address" class="custom-label">Adresse : </label>
-                        <input type="text" name="address" id="address" class="custom-input" placeholder="Saisir l'adresse">
+                        <input type="text" name="address" id="address" class="custom-input-contact" placeholder="Adresse">
                         @error('address')
                         <div class="custom-error">{{ $message }}</div>
                         @enderror
                     </div>
     
                     <div class="w-full">
-                        <label for="company" class="custom-label">Entreprise : </label>
-                        <input type="text" name="company" id="company" class="custom-input" placeholder="Saisir l'entreprise">
+                        <input type="text" name="company" id="company" class="custom-input-contact" placeholder="Entreprise">
                         @error('company')
                         <div class="custom-error">{{ $message }}</div>
                         @enderror
                     </div>
     
                     <div class="col-span-full">
-                        <label for="content" class="custom-label">Message : <span class="text-custom-blue font-bold">*</span></label>
-                        <textarea class="custom-input h-40" name="content" id="content" placeholder="Saisir un message"></textarea>
+                        <textarea class="custom-input-contact h-40" name="content" id="content" placeholder="Message *"></textarea>
                         @error('content')
                         <div class="custom-error">{{ $message }}</div>
                         @enderror
