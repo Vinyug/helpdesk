@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="z-10 sticky top-0 bg-white border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-200">
+<nav x-data="{ open: false }" class="z-10 sticky top-0 bg-white border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-200 ">
     <!-- Primary Navigation Menu -->
     <div class="z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -13,7 +13,7 @@
                 <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
                     {{ __('Accueil') }}
                 </x-nav-link>
-                <x-nav-link >
+                <x-nav-link href="#contactForm">
                     {{ __('Contact') }}
                 </x-nav-link>
 
@@ -142,7 +142,7 @@
             <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
                 {{ __('Accueil') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link>
+            <x-responsive-nav-link href="#contactForm">
                 {{ __('Contact') }}
             </x-responsive-nav-link>
 
