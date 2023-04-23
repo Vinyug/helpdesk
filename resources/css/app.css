@@ -141,7 +141,7 @@ nav .menu ul li a:hover {
     transition: all 0.3s;
     background-clip: content-box;
 }
-.star-full:hover {
+.create-review.star-full:hover {
     filter: 
         invert(40%) 
         sepia(28%) 

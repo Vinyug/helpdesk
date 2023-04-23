@@ -21,7 +21,7 @@
                             <template x-for="value in [1, 2, 3, 4, 5]">
                                 <label :for="'star'+value" x-on:click="rating = value">
                                     <input type="radio" :id="'star'+value" name="rate" :value="value" x-model="rating"/>
-                                    <img class="star-full cursor-pointer w-10" :src="(value <= rating) ? '{{ asset('assets/images/star-full.png') }}' : '{{ asset('assets/images/star-empty.png') }}'" :alt="value + ' étoile(s)'"/>
+                                    <img class="create-review star-full cursor-pointer w-10" :src="(value <= rating) ? '{{ asset('assets/images/star-full.png') }}' : '{{ asset('assets/images/star-empty.png') }}'" :alt="value + ' étoile(s)'"/>
                                 </label>
                             </template>
                         </div>
