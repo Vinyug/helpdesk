@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Ticket;
 
-
 class CommentController extends Controller
 {
     /**
@@ -72,7 +71,7 @@ class CommentController extends Controller
     public function edit($id)
     {
         //
-    }    
+    }
     
     /**
      * Remove the specified resource from storage.
@@ -82,11 +81,11 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment, Ticket $ticket)
     {
-        if(auth()->user()->id === $comment->user_id && $ticket->state !== $this->resolved) {
+        if (auth()->user()->id === $comment->user_id && $ticket->state !== $this->resolved) {
             $comment->delete();
-            return redirect()->back()->with('success','Le commentaire a été supprimé avec succès.');
+            return redirect()->back()->with('success', 'Le commentaire a été supprimé avec succès.');
         }
 
-        return redirect()->back()->with('status','Vous n\'avez pas l\'autorisation de supprimer ce commentaire.');
+        return redirect()->back()->with('status', 'Vous n\'avez pas l\'autorisation de supprimer ce commentaire.');
     }
 }

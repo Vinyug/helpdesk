@@ -23,7 +23,7 @@ class HourlyRateController extends Controller
     {
         // get last hourly_rate in listings
         $hourlyRate = Listing::whereNotNull('hourly_rate')
-            ->where('hourly_rate','!=', '')
+            ->where('hourly_rate', '!=', '')
             ->pluck('hourly_rate')
             ->last();
 
@@ -47,7 +47,6 @@ class HourlyRateController extends Controller
         Listing::create(['hourly_rate' => $request->input('hourly_rate')]);
     
         return redirect()->route('hourly_rate.index')
-                        ->with('success','Un nouveau taux horaire est crée.');
+                        ->with('success', 'Un nouveau taux horaire est crée.');
     }
-
 }

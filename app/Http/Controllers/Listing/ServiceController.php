@@ -37,7 +37,7 @@ class ServiceController extends Controller
     {
         $service = Listing::get();
 
-        return view('services.create',compact('service'));
+        return view('services.create', compact('service'));
     }
 
     /**
@@ -54,12 +54,12 @@ class ServiceController extends Controller
         ]);
     
         Listing::create([
-            'service' => $request->input('service'), 
-            'description' => $request->input('description'), 
+            'service' => $request->input('service'),
+            'description' => $request->input('description'),
         ]);
     
         return redirect()->route('services.index')
-                        ->with('success','Un nouveau service est crée.');
+                        ->with('success', 'Un nouveau service est crée.');
     }
 
     /**
@@ -84,8 +84,8 @@ class ServiceController extends Controller
         $listing = Listing::findOrFail($id);
         $services = Listing::where('service', '!=', '')->whereNotNull('service')->pluck('service');
         
-        if($services->contains($listing->service)) {
-            return view('services.edit',compact('listing'));
+        if ($services->contains($listing->service)) {
+            return view('services.edit', compact('listing'));
         }
 
         return redirect()->back()->with('status', 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.');
@@ -110,7 +110,7 @@ class ServiceController extends Controller
         $listing->update($input);
 
         return redirect()->route('services.index')
-                        ->with('success','Le service est mis à jour.');
+                        ->with('success', 'Le service est mis à jour.');
     }
 
     /**
@@ -123,6 +123,6 @@ class ServiceController extends Controller
     {
         Listing::findOrFail($id)->delete();
         return redirect()->route('services.index')
-                        ->with('success','Le service est supprimé');
+                        ->with('success', 'Le service est supprimé');
     }
 }

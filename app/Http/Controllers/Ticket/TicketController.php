@@ -64,7 +64,7 @@ class TicketController extends Controller
     public function create()
     {
         $companies = Company::get();
-        $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
+        $services = Listing::whereNotNull('service')->where('service', '!=', '')->pluck('service', 'service');
 
         return view('tickets.create', compact('companies', 'services'));
     }
@@ -110,7 +110,7 @@ class TicketController extends Controller
         $uuid = Str::uuid()->toString();
         // get hourly_rate
         $hourly_rate = Listing::whereNotNull('hourly_rate')
-            ->where('hourly_rate','!=', '')
+            ->where('hourly_rate', '!=', '')
             ->pluck('hourly_rate')
             ->last();
         
@@ -120,22 +120,26 @@ class TicketController extends Controller
         // ---------------------------------------------------------------
         
         // --------------------------- TICKET ----------------------------
-        $ticket = Ticket::create(array_merge([
+        $ticket = Ticket::create(array_merge(
+            [
             'subject' => $request['subject'],
             'service' => $request['service'],
             'visibility' => $request['visibility'] ? 0 : 1,
-        ], 
-        compact('user_id', 'company_id', 'ticket_number', 'uuid', 'hourly_rate')));
+            ],
+            compact('user_id', 'company_id', 'ticket_number', 'uuid', 'hourly_rate')
+        ));
         
         // --------------------------- COMMENT ----------------------------
         // get ticket_id
         $ticket_id = $ticket->id;
         
         // insert
-        $comment = Comment::create(array_merge([
+        $comment = Comment::create(array_merge(
+            [
             'content' => $request['content'],
-        ], 
-        compact('user_id', 'ticket_id')));
+            ],
+            compact('user_id', 'ticket_id')
+        ));
         
         // --------------------------- UPLOAD ----------------------------
         // get comment_id
@@ -156,7 +160,7 @@ class TicketController extends Controller
                     $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id, $name);
 
                     // resize thumbnail
-                    $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function($constraint){
+                    $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function ($constraint) {
                         $constraint->upsize();
                     })->encode($ext, 50); //reduce sizing by 50%
                     // thumbnail path
@@ -165,14 +169,16 @@ class TicketController extends Controller
                     Storage::put($thumbnailPath, $thumbnailFile);
 
                     // insert
-                    $upload = Upload::create(array_merge([
+                    $upload = Upload::create(array_merge(
+                        [
                         'filename' => $name,
                         'url' => Storage::url($path),
                         'path' => $path,
                         'thumbnail_url' => Storage::url($thumbnailPath),
                         'thumbnail_path' => $thumbnailPath,
-                    ], 
-                    compact('comment_id')));
+                        ],
+                        compact('comment_id')
+                    ));
                 }
             }
         }
@@ -184,7 +190,7 @@ class TicketController extends Controller
         
         $usersNotifiable = $this->listOfUsersNotifiable($ticket);
 
-        if(env('MAIL_USERNAME')) {
+        if (env('MAIL_USERNAME')) {
             Notification::send($usersNotifiable, new NewTicket($ticket));
         }
         
@@ -193,7 +199,7 @@ class TicketController extends Controller
         // ---------------------------- VIEW -----------------------------
         // ---------------------------------------------------------------
 
-        return redirect()->route('tickets.show', $uuid)->with('success','Le ticket a été enregistré avec succès.');
+        return redirect()->route('tickets.show', $uuid)->with('success', 'Le ticket a été enregistré avec succès.');
     }
 
     /**
@@ -218,22 +224,21 @@ class TicketController extends Controller
         
         // if user have all-access, ticket-private or (user belongs to a company and ticket is public) or (user is author and ticket is private)
         if (auth()->user()->can('all-access') || auth()->user()->can('ticket-private') || (auth()->user()->company_id === $ticket->company_id && $ticket->visibility) || (auth()->user()->id === $ticket->user_id && !$ticket->visibility)) {
-            
             $this->verifyTicketCanEditable($ticket, $comments);
             // Total time and price on ticket
             $totalTime = $this->calculateTicketTotalTime($ticket_id);
             $totalPrice = $this->calculateTicketTotalPrice($hourlyRate, $totalTime);
 
             // ---------------- Notification ---------------------
-            if(!$ticket->editable && !$ticket->notification_sent) {
+            if (!$ticket->editable && !$ticket->notification_sent) {
                 // Notify user and admin company of company
                 $adminCompany = User::permission('ticket-private')
-                ->where('company_id','=', $ticket->user->company_id)
-                ->get(); 
+                ->where('company_id', '=', $ticket->user->company_id)
+                ->get();
                 // merge to send
                 $userAndAdminCompany = collect([$ticket->user])->merge($adminCompany)->unique('id');
 
-                if(env('MAIL_USERNAME')) {
+                if (env('MAIL_USERNAME')) {
                     Notification::send($userAndAdminCompany, new UpdateTicketState($ticket));
                 }
 
@@ -243,12 +248,11 @@ class TicketController extends Controller
             }
             
 
-            return view('tickets.show',compact('ticket', 'comments', 'states', 'totalTime', 'totalPrice'));
+            return view('tickets.show', compact('ticket', 'comments', 'states', 'totalTime', 'totalPrice'));
         }
 
         // return error http
         return abort('403', 'Vous n\'avez pas la permission d\'accéder à cette page');
-
     }
 
     /**
@@ -261,14 +265,14 @@ class TicketController extends Controller
     {
         
         if ((Auth()->user()->id === $ticket->user_id) && ($ticket->editable)) {
-            $services = Listing::whereNotNull('service')->where('service','!=', '')->pluck('service', 'service');
+            $services = Listing::whereNotNull('service')->where('service', '!=', '')->pluck('service', 'service');
             $comment = Comment::where('ticket_id', '=', $ticket->id)->first();
             $companies = Company::get();
             
-            return view('tickets.edit',compact('ticket', 'services', 'comment', 'companies'));
+            return view('tickets.edit', compact('ticket', 'services', 'comment', 'companies'));
         }
         
-        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
+        return redirect()->route('tickets.index')->with('status', 'Vous n\'avez pas l\'autorisation de modifier ce ticket.');
     }
 
     /**
@@ -280,7 +284,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket, Comment $comment)
     {
-        if(auth()->user()->id === $ticket->user_id && $ticket->state !== $this->resolved) {
+        if (auth()->user()->id === $ticket->user_id && $ticket->state !== $this->resolved) {
             $request->validate([
                 'company_id' => 'required|exists:companies,id',
                 'subject' => 'required|max:80',
@@ -323,7 +327,6 @@ class TicketController extends Controller
 
             // verify files if file exist and isValid, to insert in DB
             if ($request->hasFile('filename')) {
-                
                 // delete every uploads of comment
                 $uploads = Upload::where('comment_id', $comment_id)->get();
                 foreach ($uploads as $upload) {
@@ -331,7 +334,7 @@ class TicketController extends Controller
                     $upload->delete();
                 }
                 
-                // Insert new uploads 
+                // Insert new uploads
                 $i = 0;
                 foreach ($request->file('filename') as $file) {
                     if ($file->isValid()) {
@@ -345,7 +348,7 @@ class TicketController extends Controller
                         $path = $file->storeAs('files/ticket-'.str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number).'/comment-'.$comment_id, $name);
 
                         // resize thumbnail
-                        $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function($constraint){
+                        $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function ($constraint) {
                             $constraint->upsize();
                         })->encode($ext, 50); //reduce sizing by 50%
                         // thumbnail path
@@ -354,23 +357,25 @@ class TicketController extends Controller
                         Storage::put($thumbnailPath, $thumbnailFile);
 
                         // insert
-                        $upload = Upload::create(array_merge([
+                        $upload = Upload::create(array_merge(
+                            [
                             'filename' => $name,
                             'url' => Storage::url($path),
                             'path' => $path,
                             'thumbnail_url' => Storage::url($thumbnailPath),
                             'thumbnail_path' => $thumbnailPath,
-                        ], 
-                        compact('comment_id')));
+                            ],
+                            compact('comment_id')
+                        ));
                     }
                 }
             }
 
 
-            return redirect()->route('tickets.index')->with('success','Le ticket a été mis à jour avec succès.');
+            return redirect()->route('tickets.index')->with('success', 'Le ticket a été mis à jour avec succès.');
         }
 
-        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
+        return redirect()->route('tickets.index')->with('status', 'Vous n\'avez pas l\'autorisation de modifier ce ticket.');
     }
 
     /**
@@ -384,10 +389,10 @@ class TicketController extends Controller
         if ((Auth()->user()->id === $ticket->user_id) && ($ticket->editable)) {
             $ticket->delete();
          
-            return redirect()->route('tickets.index')->with('success','Le ticket a été supprimé avec succès');
+            return redirect()->route('tickets.index')->with('success', 'Le ticket a été supprimé avec succès');
         }
         
-        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de supprimer ce ticket.');
+        return redirect()->route('tickets.index')->with('status', 'Vous n\'avez pas l\'autorisation de supprimer ce ticket.');
     }
 
 
@@ -437,7 +442,6 @@ class TicketController extends Controller
                         $this->commentEditableLocked($comment);
                     }
                 }
-                
             } else {
                 // update all comments of the ticket
                 foreach ($comments as $comment) {
@@ -464,7 +468,6 @@ class TicketController extends Controller
                         $this->commentEditableLocked($comment);
                     }
                 }
-                
             } else {
                 // update all comments of the ticket
                 foreach ($comments as $comment) {
@@ -476,9 +479,9 @@ class TicketController extends Controller
 
     public function ticketEditableLocked(Ticket $ticket, $ticketSeen, $ticketNotSeen)
     {
-        if($ticket->state === $ticketNotSeen) {
-            $ticket->editable = 0; 
-            $ticket->state = $ticketSeen; 
+        if ($ticket->state === $ticketNotSeen) {
+            $ticket->editable = 0;
+            $ticket->state = $ticketSeen;
             $ticket->save();
         }
     }
@@ -501,7 +504,7 @@ class TicketController extends Controller
             ->pluck('time_spent');
         $totalTime = 0;
                
-        foreach($commentTimes as $commentTime) {
+        foreach ($commentTimes as $commentTime) {
             $totalTime += $commentTime;
         }
 
@@ -527,17 +530,17 @@ class TicketController extends Controller
         
         // get users admin company belongs to company of ticket
         $usersAdminCompany = User::permission('ticket-private')
-            ->where('company_id','=', $ticket->company_id)
+            ->where('company_id', '=', $ticket->company_id)
             ->get();
 
         // filter users company of ticket
         // if ticket is public
-        if($ticket->visibility) {
+        if ($ticket->visibility) {
             $usersCompanyFiltered = $usersCompany;
-        } 
+        }
         
         // if ticket is private and (author of ticket belongs to ticket company)
-        if(!$ticket->visibility && (auth()->user()->id === $ticket->user_id)) {
+        if (!$ticket->visibility && (auth()->user()->id === $ticket->user_id)) {
             $usersCompanyFiltered = collect([$ticket->user]);
         }
 

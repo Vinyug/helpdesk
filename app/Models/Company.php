@@ -12,11 +12,11 @@ class Company extends Model
     protected $fillable = [
         'name',
         'address',
-        'city', 
+        'city',
         'zip_code',
         'siret',
-        'code_ape', 
-        'phone', 
+        'code_ape',
+        'phone',
         'email',
         'uuid',
         'active',
@@ -29,7 +29,7 @@ class Company extends Model
     }
 
 
-    // RELATIONSHIP 
+    // RELATIONSHIP
     public function users()
     {
         return $this->hasMany(User::class);

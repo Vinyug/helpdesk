@@ -32,7 +32,7 @@ class CompanyController extends Controller
     public function index()
     {
         // don't need with powergrid
-        // get model data with order by latest and paginate 
+        // get model data with order by latest and paginate
         $companies = Company::get();
         
         return view('companies.index', compact('companies'));
@@ -83,12 +83,12 @@ class CompanyController extends Controller
         $input = $request->all();
         $input['active'] = $active;
             
-        // create company 
+        // create company
         Company::create(array_merge($input, ['uuid' => $uuid]));
 
 
         // redirect with message
-        return redirect()->route('companies.index')->with('success','L\'entreprise a été enregistrée avec succès.');
+        return redirect()->route('companies.index')->with('success', 'L\'entreprise a été enregistrée avec succès.');
     }
 
     /**
@@ -99,7 +99,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        return view('companies.show',compact('company'));
+        return view('companies.show', compact('company'));
     }
 
     /**
@@ -113,7 +113,7 @@ class CompanyController extends Controller
         // get all users
         $users = User::all();
         
-        return view('companies.edit',compact('company', 'users'));
+        return view('companies.edit', compact('company', 'users'));
     }
 
     /**
@@ -143,7 +143,7 @@ class CompanyController extends Controller
         $input['active'] = $active;
   
         // udpate user
-        // update company 
+        // update company
         $company->update($input);
         
         // if value of active company change, every users of company take value of active company
@@ -168,11 +168,11 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        if(!$company->users()->exists()) {
+        if (!$company->users()->exists()) {
             $company->delete();
-            return redirect()->route('companies.index')->with('success','L\'entreprise a été supprimée avec succès');
+            return redirect()->route('companies.index')->with('success', 'L\'entreprise a été supprimée avec succès');
         }
 
-        return redirect()->back()->with('status','Vous ne pouvez pas supprimer l\'entreprise, elle possède encore des employés');
+        return redirect()->back()->with('status', 'Vous ne pouvez pas supprimer l\'entreprise, elle possède encore des employés');
     }
 }

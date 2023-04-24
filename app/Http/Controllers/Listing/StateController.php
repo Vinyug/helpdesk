@@ -44,7 +44,7 @@ class StateController extends Controller
     {
         $state = Listing::get();
 
-        return view('states.create',compact('state'));
+        return view('states.create', compact('state'));
     }
 
     /**
@@ -62,7 +62,7 @@ class StateController extends Controller
         Listing::create(['state' => $request->input('state')]);
     
         return redirect()->route('states.index')
-                        ->with('success','Un nouvel état est crée.');
+                        ->with('success', 'Un nouvel état est crée.');
     }
 
     /**
@@ -87,12 +87,11 @@ class StateController extends Controller
         $listing = Listing::findOrFail($id);
         $states = Listing::where('state', '!=', '')->whereNotNull('state')->pluck('state');
         
-        if($states->contains($listing->state)) {
-            return view('states.edit',compact('listing'));
+        if ($states->contains($listing->state)) {
+            return view('states.edit', compact('listing'));
         }
 
         return redirect()->back()->with('status', 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.');
-     
     }
 
     /**
@@ -114,10 +113,9 @@ class StateController extends Controller
             $listing->save();
 
             return redirect()->route('states.index')
-                            ->with('success','L\'état est mis à jour.');
+                            ->with('success', 'L\'état est mis à jour.');
         }
-        return redirect()->back()->with('status','Cet état ne peut pas être modifié.');
-        
+        return redirect()->back()->with('status', 'Cet état ne peut pas être modifié.');
     }
 
     /**
@@ -134,8 +132,8 @@ class StateController extends Controller
             $listing->delete();
 
             return redirect()->route('states.index')
-                            ->with('success','L\'état est supprimé');
+                            ->with('success', 'L\'état est supprimé');
         }
-        return redirect()->back()->with('status','Cet état ne peut pas être modifié.');
+        return redirect()->back()->with('status', 'Cet état ne peut pas être modifié.');
     }
 }

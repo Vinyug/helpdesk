@@ -13,7 +13,7 @@ class Upload extends Model
         'comment_id',
         'filename',
         'url',
-        'path', 
+        'path',
         'thumbnail_url',
         'thumbnail_path',
     ];

@@ -14,7 +14,6 @@ class ReviewController extends Controller
     function __construct()
     {
          $this->middleware('permission:review-list|role-edit|role-delete', ['only' => ['index']]);
-
     }
 
     /**
@@ -48,7 +47,7 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
 
-        // ----- DATA VALIDATION ----- 
+        // ----- DATA VALIDATION -----
         $request->validate([
             'rate' => 'required|integer|between:1,5',
             'content' => 'nullable',
@@ -64,24 +63,25 @@ class ReviewController extends Controller
 
 
         // ------ INSERT ------
-        $review = Review::create(array_merge([
+        $review = Review::create(array_merge(
+            [
             'rate' => $request['rate'],
             'content' => $request['content'],
             'visibility' => $request['visibility'] ? 1 : 0,
-        ], 
-        compact('user_id', 'show')));
+            ],
+            compact('user_id', 'show')
+        ));
         
         // ------ NOTIFICATION ------
         // Notify super admin
         $admin = User::permission('all-access')->get();
 
-        if(env('MAIL_USERNAME')) {
+        if (env('MAIL_USERNAME')) {
             Notification::send($admin, new NewReview($review));
         }
 
         // ------ VIEW ------
-        return back()->with('status','Nous vous remercions d\'avoir rédigé un avis!');
-
+        return back()->with('status', 'Nous vous remercions d\'avoir rédigé un avis!');
     }
 
     /**
@@ -104,7 +104,6 @@ class ReviewController extends Controller
     public function edit(Review $review, User $user)
     {
         if (Auth()->user()->can('review-list')) {
-
             return view('reviews.edit', compact('review', 'user'));
         }
         
@@ -121,8 +120,7 @@ class ReviewController extends Controller
     public function update(Request $request, $id)
     {
         if (Auth()->user()->can('review-list')) {
-
-            // ----- DATA VALIDATION ----- 
+            // ----- DATA VALIDATION -----
             $request->validate([
                 'show' => 'boolean',
             ]);
@@ -132,7 +130,7 @@ class ReviewController extends Controller
             $review->show = $request->input('show') ? 1 : 0;
             $review->save();
        
-            return redirect()->route('reviews.index')->with('success','L\'avis a été mis à jour avec succès.');
+            return redirect()->route('reviews.index')->with('success', 'L\'avis a été mis à jour avec succès.');
         }
         
         return redirect()->route('index');
@@ -148,6 +146,6 @@ class ReviewController extends Controller
     {
         Review::findOrFail($id)->delete();
         return redirect()->route('reviews.index')
-                        ->with('success','L\'avis est supprimé');
+                        ->with('success', 'L\'avis est supprimé');
     }
 }

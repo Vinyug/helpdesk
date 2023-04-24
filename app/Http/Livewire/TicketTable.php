@@ -6,9 +6,17 @@ use App\Models\Ticket;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 
 final class TicketTable extends PowerGridComponent
 {
@@ -67,14 +75,11 @@ final class TicketTable extends PowerGridComponent
         // if user authenticate have all-access, can see every tickets of DB
         if (auth()->user()->can('all-access')) {
             return $query;
-
         } else { // else only users of his company
-            
             // if user have permission ticket-private (admin-company)
             if (auth()->user()->can('ticket-private')) {
                 $query->where('tickets.company_id', '=', auth()->user()->company_id);
                 return $query;
-                
             } else {// else simple user of company
                 $query->where('tickets.company_id', '=', auth()->user()->company_id)
                 // if auth->user is not author of tickets, he looks only with visibility = 1 (public)
@@ -215,7 +220,7 @@ final class TicketTable extends PowerGridComponent
                 //  ->makeInputDatePicker(),
 
         ]
-;
+        ;
     }
 
     /*
@@ -232,24 +237,24 @@ final class TicketTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-     public function actions(): array
-     {
+    public function actions(): array
+    {
         return [
-            Button::make('show', trans(''))
-                ->class('btn-show')
-                ->target('')
-                ->route('tickets.show', ['ticket' => 'uuid']),
+           Button::make('show', trans(''))
+               ->class('btn-show')
+               ->target('')
+               ->route('tickets.show', ['ticket' => 'uuid']),
 
-            Button::make('edit', trans(''))
-                ->class('btn-edit')
-                ->target('')
-                ->route('tickets.edit', ['ticket' => 'uuid']),
+           Button::make('edit', trans(''))
+               ->class('btn-edit')
+               ->target('')
+               ->route('tickets.edit', ['ticket' => 'uuid']),
 
-            Button::make('destroy', trans(''))
-                ->class('btn-delete')
-                ->openModal('delete-ticket', ['ticket' => 'uuid']),
+           Button::make('destroy', trans(''))
+               ->class('btn-delete')
+               ->openModal('delete-ticket', ['ticket' => 'uuid']),
         ];
-     }
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -265,21 +270,21 @@ final class TicketTable extends PowerGridComponent
      * @return array<int, RuleActions>
      */
 
-     public function actionRules(): array
-     {
+    public function actionRules(): array
+    {
         return [
  
-            //Hide action edit if user have not permission
-             Rule::button('edit')
-                 ->when(fn() => auth()->user()->can('ticket-edit') === false)
-                 ->when(fn(Ticket $ticket) => ($ticket->user_id !== auth()->user()->id) || ($ticket->editable === 0))
-                 ->hide(),
+           //Hide action edit if user have not permission
+            Rule::button('edit')
+                ->when(fn() => auth()->user()->can('ticket-edit') === false)
+                ->when(fn(Ticket $ticket) => ($ticket->user_id !== auth()->user()->id) || ($ticket->editable === 0))
+                ->hide(),
  
-            //Hide action delete if user have not permission
-             Rule::button('destroy')
-                 ->when(fn() => auth()->user()->can('ticket-delete') === false)
-                 ->when(fn(Ticket $ticket) => ($ticket->user_id !== auth()->user()->id) || ($ticket->editable === 0))
-                 ->hide(),
-         ];
-     }
+           //Hide action delete if user have not permission
+            Rule::button('destroy')
+                ->when(fn() => auth()->user()->can('ticket-delete') === false)
+                ->when(fn(Ticket $ticket) => ($ticket->user_id !== auth()->user()->id) || ($ticket->editable === 0))
+                ->hide(),
+        ];
+    }
 }
