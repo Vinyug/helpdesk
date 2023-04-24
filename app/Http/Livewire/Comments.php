@@ -250,7 +250,11 @@ class Comments extends Component
 
             $comment = Comment::find($comment->id);
             $comment->update($this->input);
-
+            
+            // ---------------------- TICKET (UPDATE) ------------------------
+            $ticket = Ticket::find($ticket_id);
+            // update 'updated_at'
+            $ticket->touch();
             
             // --------------------------- UPLOAD ----------------------------
             
