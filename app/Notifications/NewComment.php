@@ -51,6 +51,7 @@ class NewComment extends Notification
                             ', par '.$this->comment->user->firstname.' '.$this->comment->user->lastname.
                             ' de l\'entreprise '.$this->comment->ticket->company->name.'.
                             ')
+                        ->line('L\'état du ticket est : '.$this->comment->ticket->state)
                         ->line('Vous pouvez consulter le ticket en cliquant sur le bouton ci-dessous')
                         ->action('Voir le ticket', route('tickets.show', $this->comment->ticket->uuid))
                         ->salutation('A bientôt sur '.config('app.name').'!');
