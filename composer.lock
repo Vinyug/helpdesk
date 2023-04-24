@@ -4,8 +4,71 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "54b6de8e636a576fe99a75513d3398b5",
+    "content-hash": "c94f26a9d7f0fac515ad2f65dfab5815",
     "packages": [
+        {
+            "name": "beyondcode/laravel-prose-linter",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beyondcode/laravel-prose-linter.git",
+                "reference": "5b14a8436fde8b2d56ddb181577c5098595e2c5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beyondcode/laravel-prose-linter/zipball/5b14a8436fde8b2d56ddb181577c5098595e2c5c",
+                "reference": "5b14a8436fde8b2d56ddb181577c5098595e2c5c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0|^9.0|^10.0",
+                "php": "^8.0",
+                "symfony/finder": "^4.0|^5.0|^6.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^9.0|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Beyondcode\\LaravelProseLinter\\LaravelProseLinterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Beyondcode\\LaravelProseLinter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Diana Scharf",
+                    "email": "diana@beyondco.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Syntax-aware proofreading for your Laravel application.",
+            "homepage": "https://beyondco.de/docs/laravel-prose-linter/",
+            "keywords": [
+                "beyondcode",
+                "laravel",
+                "laravel-prose-linter",
+                "linter",
+                "prose linting",
+                "vale"
+            ],
+            "support": {
+                "issues": "https://github.com/beyondcode/laravel-prose-linter/issues",
+                "source": "https://github.com/beyondcode/laravel-prose-linter/tree/v3.1.0"
+            },
+            "time": "2023-02-16T10:08:18+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.11.0",
