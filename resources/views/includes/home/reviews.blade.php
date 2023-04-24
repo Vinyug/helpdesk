@@ -3,12 +3,6 @@
         <div class="relative w-full my-32 md:my-44">
         
             {{--------------------- HEADER ----------------------}}
-            {{-- <div class="text-center">
-                <h2 class="font-share-tech text-3xl sm:text-4xl md:text-5xl font-medium">Nos clients nous font confiance</h2>
-                <span class="absolute w-full -top-7 sm:-top-9 md:-top-16 left-0 font-share-tech uppercase text-custom-grey opacity-[3%] tracking-wide text-5xl sm:text-6xl md:text-8xl">Expériences</span>
-            </div> --}}
-        
-            {{--------------------- HEADER ----------------------}}
             <div class="text-center">
                 <h2 class="font-share-tech text-white text-3xl sm:text-4xl md:text-5xl font-medium">Nos clients nous font confiance</h2>
                 <span class="absolute text-white w-full -top-7 sm:-top-9 md:-top-16 left-0 font-share-tech uppercase opacity-[3%] tracking-wide text-5xl sm:text-6xl md:text-8xl">Expériences</span>
