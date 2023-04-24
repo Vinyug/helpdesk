@@ -27,7 +27,7 @@
                     {{-- card right --}}
                     <div class="w-full flex flex-col md:self-end items-start mb-8 md:mb-12 bg-custom-light-blue text-white border border-gray-300 rounded-sm shadow shadow-gray-300 md:flex-row md:max-w-xl xl:max-w-3xl md:min-h-[256px] md:mr-[7%] lg:mr-[15%] 2xl:mr-[18%]">
                         <img class="md:order-2 self-center w-16 mt-8 md:mt-0 md:mr-10 md:ml-4" style="filter: brightness(0) invert(1);" src="assets/images/img-service.png" alt="image service">
-                        <div class="md:order-1 flex flex-col justify-center my-2 p-8 leading-normal md:ml-2">
+                        <div class="w-full md:order-1 flex flex-col justify-center my-2 p-8 leading-normal md:ml-2">
                             <h3 class="font-share-tech mb-2 text-2xl font-medium">{{ $service }}</h3>
                             <p class="mt-4">{!! nl2br(e($description)) !!}</p>
                         </div>
