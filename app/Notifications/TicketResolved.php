@@ -42,7 +42,7 @@ class TicketResolved extends Notification
      */
     public function toMail($notifiable)
     {
-        if($notifiable->email === $this->ticket->user->email) {
+        if ($notifiable->email === $this->ticket->user->email) {
             return (new MailMessage)
                         ->subject(config('app.name').' - Ticket N° : '.$this->ticket->ticket_number)
                         ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')
@@ -51,7 +51,6 @@ class TicketResolved extends Notification
                         ->action('Écrite un avis', route('reviews.create'))
                         ->salutation('A bientôt sur '.config('app.name').'!');
         } else {
-            
             return (new MailMessage)
                         ->subject(config('app.name').' - Ticket N° : '.$this->ticket->ticket_number)
                         ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')

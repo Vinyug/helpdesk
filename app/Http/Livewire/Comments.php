@@ -14,7 +14,6 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
-
 class Comments extends Component
 {
     use WithFileUploads;
@@ -41,119 +40,148 @@ class Comments extends Component
 
     public function store(Ticket $ticket)
     {
-        if($this->ticket->state !== $this->resolved) {
-            
-            $this->storeSubmitted = true;      
+        
+        $this->storeSubmitted = true;
 
-            // ---------------------------------------------------------------
-            // ---------------------- DATA VALIDATION ------------------------
-            // ---------------------------------------------------------------
-            $validatedData = $this->validate([
-                'input.content' => 'required|max:2000',
-                'input.filenames.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
-                'input.time_spent' => 'sometimes|nullable|numeric|regex:/^\d{1,4}(\.\d{1,2})?$/', //number 0000.00
-            ], [
-                'input.time_spent.regex' => 'Le champ temps passé doit être un nombre respectant dans sa valeur maximum cette syntaxe 0000.00'
-            ]);
+        // ---------------------------------------------------------------
+        // ---------------------- DATA VALIDATION ------------------------
+        // ---------------------------------------------------------------
+        $validatedData = $this->validate([
+            'input.content' => 'required|max:2000',
+            'input.filenames.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
+            'input.time_spent' => 'sometimes|nullable|numeric|regex:/^\d{1,4}(\.\d{1,2})?$/', //number 0000.00
+        ], [
+            'input.time_spent.regex' => 'Le champ temps passé doit être un nombre respectant dans sa valeur maximum cette syntaxe 0000.00'
+        ]);
+        
+
+        // ---------------------------------------------------------------
+        // --------------------------- VARIABLE --------------------------
+        // ---------------------------------------------------------------
+
+        // get user_id
+        $user_id = auth()->user()->id;
+        // get ticket_id
+        $ticket_id = $this->ticket->id;
+        // get ticket_number
+        $ticket_number = $this->ticket->ticket_number;
             
 
-            // ---------------------------------------------------------------
-            // --------------------------- VARIABLE --------------------------
-            // ---------------------------------------------------------------
+        // ---------------------------------------------------------------
+        // --------------------------- INSERT ----------------------------
+        // ---------------------------------------------------------------
+        
+        // --------------------------- COMMENT ---------------------------
+        $comment = Comment::create(array_merge($this->input, compact('user_id', 'ticket_id')));
+        
+        // ---------------------- TICKET (UPDATE) ------------------------
+        $ticket = Ticket::find($ticket_id);
+        // update 'updated_at'
+        $ticket->touch();
+        
+        
+        // --------------------------- UPLOAD ----------------------------
+        
+        // get comment_id
+        $comment_id = $comment->id;
+        
+        // verify files if file exist and isValid, to insert in DB
+        if (array_key_exists('filenames', $this->input) && $this->input['filenames']) {
+            $i = 0;
+            foreach ($this->input['filenames'] as $file) {
+                if ($file->isValid()) {
+                    // get file extension
+                    $ext = $file->extension();
+                    // rename each file
+                    $name = str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number) . '_' . $i . '.' . $ext;
+                    $i++;
 
-            // get user_id
-            $user_id = auth()->user()->id;
-            // get ticket_id
-            $ticket_id = $this->ticket->id;
-            // get ticket_number
-            $ticket_number = $this->ticket->ticket_number;
-             
+                    // upload each file in folder named by ticket number and comment id
+                    $path = $file->storeAs('files/ticket-' . str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number) . '/comment-' . $comment_id, $name);
 
-            // ---------------------------------------------------------------
-            // --------------------------- INSERT ----------------------------
-            // ---------------------------------------------------------------
-            
-            // --------------------------- COMMENT ---------------------------
-            $comment = Comment::create(array_merge($this->input, compact('user_id', 'ticket_id')));
-            
-            // ---------------------- TICKET (UPDATE) ------------------------
-            $ticket = Ticket::find($ticket_id);
-            // update 'updated_at'
-            $ticket->touch();
-            
-            
-            // --------------------------- UPLOAD ----------------------------
-            
-            // get comment_id
-            $comment_id = $comment->id;
-            
-            // verify files if file exist and isValid, to insert in DB
-            if (array_key_exists('filenames', $this->input) && $this->input['filenames']) {
-                $i = 0;
-                foreach ($this->input['filenames'] as $file) {
-                    if ($file->isValid()) {
-                        // get file extension
-                        $ext = $file->extension();
-                        // rename each file
-                        $name = str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number) . '_' . $i . '.' . $ext;
-                        $i++;
+                    // resize thumbnail
+                    $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function ($constraint) {
+                        $constraint->upsize();
+                    })->encode($ext, 50); //reduce sizing by 50%
+                    // thumbnail path
+                    $thumbnailPath = 'files/ticket-' . str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number) . '/comment-' . $comment_id . '/thumbnail/thumb_' . $name;
+                    // stock file. first parameter : where ; second parameter : what
+                    Storage::put($thumbnailPath, $thumbnailFile);
 
-                        // upload each file in folder named by ticket number and comment id
-                        $path = $file->storeAs('files/ticket-' . str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number) . '/comment-' . $comment_id, $name);
-
-                        // resize thumbnail
-                        $thumbnailFile = Image::make($file)->fit($this->thumbnail_width, $this->thumbnail_height, function ($constraint) {
-                            $constraint->upsize();
-                        })->encode($ext, 50); //reduce sizing by 50%
-                        // thumbnail path
-                        $thumbnailPath = 'files/ticket-' . str_replace(['#', $this->ticket_number_separate], ['', '-'], $ticket_number) . '/comment-' . $comment_id . '/thumbnail/thumb_' . $name;
-                        // stock file. first parameter : where ; second parameter : what
-                        Storage::put($thumbnailPath, $thumbnailFile);
-
-                        // insert
-                        $upload = Upload::create(array_merge([
-                            'filename' => $name,
-                            'url' => Storage::url($path),
-                            'path' => $path,
-                            'thumbnail_url' => Storage::url($thumbnailPath),
-                            'thumbnail_path' => $thumbnailPath,
+                    // insert
+                    $upload = Upload::create(array_merge(
+                        [
+                        'filename' => $name,
+                        'url' => Storage::url($path),
+                        'path' => $path,
+                        'thumbnail_url' => Storage::url($thumbnailPath),
+                        'thumbnail_path' => $thumbnailPath,
                         ],
-                            compact('comment_id')));
-                    }
+                        compact('comment_id')
+                    ));
                 }
             }
-            
-            // Remove all temporary files
-            File::cleanDirectory(storage_path('app/public/livewire-tmp/'));
+        }
+        
+        // Remove all temporary files
+        File::cleanDirectory(storage_path('app/public/livewire-tmp/'));
 
 
-            // ---------------------------------------------------------------
-            // ------------------------ NOTIFICATION -------------------------
-            // ---------------------------------------------------------------
+        // ---------------------------------------------------------------
+        // ------------------------ NOTIFICATION -------------------------
+        // ---------------------------------------------------------------
 
-            // Notify author of ticket, admin, and admin company of company
-            $listOfUsersNotifiable = $this->listOfUsersNotifiable($comment);
-            
-            if(env('MAIL_USERNAME')) {
-                Notification::send($listOfUsersNotifiable, new NewComment($comment));
-            }
+        // Notify author of ticket, admin, and admin company of company
+        $listOfUsersNotifiable = $this->listOfUsersNotifiable($comment);
+        
+        if (env('MAIL_USERNAME')) {
+            Notification::send($listOfUsersNotifiable, new NewComment($comment));
+        }
 
 
-            // ---------------------------------------------------------------
-            // ---------------------------- RESET ----------------------------
-            // ---------------------------------------------------------------
+        // ---------------------------------------------------------------
+        // ---------------------------- RESET ----------------------------
+        // ---------------------------------------------------------------
+        
+        $this->reset('input');
+        $this->comments = Comment::where('ticket_id', '=', $ticket_id)->latest()->get();
+        
+        $this->storeSubmitted = false;
+    }
+
+    public function storeInProgress(Ticket $ticket)
+    {
+        if ($this->ticket->state !== $this->resolved) {
+            $this->ticket->update([
+                'state' => 'En cours',
+            ]);
             
-            $this->reset('input');
-            $this->comments = Comment::where('ticket_id', '=', $ticket_id)->latest()->get();
-            
-            $this->storeSubmitted = false;
-            
+            $this->store($ticket);
+
             session()->flash('success', 'Le commentaire a été enregistré avec succès.');
-
         } else {
+            return redirect()->back()->with('status', 'Le ticket est cloturé, vous ne pouvez plus créer de commentaire.');
+        }
+    }
 
-            return redirect()->back()->with('status','Le ticket est cloturé, vous ne pouvez plus créer de commentaire.');
+    public function storeWaiting(Ticket $ticket)
+    {
+        if ($this->ticket->state !== $this->resolved) {
+            if (auth()->user()->can('all-access')) {
+                $this->ticket->update([
+                    'state' => 'En attente réponse entreprise',
+                ]);
+            } else {
+                $this->ticket->update([
+                    'state' => 'En attente réponse helpdesk',
+                ]);
+            }
+            
+            $this->store($ticket);
 
+            session()->flash('success', 'Le commentaire a été enregistré avec succès.');
+        } else {
+            return redirect()->back()->with('status', 'Le ticket est cloturé, vous ne pouvez plus créer de commentaire.');
         }
     }
 
@@ -167,7 +195,6 @@ class Comments extends Component
             'content' => $comment->content,
             'time_spent' => $comment->time_spent,
         ];
-        
     }
 
     public function cancel()
@@ -177,11 +204,10 @@ class Comments extends Component
     }
 
     public function update(Comment $comment)
-    {   
+    {
 
-        if(auth()->user()->id === $comment->user_id && $this->ticket->state !== $this->resolved) {
-           
-            $this->updateSubmitted = true;      
+        if (auth()->user()->id === $comment->user_id && $this->ticket->state !== $this->resolved) {
+            $this->updateSubmitted = true;
 
             // ---------------------------------------------------------------
             // ---------------------- DATA VALIDATION ------------------------
@@ -214,7 +240,11 @@ class Comments extends Component
 
             $comment = Comment::find($comment->id);
             $comment->update($this->input);
-
+            
+            // ---------------------- TICKET (UPDATE) ------------------------
+            $ticket = Ticket::find($ticket_id);
+            // update 'updated_at'
+            $ticket->touch();
             
             // --------------------------- UPLOAD ----------------------------
             
@@ -250,14 +280,16 @@ class Comments extends Component
                         Storage::put($thumbnailPath, $thumbnailFile);
 
                         // insert
-                        $upload = Upload::create(array_merge([
+                        $upload = Upload::create(array_merge(
+                            [
                             'filename' => $name,
                             'url' => Storage::url($path),
                             'path' => $path,
                             'thumbnail_url' => Storage::url($thumbnailPath),
                             'thumbnail_path' => $thumbnailPath,
-                        ],
-                            compact('comment_id')));
+                            ],
+                            compact('comment_id')
+                        ));
                     }
                 }
             }
@@ -277,11 +309,8 @@ class Comments extends Component
             $this->editMode = false;
             
             session()->flash('success', 'Le commentaire a été modifié avec succès.');
-
         } else {
-
-            return redirect()->back()->with('status','Le ticket est cloturé, vous ne pouvez plus modifier un commentaire.');
-
+            return redirect()->back()->with('status', 'Le ticket est cloturé, vous ne pouvez plus modifier un commentaire.');
         }
     }
 
@@ -291,8 +320,8 @@ class Comments extends Component
         $this->reset('input');
         $ticket_id = $this->ticket->id;
 
-        if($id){
-            Comment::where('id',$id)->delete();
+        if ($id) {
+            Comment::where('id', $id)->delete();
             $this->comments = Comment::where('ticket_id', '=', $ticket_id)->latest()->get();
 
             session()->flash('success', 'Le commentaire a bien été supprimé.');
@@ -318,12 +347,11 @@ class Comments extends Component
         $authorTicket = $comment->ticket->user;
         // get admin company
         $adminCompany = User::permission('ticket-private')
-        ->where('company_id','=', $comment->ticket->company_id)
-        ->get(); 
+        ->where('company_id', '=', $comment->ticket->company_id)
+        ->get();
         // merge to send
         $authorTicketAdminAndAdminCompany = collect([$authorTicket])->merge($admin)->merge($adminCompany)->unique('id');
         
         return $authorTicketAdminAndAdminCompany;
     }
-    
 }

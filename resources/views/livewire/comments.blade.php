@@ -58,13 +58,21 @@
             </div>
             @endif
 
-            <div class="col-span-full">
-                <button type="submit" wire:click.prevent="store" class="btn-comment-orange">Envoyer</button>
+            <div class="flex flex-col sm:flex-row justify-end">
+                @if(auth()->user()->can('all-access'))
+                <div class="col-span-full">
+                    <button type="submit" wire:click.prevent="storeInProgress" class="btn-comment-orange mr-8 mb-4 sm:mb-0">Envoyer - En cours</button>
+                </div>
+                @endif
+    
+                <div class="col-span-full">
+                    <button type="submit" wire:click.prevent="storeWaiting" class="btn-comment-orange md:w-full">Envoyer @if(auth()->user()->can('all-access')) - Attente réponse @endif</button>
+                </div>
             </div>
         </form>
     </div>
     @else 
-    <div style="height: 311px"></div>
+    <div style="height: 263px"></div>
     @endif
 
 

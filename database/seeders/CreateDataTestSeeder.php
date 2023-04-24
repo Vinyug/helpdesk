@@ -26,7 +26,7 @@ class CreateDataTestSeeder extends Seeder
 
         // LISTINGS
         $jobs = ['Poste A', 'Poste B', 'Poste C'];
-        $states = ['Non lu', 'Lu', 'En cours', 'En attente de réponse', 'Résolu'];
+        $states = ['Non lu', 'Lu', 'En cours', 'En attente de réponse helpdesk', 'En attente de réponse entreprise', 'Résolu'];
         $services = ['Support informatique', 'Sécurité informatique', 'Réseau informatique', 'Application logicielle', 'Matériel informatique', 'Téléphonie / Communication', 'Conseil assistance générale', 'Autre'];
         $hourly_rate = '25';
         

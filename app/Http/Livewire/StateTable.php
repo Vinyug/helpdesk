@@ -5,9 +5,17 @@ namespace App\Http\Livewire;
 use App\Models\Listing;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 
 final class StateTable extends PowerGridComponent
 {
@@ -153,7 +161,7 @@ final class StateTable extends PowerGridComponent
             //     ->makeInputDatePicker(),
 
         ]
-;
+        ;
     }
 
     /*
@@ -170,24 +178,24 @@ final class StateTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-     public function actions(): array
-     {
+    public function actions(): array
+    {
         return [
-            // Button::make('show', trans('Show'))
-            //      ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
-            //      ->target('')
-            //      ->route('states.show', ['state' => 'id']),
+           // Button::make('show', trans('Show'))
+           //      ->class('inline-block ml-4 py-1 align-middle text-center font-medium hover:underline transition duration-150 ease-in-out')
+           //      ->target('')
+           //      ->route('states.show', ['state' => 'id']),
                  
-            Button::make('edit', trans(''))
-                 ->class('btn-edit')
-                 ->target('')
-                 ->route('states.edit', ['state' => 'id']),
+           Button::make('edit', trans(''))
+                ->class('btn-edit')
+                ->target('')
+                ->route('states.edit', ['state' => 'id']),
                  
-            Button::make('destroy', trans(''))
-                ->class('btn-delete')
-                ->openModal('delete-state', ['listing' => 'id']),
-         ];
-     }
+           Button::make('destroy', trans(''))
+               ->class('btn-delete')
+               ->openModal('delete-state', ['listing' => 'id']),
+        ];
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -203,20 +211,20 @@ final class StateTable extends PowerGridComponent
      * @return array<int, RuleActions>
      */
 
-     public function actionRules(): array
-     {
+    public function actionRules(): array
+    {
         return [
-            //Hide action edit if user have not permission
-             Rule::button('edit')
-                 ->when(fn() => auth()->user()->can('state-edit') === false)
-                 ->when(fn(Listing $listing) => ($listing->state === 'Non lu' || $listing->state === 'Lu' || $listing->state === 'Résolu'))
-                 ->hide(),
+           //Hide action edit if user have not permission
+            Rule::button('edit')
+                ->when(fn() => auth()->user()->can('state-edit') === false)
+                ->when(fn(Listing $listing) => ($listing->state === 'Non lu' || $listing->state === 'Lu' || $listing->state === 'En cours' || $listing->state === 'En attente de réponse helpdesk' || $listing->state === 'En attente de réponse entreprise' || $listing->state === 'Résolu'))
+                ->hide(),
  
-            //Hide action delete if user have not permission
-             Rule::button('destroy')
-                 ->when(fn() => auth()->user()->can('state-delete') === false)
-                 ->when(fn(Listing $listing) => ($listing->state === 'Non lu' || $listing->state === 'Lu' || $listing->state === 'Résolu'))
-                 ->hide(),
-         ];
-     }
+           //Hide action delete if user have not permission
+            Rule::button('destroy')
+                ->when(fn() => auth()->user()->can('state-delete') === false)
+                ->when(fn(Listing $listing) => ($listing->state === 'Non lu' || $listing->state === 'Lu' || $listing->state === 'En cours' || $listing->state === 'En attente de réponse helpdesk' || $listing->state === 'En attente de réponse entreprise' || $listing->state === 'Résolu'))
+                ->hide(),
+        ];
+    }
 }

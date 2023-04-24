@@ -5,9 +5,17 @@ namespace App\Http\Livewire;
 use App\Models\Company;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 
 final class CompanyTable extends PowerGridComponent
 {
@@ -185,7 +193,7 @@ final class CompanyTable extends PowerGridComponent
             //     ->makeInputDatePicker(),
 
         ]
-    ;
+        ;
     }
 
     /*
@@ -205,7 +213,7 @@ final class CompanyTable extends PowerGridComponent
     
     public function actions(): array
     {
-       return [
+        return [
         Button::make('show', trans(''))
             ->class('btn-show')
             ->target('')
@@ -240,7 +248,7 @@ final class CompanyTable extends PowerGridComponent
     
     public function actionRules(): array
     {
-       return [
+        return [
 
            //Hide action edit if user have not permission
             Rule::button('edit')
@@ -253,5 +261,4 @@ final class CompanyTable extends PowerGridComponent
                 ->hide(),
         ];
     }
-    
 }

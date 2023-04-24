@@ -7,9 +7,17 @@ use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 
 final class UserTable extends PowerGridComponent
 {
@@ -58,9 +66,9 @@ final class UserTable extends PowerGridComponent
     {
         // left join permits to take user datas with or without company
         $query = User::query()
-            ->leftjoin('companies','users.company_id', '=', 'companies.id')
-            ->leftjoin('model_has_roles','users.id', '=', 'model_has_roles.model_id')
-            ->leftjoin('roles','model_has_roles.role_id', '=', 'roles.id')
+            ->leftjoin('companies', 'users.company_id', '=', 'companies.id')
+            ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->leftjoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
             ->select([
                 'users.*',
                 'companies.name as company_name',
@@ -71,7 +79,6 @@ final class UserTable extends PowerGridComponent
         // if user authenticate have all-access, can see every users of DB
         if (auth()->user()->can('all-access')) {
             return $query;
-
         } else {
             // else only users of his company
             return $query
@@ -202,7 +209,7 @@ final class UserTable extends PowerGridComponent
             //     ->makeInputDatePicker(),
 
         ]
-;
+        ;
     }
 
     /*
@@ -219,24 +226,24 @@ final class UserTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-     public function actions(): array
-     {
+    public function actions(): array
+    {
         return [
-            Button::make('show', trans(''))
-                 ->class('btn-show')
-                 ->target('')
-                 ->route('users.show', ['user' => 'id']),
+           Button::make('show', trans(''))
+                ->class('btn-show')
+                ->target('')
+                ->route('users.show', ['user' => 'id']),
                  
-            Button::make('edit', trans(''))
-                 ->class('btn-edit')
-                 ->target('')
-                 ->route('users.edit', ['user' => 'id']),
+           Button::make('edit', trans(''))
+                ->class('btn-edit')
+                ->target('')
+                ->route('users.edit', ['user' => 'id']),
                  
-                 Button::make('destroy', trans(''))
-                 ->class('btn-delete')
-                 ->openModal('delete-user', ['user' => 'id']),
-         ];
-     }
+                Button::make('destroy', trans(''))
+                ->class('btn-delete')
+                ->openModal('delete-user', ['user' => 'id']),
+        ];
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -252,18 +259,18 @@ final class UserTable extends PowerGridComponent
      * @return array<int, RuleActions>
      */
 
-     public function actionRules(): array
-     {
+    public function actionRules(): array
+    {
         return [
-            //Hide action edit if user have not permission
-             Rule::button('edit')
-                 ->when(fn() => auth()->user()->can('user-edit') === false)
-                 ->hide(),
+           //Hide action edit if user have not permission
+            Rule::button('edit')
+                ->when(fn() => auth()->user()->can('user-edit') === false)
+                ->hide(),
  
-            //Hide action delete if user have not permission
-             Rule::button('destroy')
-                 ->when(fn() => auth()->user()->can('user-delete') === false)
-                 ->hide(),
-         ];
-     }
+           //Hide action delete if user have not permission
+            Rule::button('destroy')
+                ->when(fn() => auth()->user()->can('user-delete') === false)
+                ->hide(),
+        ];
+    }
 }

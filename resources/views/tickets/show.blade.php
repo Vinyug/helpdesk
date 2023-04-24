@@ -80,7 +80,7 @@
                             </div>
 
                             <div class="col-span-full">
-                                <button type="submit" class="btn-comment-orange">Modifier</button>
+                                <button type="submit" class="btn-comment-orange mt-4 sm:mt-0">Modifier</button>
                             </div>
                         </div>
                     </form>

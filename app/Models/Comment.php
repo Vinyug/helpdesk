@@ -12,9 +12,9 @@ class Comment extends Model
     protected $fillable = [
         'user_id',
         'ticket_id',
-        'content', 
-        'editable', 
-        'time_spent', 
+        'content',
+        'editable',
+        'time_spent',
     ];
 
 
@@ -49,5 +49,4 @@ class Comment extends Model
     {
         return ucfirst($this->attributes['content']);
     }
-
 }

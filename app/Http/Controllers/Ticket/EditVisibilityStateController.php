@@ -18,13 +18,13 @@ class EditVisibilityStateController extends Controller
     {
         $ticketCurrentState = $ticket->state;
 
-        if(auth()->user()->can('all-access')) {
+        if (auth()->user()->can('all-access')) {
             $request->validate([
                 'visibility' => 'boolean',
                 'state' => 'required|exists:listings,state|not_in:null,',
             ]);
 
-            if($request['state'] !== 'Non lu') {
+            if ($request['state'] !== 'Non lu') {
                 $ticket->editable = 0;
             }
 
@@ -39,9 +39,9 @@ class EditVisibilityStateController extends Controller
             // ---------------- Notification ---------------------
             $listOfUsersNotifiable = $this->listOfUsersNotifiable($ticket);
             
-            if(env('MAIL_USERNAME')) {
+            if (env('MAIL_USERNAME')) {
                 // if ticket state is resolved => notify
-                ($ticket->state === $this->resolved) && 
+                ($ticket->state === $this->resolved) &&
                 (Notification::send($listOfUsersNotifiable, new TicketResolved($ticket)));
                 
                 // if ticket state change and not resolved => notify
@@ -50,18 +50,18 @@ class EditVisibilityStateController extends Controller
             }
             
 
-            return redirect()->back()->with('success','Le ticket a été mis à jour avec succès.');
+            return redirect()->back()->with('success', 'Le ticket a été mis à jour avec succès.');
         }
 
-        return redirect()->route('tickets.index')->with('status','Vous n\'avez pas l\'autorisation de modifier ce ticket.');
+        return redirect()->route('tickets.index')->with('status', 'Vous n\'avez pas l\'autorisation de modifier ce ticket.');
     }
 
     public function listOfUsersNotifiable(Ticket $ticket)
     {
         // Notify user and admin company of company
         $adminCompany = User::permission('ticket-private')
-        ->where('company_id','=', $ticket->user->company_id)
-        ->get(); 
+        ->where('company_id', '=', $ticket->user->company_id)
+        ->get();
         // merge to send
         $userAndAdminCompany = collect([$ticket->user])->merge($adminCompany)->unique('id');
 

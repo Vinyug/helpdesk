@@ -6,9 +6,17 @@ use App\Models\Ticket;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 
 final class TimeTable extends PowerGridComponent
 {
@@ -67,7 +75,6 @@ final class TimeTable extends PowerGridComponent
             ])
             ->whereNotNull('comments.time_spent')
             ->where('comments.time_spent', '!=', '');
-
     }
 
     /*
@@ -172,14 +179,14 @@ final class TimeTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-     public function actions(): array
-     {
+    public function actions(): array
+    {
         return [
-            Button::make('show', trans(''))
-                ->class('btn-show')
-                ->target('')
-                ->route('tickets.show', ['ticket' => 'uuid']),
+           Button::make('show', trans(''))
+               ->class('btn-show')
+               ->target('')
+               ->route('tickets.show', ['ticket' => 'uuid']),
   
         ];
-     }
+    }
 }

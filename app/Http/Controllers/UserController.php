@@ -41,7 +41,6 @@ class UserController extends Controller
         $users = User::with('company');
 
         return view('users.index', compact('users'));
-        
     }
     
     /**
@@ -53,9 +52,9 @@ class UserController extends Controller
     {
         $roles = Role::get();
         $companies = Company::get();
-        $jobs = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
+        $jobs = Listing::whereNotNull('job')->where('job', '!=', '')->pluck('job', 'job');
 
-        return view('users.create',compact('roles', 'companies', 'jobs'));
+        return view('users.create', compact('roles', 'companies', 'jobs'));
     }
     
     /**
@@ -109,17 +108,18 @@ class UserController extends Controller
         $admin = User::permission('all-access')->get();
         // get users admin company of company
         $adminCompany = User::permission('ticket-private')
-            ->where('company_id','=', $user->company_id)
-            ->get(); 
+            ->where('company_id', '=', $user->company_id)
+            ->get();
         // merge to send
-        $userAdminAndAdminCompany = collect([$user])->merge($admin)->merge($adminCompany);;
+        $userAdminAndAdminCompany = collect([$user])->merge($admin)->merge($adminCompany);
+        ;
 
-        if(env('MAIL_USERNAME')) {
+        if (env('MAIL_USERNAME')) {
             Notification::send($userAdminAndAdminCompany, new NewUser($user));
         }
 
         return redirect()->route('users.index')
-                        ->with('success','L\'utilisateur est créé.');
+                        ->with('success', 'L\'utilisateur est créé.');
     }
     
     /**
@@ -131,7 +131,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('users.show',compact('user'));
+        return view('users.show', compact('user'));
     }
     
     /**
@@ -145,11 +145,11 @@ class UserController extends Controller
         $user = User::find($id);
 
         $roles = Role::get();
-        $userRole = $user->roles->pluck('name','name')->all();
+        $userRole = $user->roles->pluck('name', 'name')->all();
         $companies = Company::get();
-        $jobs = Listing::whereNotNull('job')->where('job','!=', '')->pluck('job', 'job');
+        $jobs = Listing::whereNotNull('job')->where('job', '!=', '')->pluck('job', 'job');
 
-        return view('users.edit',compact('user', 'roles', 'userRole', 'companies', 'jobs'));
+        return view('users.edit', compact('user', 'roles', 'userRole', 'companies', 'jobs'));
     }
     
     /**
@@ -195,29 +195,30 @@ class UserController extends Controller
             $input['company_id'] = auth()->user()->company_id;
         }
 
-        // update user 
+        // update user
         $user->update($input);
         
         // assign roles to user (delete and assign)
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
         $user->assignRole($request->input('roles'));
 
         // ---------------- Notification ---------------------
-        if($userCurrentCompany !== $user->company->id) {
+        if ($userCurrentCompany !== $user->company->id) {
             // Notify user and admin company of company
             $adminCompany = User::permission('ticket-private')
-                ->where('company_id','=', $user->company_id)
-                ->get(); 
+                ->where('company_id', '=', $user->company_id)
+                ->get();
             // merge to send
-            $userAndAdminCompany = collect([$user])->merge($adminCompany);;
+            $userAndAdminCompany = collect([$user])->merge($adminCompany);
+            ;
 
-            if(env('MAIL_USERNAME')) {
+            if (env('MAIL_USERNAME')) {
                 Notification::send($userAndAdminCompany, new AssignCompanyUser($user));
             }
         }
     
         return redirect()->route('users.index')
-                        ->with('success','L\'utilisateur a été mis à jour.');
+                        ->with('success', 'L\'utilisateur a été mis à jour.');
     }
     
     /**
@@ -230,6 +231,6 @@ class UserController extends Controller
     {
         User::find($id)->delete();
         return redirect()->route('users.index')
-                        ->with('success','L\'utilisateur est supprimé.');
+                        ->with('success', 'L\'utilisateur est supprimé.');
     }
 }

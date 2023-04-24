@@ -21,7 +21,7 @@
         @endif
         
         
-        {{------------------ CREATE HOURLY RATE --------------}}
+        {{------------------ CREATE HOURLY_RATE --------------}}
         <div class="mb-16">
             <h3 class="text-base sm:text-lg font-bold mb-4">Information sur le taux horaire</h3>
             

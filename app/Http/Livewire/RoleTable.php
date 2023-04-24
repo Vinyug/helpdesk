@@ -6,9 +6,17 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 
 final class RoleTable extends PowerGridComponent
 {
@@ -150,7 +158,7 @@ final class RoleTable extends PowerGridComponent
             //     ->makeInputDatePicker(),
 
         ]
-;
+        ;
     }
 
     /*
@@ -168,7 +176,7 @@ final class RoleTable extends PowerGridComponent
      */
 
     public function actions(): array
-     {
+    {
         return [
             Button::make('show', trans(''))
                  ->class('btn-show')
@@ -184,7 +192,7 @@ final class RoleTable extends PowerGridComponent
                 ->class('btn-delete')
                 ->openModal('delete-role', ['role' => 'id']),
          ];
-     }
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -200,18 +208,18 @@ final class RoleTable extends PowerGridComponent
      * @return array<int, RuleActions>
      */
 
-     public function actionRules(): array
-     {
+    public function actionRules(): array
+    {
         return [
-            //Hide action edit if user have not permission
-             Rule::button('edit')
-                 ->when(fn() => auth()->user()->can('role-edit') === false)
-                 ->hide(),
+           //Hide action edit if user have not permission
+            Rule::button('edit')
+                ->when(fn() => auth()->user()->can('role-edit') === false)
+                ->hide(),
  
-            //Hide action delete if user have not permission
-             Rule::button('destroy')
-                 ->when(fn() => auth()->user()->can('role-delete') === false)
-                 ->hide(),
-         ];
-     }
+           //Hide action delete if user have not permission
+            Rule::button('destroy')
+                ->when(fn() => auth()->user()->can('role-delete') === false)
+                ->hide(),
+        ];
+    }
 }

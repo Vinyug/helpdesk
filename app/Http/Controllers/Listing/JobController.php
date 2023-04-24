@@ -38,7 +38,7 @@ class JobController extends Controller
     {
         $job = Listing::get();
 
-        return view('jobs.create',compact('job'));
+        return view('jobs.create', compact('job'));
     }
 
     /**
@@ -56,7 +56,7 @@ class JobController extends Controller
         Listing::create(['job' => $request->input('job')]);
     
         return redirect()->route('jobs.index')
-                        ->with('success','Un nouveau poste est crée.');
+                        ->with('success', 'Un nouveau poste est crée.');
     }
 
     /**
@@ -81,8 +81,8 @@ class JobController extends Controller
         $listing = Listing::findOrFail($id);
         $jobs = Listing::where('job', '!=', '')->whereNotNull('job')->pluck('job');
         
-        if($jobs->contains($listing->job)) {
-            return view('jobs.edit',compact('listing'));
+        if ($jobs->contains($listing->job)) {
+            return view('jobs.edit', compact('listing'));
         }
 
         return redirect()->back()->with('status', 'Vous n\'avez pas l\'autorisation d\'accéder à cette page.');
@@ -106,7 +106,7 @@ class JobController extends Controller
         $listing->save();
     
         return redirect()->route('jobs.index')
-                        ->with('success','Le poste est mis à jour.');
+                        ->with('success', 'Le poste est mis à jour.');
     }
 
     /**
@@ -119,6 +119,6 @@ class JobController extends Controller
     {
         Listing::findOrFail($id)->delete();
         return redirect()->route('jobs.index')
-                        ->with('success','Le poste est supprimé');
+                        ->with('success', 'Le poste est supprimé');
     }
 }

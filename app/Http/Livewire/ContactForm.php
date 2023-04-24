@@ -34,7 +34,7 @@ class ContactForm extends Component
         
         $admin = User::permission('all-access')->get();
        
-        if(env('MAIL_USERNAME')) {
+        if (env('MAIL_USERNAME')) {
             Notification::send($admin, new NewContact(
                 $validatedData['fullname'],
                 $validatedData['email'],

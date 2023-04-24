@@ -10,7 +10,7 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
          $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
          $this->middleware('permission:role-create', ['only' => ['create','store']]);
@@ -26,7 +26,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $roles = Role::get();
-        return view('roles.index',compact('roles'));
+        return view('roles.index', compact('roles'));
     }
 
     /**
@@ -37,7 +37,7 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Permission::get();
-        return view('roles.create',compact('permissions'));
+        return view('roles.create', compact('permissions'));
     }
 
     /**
@@ -57,7 +57,7 @@ class RoleController extends Controller
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index')
-                        ->with('success','Un nouveau rôle est créé.');
+                        ->with('success', 'Un nouveau rôle est créé.');
     }
 
     /**
@@ -69,11 +69,11 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::find($id);
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-            ->where("role_has_permissions.role_id",$id)
+        $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+            ->where("role_has_permissions.role_id", $id)
             ->get();
     
-        return view('roles.show',compact('role','rolePermissions'));
+        return view('roles.show', compact('role', 'rolePermissions'));
     }
 
     /**
@@ -86,11 +86,11 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         $permissions = Permission::get();
-        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
-            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id", $id)
+            ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
             ->all();
     
-        return view('roles.edit',compact('role','permissions','rolePermissions'));
+        return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }
 
     /**
@@ -114,7 +114,7 @@ class RoleController extends Controller
         $role->syncPermissions($request->input('permission'));
     
         return redirect()->route('roles.index')
-                        ->with('success','Le rôle a été mis à jour.');
+                        ->with('success', 'Le rôle a été mis à jour.');
     }
 
     /**
@@ -127,12 +127,12 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
 
-        if(!$role->users()->exists()) {
-            DB::table("roles")->where('id',$id)->delete();
+        if (!$role->users()->exists()) {
+            DB::table("roles")->where('id', $id)->delete();
             return redirect()->route('roles.index')
-                            ->with('success','Le rôle est supprimé');
+                            ->with('success', 'Le rôle est supprimé');
         }
 
-        return redirect()->back()->with('status','Vous ne pouvez pas supprimer le rôle, au moins un utilisateur le possède encore.');
+        return redirect()->back()->with('status', 'Vous ne pouvez pas supprimer le rôle, au moins un utilisateur le possède encore.');
     }
 }

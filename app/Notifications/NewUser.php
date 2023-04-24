@@ -42,7 +42,7 @@ class NewUser extends Notification
      */
     public function toMail($notifiable)
     {
-        if($notifiable->email === $this->user->email) {
+        if ($notifiable->email === $this->user->email) {
             return (new MailMessage)
                         ->subject('Nouvel utilisateur sur '.config('app.name').' - Entreprise : '.$this->user->company->name)
                         ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')

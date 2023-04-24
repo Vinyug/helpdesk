@@ -6,9 +6,17 @@ use App\Models\Review;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
+use PowerComponents\LivewirePowerGrid\Rules\RuleActions;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 
 final class ReviewTable extends PowerGridComponent
 {
@@ -176,7 +184,7 @@ final class ReviewTable extends PowerGridComponent
             //     ->makeInputDatePicker(),
 
         ]
-;
+        ;
     }
 
     /*
@@ -196,7 +204,7 @@ final class ReviewTable extends PowerGridComponent
     
     public function actions(): array
     {
-       return [
+        return [
             Button::make('edit', trans(''))
                 ->class('btn-edit')
                 ->target('')
@@ -227,12 +235,12 @@ final class ReviewTable extends PowerGridComponent
     public function actionRules(): array
     {
        return [
- 
+
             //Hide action edit if user have not permission
              Rule::button('edit')
                  ->when(fn() => auth()->user()->can('review-edit') === false)
                  ->hide(),
- 
+
             //Hide action delete if user have not permission
              Rule::button('destroy')
                  ->when(fn() => auth()->user()->can('review-delete') === false)

@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
 
-    // RELATIONSHIP 
+    // RELATIONSHIP
     public function company()
     {
         return $this->belongsTo(Company::class);
