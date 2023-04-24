@@ -60,7 +60,7 @@ class EditVisibilityStateController extends Controller
     {
         // Notify user and admin company of company
         $adminCompany = User::permission('ticket-private')
-        ->where('company_id', '=', $ticket->user->company_id)
+        ->where('company_id', '=', $ticket->company->id)
         ->get();
         // merge to send
         $userAndAdminCompany = collect([$ticket->user])->merge($adminCompany)->unique('id');
