@@ -19,8 +19,11 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register(): void
     {
+        $this->artisan('permission:create-permission', ['name' => 'all-access']);
+
         $response = $this->post('/register', [
-            'name' => 'Test User',
+            'firstname' => 'Test firstname',
+            'lastname' => 'Test lastname',
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
