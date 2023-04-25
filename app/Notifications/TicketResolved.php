@@ -42,21 +42,21 @@ class TicketResolved extends Notification
      */
     public function toMail($notifiable)
     {
-        if ($notifiable->email === $this->ticket->user->email) {
-            return (new MailMessage)
-                        ->subject(config('app.name').' - Ticket N° : '.$this->ticket->ticket_number)
-                        ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')
-                        ->line('Votre administrateur sur '.config('app.name').' a cloturé le ticket n°'.$this->ticket->ticket_number.'.')
-                        ->line('Nous vous remercions par avance de rédiger un avis en cliquant sur le bouton ci-dessous.')
-                        ->action('Écrite un avis', route('reviews.create'))
-                        ->salutation('A bientôt sur '.config('app.name').'!');
-        } else {
+        if ($notifiable->email === $this->ticket->user->email && $notifiable->can('all-access')) {
             return (new MailMessage)
                         ->subject(config('app.name').' - Ticket N° : '.$this->ticket->ticket_number)
                         ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')
                         ->line('Votre administrateur sur '.config('app.name').' a cloturé le ticket n°'.$this->ticket->ticket_number.'.')
                         ->line('Vous pouvez toujours consulter ce ticket.')
                         ->action('Voir ticket', route('tickets.show', $this->ticket->uuid))
+                        ->salutation('A bientôt sur '.config('app.name').'!');
+        } else {
+            return (new MailMessage)
+                        ->subject(config('app.name').' - Ticket N° : '.$this->ticket->ticket_number)
+                        ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')
+                        ->line('Votre administrateur sur '.config('app.name').' a cloturé le ticket n°'.$this->ticket->ticket_number.'.')
+                        ->line('Nous vous remercions par avance de rédiger un avis en cliquant sur le bouton ci-dessous.')
+                        ->action('Écrire un avis', route('reviews.create'))
                         ->salutation('A bientôt sur '.config('app.name').'!');
         }
     }
