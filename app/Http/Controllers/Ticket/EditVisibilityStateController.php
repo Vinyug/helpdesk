@@ -42,7 +42,7 @@ class EditVisibilityStateController extends Controller
             if (env('MAIL_USERNAME')) {
                 // if ticket state is resolved => notify
                 ($ticket->state === $this->resolved) &&
-                (Notification::send($listOfUsersNotifiable, new TicketResolved($ticket)));
+                    (Notification::send($listOfUsersNotifiable, new TicketResolved($ticket)));
                 
                 // if ticket state change and not resolved => notify
                 ($request['state'] !== $ticketCurrentState && $ticket->state !== $this->resolved) &&
