@@ -71,6 +71,7 @@ final class UserTable extends PowerGridComponent
             ->leftjoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
             ->select([
                 'users.*',
+                'users.email as user_email', // need to identify, cause field email exists in table company
                 'companies.name as company_name',
                 DB::raw('GROUP_CONCAT(DISTINCT roles.name SEPARATOR ", ") as role_name'),
             ])
@@ -135,7 +136,7 @@ final class UserTable extends PowerGridComponent
             ->addColumn('role_name', fn (User $user) => $user->roles->pluck('name')->implode(', '))
             ->addColumn('firstname')
             ->addColumn('lastname')
-            ->addColumn('email')
+            ->addColumn('user_email')
             ->addColumn('active', fn (User $user) => $user->active ? 'Activé' : 'Désactivé')
             ->addColumn('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
             // ->addColumn('updated_at_formatted', fn (User $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
@@ -175,7 +176,7 @@ final class UserTable extends PowerGridComponent
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make(trans('Email'), 'email')
+            Column::make(trans('Email'), 'user_email', 'users.email')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
