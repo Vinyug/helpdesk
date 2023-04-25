@@ -76,9 +76,10 @@ class Comments extends Component
         
         // ---------------------- TICKET (UPDATE) ------------------------
         $ticket = Ticket::find($ticket_id);
+        // if ticket update is editable return editable = 0
+        $ticket->editable && $ticket->editable = 0;
         // update 'updated_at'
         $ticket->touch();
-        
         
         // --------------------------- UPLOAD ----------------------------
         
