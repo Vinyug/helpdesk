@@ -48,7 +48,7 @@ class AssignCompanyUser extends Notification
                     ->greeting('Bonjour '.$notifiable->firstname.' '.$notifiable->lastname.',')
                     ->line('Une nouvelle affection d\'entreprise a été enregistrée par un administrateur sur '.config('app.name').'!')
                     ->line('L\'utilisateur '.$this->user->firstname.' '.$this->user->lastname.' est affecté à l\'entreprise '.$this->user->company->name)
-                    ->line('Pour voir la liste des utilisteurs de la société, cliquez ci-dessous.')
+                    ->line('Pour voir la liste des utilisateurs de la société, cliquez ci-dessous.')
                     ->action('Se connecter', route('users.index'))
                     ->salutation('A bientôt sur '.config('app.name').'!');
     }
