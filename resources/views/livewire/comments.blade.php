@@ -72,7 +72,11 @@
         </form>
     </div>
     @else 
-    <div style="height: 263px"></div>
+        @if (auth()->user()->can('all-access'))
+            <div style="height: 311px"></div>
+        @else
+            <div style="height: 263px"></div>
+        @endif
     @endif
 
 
