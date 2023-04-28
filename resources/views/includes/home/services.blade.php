@@ -8,7 +8,7 @@
         </div>
         
         {{--------------------- CARD ----------------------}}
-        <div class="flex flex-col mt-16 md:mt-20">
+        <div class="flex flex-col md:flex-row md:flex-wrap md:justify-center mt-16 md:mt-20">
             @php
                 $counter = 0
             @endphp
@@ -16,18 +16,18 @@
             @foreach ($services as $service => $description)
                 @if ($counter % 2 == 0)
                     {{-- card left --}}
-                    <div class="w-full flex flex-col md:self-start items-start mb-8 md:mb-12 bg-white border border-orange-200 rounded-sm shadow md:flex-row md:max-w-xl xl:max-w-3xl md:min-h-[256px] md:ml-[7%] lg:ml-[15%] 2xl:ml-[18%]">
-                        <img class="md:order-1 self-center w-16 mt-8 md:mt-0 md:ml-10 md:mr-4" style="filter: invert(52%) sepia(50%) saturate(756%) brightness(101%) contrast(90%);" src="assets/images/img-service.png" alt="image service">
-                        <div class="md:order-2 flex flex-col justify-center my-2 p-8 leading-normal md:mr-2">
+                    <div class="w-full lg:w-2/5 xl:w-1/4 flex flex-col items-start mb-8 md:mb-12 md:mx-12 bg-white border border-orange-200 rounded-sm shadow">
+                        <img class="self-center w-16 mt-8" style="filter: invert(52%) sepia(50%) saturate(756%) brightness(101%) contrast(90%);" src="assets/images/img-service.png" alt="image service">
+                        <div class="flex flex-col justify-center my-2 p-8 leading-normal md:mr-2">
                             <h3 class="font-share-tech mb-2 text-2xl font-medium">{{ $service }}</h3>
                             <p class="mt-4">{!! nl2br(e($description)) !!}</p>
                         </div>
                     </div>
                 @else
                     {{-- card right --}}
-                    <div class="w-full flex flex-col md:self-end items-start mb-8 md:mb-12 bg-custom-light-blue text-white border border-gray-300 rounded-sm shadow shadow-gray-300 md:flex-row md:max-w-xl xl:max-w-3xl md:min-h-[256px] md:mr-[7%] lg:mr-[15%] 2xl:mr-[18%]">
-                        <img class="md:order-2 self-center w-16 mt-8 md:mt-0 md:mr-10 md:ml-4" style="filter: brightness(0) invert(1);" src="assets/images/img-service.png" alt="image service">
-                        <div class="w-full md:order-1 flex flex-col justify-center my-2 p-8 leading-normal md:ml-2">
+                    <div class="w-full lg:w-2/5 xl:w-1/4 flex flex-col items-start mb-8 md:mb-12 md:mx-12 bg-custom-light-blue text-white border border-gray-300 rounded-sm shadow shadow-gray-300">
+                        <img class="self-center w-16 mt-8" style="filter: brightness(0) invert(1);" src="assets/images/img-service.png" alt="image service">
+                        <div class="w-full flex flex-col justify-center my-2 p-8 leading-normal">
                             <h3 class="font-share-tech mb-2 text-2xl font-medium">{{ $service }}</h3>
                             <p class="mt-4">{!! nl2br(e($description)) !!}</p>
                         </div>

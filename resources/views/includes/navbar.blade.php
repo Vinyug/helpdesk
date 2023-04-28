@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="z-10 sticky top-12 bg-white border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-200 ">
+<nav x-data="{ open: false }" class="z-10 sticky top-10 sm:top-12 bg-white border-b-[1px] border-custom-dark border-opacity-30 shadow-sm shadow-gray-200 ">
     <!-- Primary Navigation Menu -->
     <div class="z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
