@@ -1,6 +1,6 @@
 <div class="relative">
-    <img class="absolute object-cover object-center w-full xl:h-[500px] lg:h-[450px] h-[400px]" src="assets/images/jumbotron.jpg" alt="image serveur">
-    <div class="relative flex justify-center items-center xl:h-[500px] lg:h-[450px] h-[400px] bg-opacity-80 bg-indigo-900">
+    <img class="absolute object-cover object-center w-full h-[calc(65vh-113px)] min-h-[400px] lg:min-h-[450px] xl:min-h-[500px] 2xl:min-h-[600px]" src="assets/images/jumbotron.jpg" alt="image serveur">
+    <div class="relative flex justify-center items-center h-[calc(65vh-113px)] min-h-[400px] lg:min-h-[450px] xl:min-h-[500px] 2xl:min-h-[600px] bg-opacity-80 bg-indigo-900">
         <div class="text-white m-3 text-center">
             <h1 class="font-share-tech font-bold text-4xl md:text-5xl lg:text-6xl mb-3">HELPDESK - Axess Informatique</h1>
             <h3 class="text-lg md:text-xl lg:text-2xl mb-4">
