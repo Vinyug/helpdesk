@@ -10,14 +10,14 @@
         {{--------------------- CARD ----------------------}}
         <div class="flex flex-col md:flex-row md:flex-wrap md:justify-center mt-16 md:mt-20">
             @php
-                $counter = 0
+                $counter = 0;
             @endphp
 
             @foreach ($services as $service => $description)
                 @if ($counter % 2 == 0)
                     {{-- card white --}}
                     <div class="card-white">
-                        <img class="self-center w-16 mt-8" style="filter: invert(52%) sepia(50%) saturate(756%) brightness(101%) contrast(90%);" src="assets/images/img-service.png" alt="image service">
+                        <img class="img-orange self-center w-16 mt-8" src="assets/images/img-service.png" alt="image service">
                         <div class="flex flex-col justify-center my-2 p-8 leading-normal md:mr-2">
                             <h3 class="font-share-tech mb-2 text-2xl font-medium">{{ $service }}</h3>
                             <p class="mt-4">{!! nl2br(e($description)) !!}</p>
@@ -26,7 +26,7 @@
                 @else
                     {{-- card blue --}}
                     <div class="card-blue">
-                        <img class="self-center w-16 mt-8" style="filter: brightness(0) invert(1);" src="assets/images/img-service.png" alt="image service">
+                        <img class="img-white self-center w-16 mt-8" src="assets/images/img-service.png" alt="image service">
                         <div class="w-full flex flex-col justify-center my-2 p-8 leading-normal">
                             <h3 class="font-share-tech mb-2 text-2xl font-medium">{{ $service }}</h3>
                             <p class="mt-4">{!! nl2br(e($description)) !!}</p>
