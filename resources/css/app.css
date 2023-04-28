@@ -67,6 +67,12 @@
     .thumbnail {
         @apply border p-[2px] border-custom-blue rounded-md hover:scale-[102%] transition duration-300 ease-in-out;
     }
+    .card-white {
+        @apply w-full lg:w-2/5 xl:w-1/4 flex flex-col items-start mb-8 md:mb-12 md:mx-6 bg-white text-custom-dark border border-orange-200 rounded-sm shadow;
+    }
+    .card-blue {
+        @apply w-full lg:w-2/5 xl:w-1/4 flex flex-col items-start mb-8 md:mb-12 md:mx-6 bg-custom-light-blue text-white border border-gray-300 rounded-sm shadow shadow-gray-300;
+    }
 }
 /* END COMPONENTS */
 
@@ -135,6 +141,23 @@ nav .menu ul li a:hover {
 }
 /* END POWERGRID  */
 
+/* HOMEPAGE */
+/* SERVICES */
+.img-orange {
+    filter: 
+        invert(52%) 
+        sepia(50%) 
+        saturate(756%) 
+        brightness(101%) 
+        contrast(90%);
+}
+.img-white {
+    filter: 
+        brightness(0)
+        invert(1);
+}
+/* END SERVICES  */
+
 
 /* REVIEW */
 .rating input[type="radio"] {
@@ -146,15 +169,16 @@ nav .menu ul li a:hover {
 }
 .create-review.star-full:hover {
     filter: 
-        invert(40%) 
-        sepia(28%) 
-        saturate(1766%) 
-        brightness(107%) 
-        contrast(102%);
+    invert(40%) 
+    sepia(28%) 
+    saturate(1766%) 
+    brightness(107%) 
+    contrast(102%);
     transition: all 0.3s;
     background-clip: content-box;
 }
 /* END REVIEW */
+/* END HOMEPAGE */
 
 
 /* FOOTER */
