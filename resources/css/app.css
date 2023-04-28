@@ -67,6 +67,12 @@
     .thumbnail {
         @apply border p-[2px] border-custom-blue rounded-md hover:scale-[102%] transition duration-300 ease-in-out;
     }
+    .card-white {
+        @apply w-full lg:w-2/5 xl:w-1/4 flex flex-col items-start mb-8 md:mb-12 md:mx-6 bg-white border border-orange-200 rounded-sm shadow;
+    }
+    .card-blue {
+        @apply w-full lg:w-2/5 xl:w-1/4 flex flex-col items-start mb-8 md:mb-12 md:mx-6 bg-custom-light-blue text-white border border-gray-300 rounded-sm shadow shadow-gray-300;
+    }
 }
 /* END COMPONENTS */
 

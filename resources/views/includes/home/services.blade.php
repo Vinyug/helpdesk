@@ -16,7 +16,7 @@
             @foreach ($services as $service => $description)
                 @if ($counter % 2 == 0)
                     {{-- card white --}}
-                    <div class="w-full lg:w-2/5 xl:w-1/4 flex flex-col items-start mb-8 md:mb-12 md:mx-6 bg-white border border-orange-200 rounded-sm shadow">
+                    <div class="card-white">
                         <img class="self-center w-16 mt-8" style="filter: invert(52%) sepia(50%) saturate(756%) brightness(101%) contrast(90%);" src="assets/images/img-service.png" alt="image service">
                         <div class="flex flex-col justify-center my-2 p-8 leading-normal md:mr-2">
                             <h3 class="font-share-tech mb-2 text-2xl font-medium">{{ $service }}</h3>
@@ -25,7 +25,7 @@
                     </div>
                 @else
                     {{-- card blue --}}
-                    <div class="w-full lg:w-2/5 xl:w-1/4 flex flex-col items-start mb-8 md:mb-12 md:mx-6 bg-custom-light-blue text-white border border-gray-300 rounded-sm shadow shadow-gray-300">
+                    <div class="card-blue">
                         <img class="self-center w-16 mt-8" style="filter: brightness(0) invert(1);" src="assets/images/img-service.png" alt="image service">
                         <div class="w-full flex flex-col justify-center my-2 p-8 leading-normal">
                             <h3 class="font-share-tech mb-2 text-2xl font-medium">{{ $service }}</h3>
