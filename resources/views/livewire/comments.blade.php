@@ -25,7 +25,7 @@
     <div class="flex flex-col border border-gray-400 rounded-t-md rounded-sm mb-4 shadow shadow-grey-500">
         <div class="p-2 font-medium border-b border-gray-400 text-white bg-custom-light-blue">Ecrire un nouveau message</div>
         <form class="p-4 rounded-b-sm">
-
+        @csrf    
             <div class="col-span-full mb-4">
                 <textarea class="custom-input h-20" wire:model="input.content" x-on:click="showMessage = false" name="content" id="content" placeholder="Saisir un message"></textarea>
                 @if($storeSubmitted)
@@ -177,7 +177,7 @@
                 @else
                     <x-modal name="confirm-comment-delete">
                         <form class="p-6">
-                
+                        @csrf
                             <h2 class="text-lg font-medium text-custom-grey">
                                 {{ __('Êtes-vous sûr de vouloir supprimer ce commentaire ?') }}
                             </h2>
@@ -217,7 +217,7 @@
             {{---------------- TOGGLE editComment TRUE -----------------}}
             @if ($editMode)
                 <form x-cloak x-show="editComment" class="mb-2">
-
+                @csrf
                     <textarea class="custom-input border-custom-blue shadow-gray-400 shadow-sm h-20 mb-2" wire:model="input.content" x-on:click="showMessage = false" name="content" id="content" placeholder="Saisir un message"></textarea>
                     @if($updateSubmitted)
                         @error('input.content')

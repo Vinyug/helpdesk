@@ -47,9 +47,9 @@ class Comments extends Component
         // ---------------------- DATA VALIDATION ------------------------
         // ---------------------------------------------------------------
         $validatedData = $this->validate([
-            'input.content' => 'required|max:2000',
+            'input.content'     => 'required|max:2048',
             'input.filenames.*' => 'sometimes|file|mimes:jpg,jpeg,png,bmp|max:2000|dimensions:min_width='.$this->thumbnail_width.',min_height='.$this->thumbnail_height,
-            'input.time_spent' => 'sometimes|nullable|numeric|regex:/^\d{1,4}(\.\d{1,2})?$/', //number 0000.00
+            'input.time_spent'  => 'sometimes|numeric|regex:/^\d{1,4}(\.\d{1,2})?$/', //number 0000.00
         ], [
             'input.time_spent.regex' => 'Le champ temps passé doit être un nombre respectant dans sa valeur maximum cette syntaxe 0000.00'
         ]);
